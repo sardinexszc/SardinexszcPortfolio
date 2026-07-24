@@ -20,8 +20,8 @@ function getProjectDomain(url: string | null): string {
 
 const aboutParagraphs = [
   "I build software that connects research, automation, and real-world operations. My work spans full-stack web development, AI-powered applications, workflow automation, and IoT systems, creating tools that solve practical problems rather than simply demonstrating technology.",
-  "Over the past few years, I&apos;ve developed production systems for government-funded research institutions, including content management systems, research information systems, real-time monitoring platforms, and smart agriculture solutions. I enjoy turning complex workflows into software that is reliable, intuitive, and scalable.",
-  "Currently, I&apos;m exploring AI agents, LLM applications, and intelligent automation to build systems that work alongside people instead of replacing them.",
+  "Over the past few years, I've developed production systems for government-funded research institutions, including content management systems, research information systems, real-time monitoring platforms, and smart agriculture solutions. I enjoy turning complex workflows into software that is reliable, intuitive, and scalable.",
+  "Currently, I'm exploring AI agents, LLM applications, and intelligent automation to build systems that work alongside people instead of replacing them.",
 ];
 
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
