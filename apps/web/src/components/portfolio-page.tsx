@@ -30,6 +30,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
       <SiteHeader />
       <main>
         <section className="hero" aria-labelledby="hero-title">
+          <img src="/images/hero-photo.jpg" alt="Ivan Christian Salinas" className="hero-photo-mobile" />
           <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
           <h1 id="hero-title">Building software that solves<br /><em>real-world problems.</em></h1>
           <div className="hero-bottom">
