@@ -1,3 +1,4 @@
 import type { MetadataRoute } from "next";
+import { getSiteOrigin } from "@/lib/site-url";
 
-export default function sitemap(): MetadataRoute.Sitemap { return [{ url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000", lastModified: new Date() }]; }
+export default function sitemap(): MetadataRoute.Sitemap { return [{ url: getSiteOrigin(), lastModified: new Date() }]; }

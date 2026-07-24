@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, DM_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
@@ -16,7 +17,7 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   title: "Sardinexszc — Product designer & developer",
   description: "The portfolio of Sardinexszc, a product designer and developer building clear, useful experiences for the web.",
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"),
+  metadataBase: getSiteUrl(),
   alternates: {
     canonical: "/",
   },
