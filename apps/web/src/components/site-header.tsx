@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
-import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
   return (
@@ -12,7 +11,6 @@ export function SiteHeader() {
         <Link href="#work">Work</Link>
         <Link href="#about">About</Link>
         <Link href="#contact" className="nav-contact">Let&apos;s talk <ArrowUpRight size={15} /></Link>
-        <ThemeToggle />
       </nav>
     </header>
   );
