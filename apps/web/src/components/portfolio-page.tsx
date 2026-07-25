@@ -1,5 +1,6 @@
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { CapabilitiesSection } from "./capabilities-section";
+import { HeroScrambleText } from "./hero-scramble";
 import type { Portfolio } from "@/lib/types";
 import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
@@ -32,7 +33,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <section className="hero" aria-labelledby="hero-title">
           <img src="/images/hero-photo.jpg" alt="Ivan Christian Salinas" className="hero-photo-mobile" />
           <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
-          <h1 id="hero-title">Building software that solves<br /><em>real-world problems.</em></h1>
+          <HeroScrambleText>Building software that solves<br /><em>real-world problems.</em></HeroScrambleText>
           <div className="hero-bottom">
             <p>I&apos;m Ivan Christian Salinas, a Full Stack Software Engineer specializing in web applications, AI automation, and business process digitalization.</p>
             <a className="scroll-cue" href="#work">Scroll to explore <ArrowDown size={16} /></a>
