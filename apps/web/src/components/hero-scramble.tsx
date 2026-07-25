@@ -13,23 +13,14 @@ export function HeroScrambleText({ children }: HeroScrambleProps) {
   useEffect(() => {
     if (!elementRef.current) return;
 
-    // Get the original text content (plain text without HTML)
-    const originalText = 'Building software that solves\nreal-world problems.';
-
-    // Use anime.js with scrambleText function
+    // Use anime.js scrambleText function to animate the heading
+    // scrambleText() returns a function-based tween value that reveals text through scrambling
     animate(elementRef.current, {
-      innerHTML: [
-        {
-          value: scrambleText({
-            text: originalText,
-          }),
-        },
-        {
-          value: originalText,
-        },
-      ],
-      duration: 1500,
-      easing: 'easeInOutQuad',
+      innerHTML: scrambleText({
+        text: 'Building software that solves<br /><em>real-world problems.</em>',
+        duration: 2000,
+        revealDelay: 100,
+      }),
     });
   }, []);
 
