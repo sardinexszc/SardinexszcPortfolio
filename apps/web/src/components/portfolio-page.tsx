@@ -1,6 +1,9 @@
+'use client';
+
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { CapabilitiesSection } from "./capabilities-section";
 import { HeroScrambleText } from "./hero-scramble";
+import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
 import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
@@ -36,7 +39,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <HeroScrambleText>Building software that solves<br /><em>real-world problems.</em></HeroScrambleText>
           <div className="hero-bottom">
             <p>I&apos;m Ivan Christian Salinas, a Full Stack Software Engineer specializing in web applications, AI automation, and business process digitalization.</p>
-            <a className="scroll-cue" href="#work">Scroll to explore <ArrowDown size={16} /></a>
+            <a className="scroll-cue" href="#work" onClick={(e) => { e.preventDefault(); smoothScrollToId('work'); }}>Scroll to explore <ArrowDown size={16} /></a>
           </div>
         </section>
 
