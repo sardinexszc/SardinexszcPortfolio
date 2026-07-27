@@ -7,6 +7,7 @@ import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
 import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
+import { PortfolioChatbot } from "./chatbot";
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2></div>;
@@ -33,6 +34,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
     <div className="page-shell">
       <SiteHeader />
       <main>
+        <PortfolioChatbot portfolio={portfolio} />
         <section className="hero" aria-labelledby="hero-title">
           <img src="/images/hero-photo.jpg" alt="Ivan Christian Salinas" className="hero-photo-mobile" />
           <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
@@ -112,7 +114,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
         <CapabilitiesSection />
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Have a good problem?</p><h2 id="contact-title">Let&apos;s make<br /><em>something clear.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:sardinexszc@gmail.com"><Mail size={19} /> sardinexszc@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a></div><div className="social-row"><a href={buildWhatsAppLink('+63 926 745 9456', 'Hi Ivan, I saw your portfolio and would like to discuss a project.')} target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp</a><a href={buildTelegramLink('@Sardinexszc')} target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a><a href="https://github.com/sardinexszc" target="_blank" rel="noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Have a good problem?</p><h2 id="contact-title">Let&apos;s make<br /><em>something clear.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:sardinexszc@gmail.com"><Mail size={19} /> sardinexszc@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href={buildWhatsAppLink('+63 926 745 9456', 'Hi Ivan, I saw your portfolio and would like to discuss a project.')} target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp</a><a href={buildTelegramLink('@Sardinexszc')} target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a><a href="https://github.com/sardinexszc" target="_blank" rel="noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
       </main>
       <footer><span>© 2026 Sardinexszc</span><span>Designed and built with care</span></footer>
     </div>

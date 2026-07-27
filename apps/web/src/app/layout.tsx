@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
+import "./chatbot.css";
 
 const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
 const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });

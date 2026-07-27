@@ -1,0 +1,69 @@
+• Managed project documentation, financial records, and technical reports for a CHED–British Council research 
+initiative.
+• Coordinated project documentation, monitored fund utilization, and ensured compliance with project reporting 
+requirements.
+• Prepared technical, financial, and accomplishment reports while supporting project administration and stakeholder 
+coordination.
+Full Stack Software Engineer and AI Automation Specialist with 7+ years of experience designing, developing, and deploying 
+enterprise-grade web applications and automated workflows. Proficient in building scalable, cloud-based solutions using 
+React.js, Next.js, PHP, TypeScript, and PostgreSQL. Expert in integrating Large Language Models (LLMs), n8n automation, 
+and Telegram bots to solve complex operational challenges. Proven track record of leading the full Software Development Life 
+Cycle (SDLC) for research institutions, translating business requirements into efficient, data-driven information systems.
+• PHP, JavaScript (ES6+), TypeScript, SQL, Java
+• React.js, Next.js, HTML5, CSS3, Responsive Web Design, 
+Tailwind CSS
+• RESTful API Development, Server-side Application Dev, 
+Authentication and Authorization, API Integration
+• MySQL, PostgreSQL, Supabase, Database Design, Data 
+Modeling
+Central Luzon State University
+Project Technical Staff
+Central Luzon State University - Crops and Resources Research and 
+Development Center, Information and Communication Division
+Bachelor of Science in Information Technology
+Instructor I | Information Systems Developer
+Major: Systems Development
+• Taught undergraduate programming courses and supervised software development capstone projects.
+• Developed and maintained a multi-module enterprise information system supporting research management, 
+inventory, personnel, document management, and organizational services for the Crops and Resources Research 
+and Development Center (CRRDC).
+• Led the complete Software Development Life Cycle (SDLC), including requirements gathering, system design, 
+database architecture, development, testing, deployment, maintenance, and user support.
+• Designed relational databases using MySQL, PostgreSQL, and Supabase, and developed secure RESTful APIs for 
+integration with internal and third-party services.
+• Implemented workflow automation using n8n and integrated AI-powered solutions, LLMs, webhooks, chatbots, and 
+external APIs to improve operational efficiency.
+• Collaborated with researchers, administrators, and multidisciplinary teams to translate operational requirements into 
+scalable software solutions while mentoring interns and student developers
+August 2019 – June 2026
+July 2017 – June 2019
+PROFESSIONAL SUMMARY
++63-926-7459-456 
+Science City of Muñoz, Nueva Ecija
+banbansalinas@gmail.com
+https://www.sardinexszc.vercel.app
+Ivan Christian L. Salinas
+EXPERIENCE
+EDUCATION PUBLICATIONS
+SKILLS
+Central Luzon State University 2013 - 2017
+• Vercel, Git, GitHub, Cloud Application Deployment
+• Workflow Automation(n8n), AI Agent integration, LLM 
+Integration, API Orchestration, Prompt Engineering, 
+Telegram BOT Development, Webhook Integration
+• Artificial Intelligence Workflow Automation, Internet of Things 
+(IoT), ArcGIS, QGIS
+Master of Science in Information Technology
+Major: Data Science
+Nueva Ecija University of Science and Technology 
+2026 - present
+Senior Digital World: Social Media Usage and Online 
+Identity Expression Among Senior Citizens in 
+Selected Barangays of Talavera, Nueva Ecija
+Published: March 11, 2025
+DOI: 10.70059/nv6q0j65
+Development of a Web-based Research Consortium 
+Database Management System: Advancing Data-
+driven and Knowledge-based Project Management
+Published: May 24, 2024
+DOI: 10.1145/3670105.3670120

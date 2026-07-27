@@ -1,5 +1,7 @@
 import type { NextConfig } from "next";
 
+const isDevelopment = process.env.NODE_ENV !== "production";
+
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
@@ -21,6 +23,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
   },
   async headers() {
+    if (isDevelopment) {
+      return [];
+    }
+
     return [
       {
         source: "/:path*",
