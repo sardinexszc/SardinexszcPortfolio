@@ -1,8 +1,9 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useState, useSyncExternalStore } from "react";
+import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
+import type { Portfolio } from "@/lib/types";
 
 const LazyScene = dynamic(
   () => import("./engineering-ecosystem-scene").then((module) => module.EngineeringEcosystemScene),
@@ -69,7 +70,7 @@ function EcosystemFallback({ reason, onNavigate }: { reason: "mobile" | "reduced
   );
 }
 
-export function EngineeringEcosystemVisual() {
+export function EngineeringEcosystemVisual({ portfolio }: { portfolio: Portfolio }) {
   const isClientHydrated = useIsClientHydrated();
   const isMobile = useIsMobile();
   const [paused, setPaused] = useState(false);
@@ -104,6 +105,46 @@ export function EngineeringEcosystemVisual() {
   const mode = !isClientHydrated || isMobile ? (isMobile ? "mobile" : "scene") : "scene";
   const activeNode = architectureFlow.find((item) => item.key === hoveredNode);
 
+  const tooltipContent = useMemo(() => {
+    const projectTitles = portfolio.projects.map((project) => project.title);
+    const timelineText = portfolio.timeline.map((entry) => entry.description).join(" ").toLowerCase();
+
+    const domainMap: Record<string, { description: string; technologies: string[]; relatedProjects: string[] }> = {
+      web: {
+        description: "Client-facing systems for research, operations, and public access.",
+        technologies: ["Next.js", "React", "TypeScript", "Tailwind CSS"],
+        relatedProjects: projectTitles.filter((title) => /research|development|center|consortium/i.test(title)).slice(0, 2),
+      },
+      api: {
+        description: "Backend services, integrations, and application logic for institutional workflows.",
+        technologies: ["Laravel", "PHP", "JavaScript"],
+        relatedProjects: projectTitles.filter((title) => /monitoring|management|consortium|research/i.test(title)).slice(0, 2),
+      },
+      db: {
+        description: "Data models, persistence, and operational systems that support dependable delivery.",
+        technologies: ["MySQL", "Database design", "Data management"],
+        relatedProjects: projectTitles.filter((title) => /database|management|monitoring/i.test(title)).slice(0, 2),
+      },
+      ai: {
+        description: "Automation and AI-enabled workflows that support practical decision support.",
+        technologies: ["AI-powered applications", "Automation workflows"],
+        relatedProjects: timelineText.includes("automation") ? projectTitles.slice(0, 2) : projectTitles.slice(0, 1),
+      },
+      iot: {
+        description: "Monitoring and connected-device systems for live operational environments.",
+        technologies: ["IoT monitoring", "Real-time monitoring"],
+        relatedProjects: projectTitles.filter((title) => /monitoring|smart|agriculture|real/i.test(title)).slice(0, 2),
+      },
+      research: {
+        description: "Research infrastructure for evidence, knowledge, and informed delivery.",
+        technologies: ["Research information systems", "Content management", "Database management"],
+        relatedProjects: projectTitles.filter((title) => /research|consortium|database|management/i.test(title)).slice(0, 2),
+      },
+    };
+
+    return hoveredNode ? domainMap[hoveredNode] ?? null : null;
+  }, [hoveredNode, portfolio.projects, portfolio.timeline]);
+
   const handleNavigate = (key: string) => {
     const selected = architectureFlow.find((item) => item.key === key);
     if (selected) {
@@ -130,10 +171,14 @@ export function EngineeringEcosystemVisual() {
               onNodeHover={setHoveredNode}
               onNodeSelect={handleNavigate}
             />
-            {activeNode ? (
+            {activeNode && tooltipContent ? (
               <div className="ecosystem-tooltip" role="status" aria-live="polite">
                 <strong>{activeNode.label}</strong>
-                <span>{activeNode.detail}</span>
+                <span>{tooltipContent.description}</span>
+                <span className="ecosystem-tooltip-label">Technologies</span>
+                <span>{tooltipContent.technologies.join(" · ")}</span>
+                <span className="ecosystem-tooltip-label">Related work</span>
+                <span>{tooltipContent.relatedProjects.join(" · ")}</span>
               </div>
             ) : null}
           </>
@@ -163,10 +208,10 @@ export function EngineeringEcosystemVisual() {
           type="button"
           className="ecosystem-toggle"
           onClick={() => setPaused((value) => !value)}
-          disabled={mode !== "scene"}
+          disabled={mode !== "scene" || reducedMotion}
           aria-pressed={paused}
         >
-          {paused ? "Resume motion" : "Pause motion"}
+          {reducedMotion ? "Motion: Off" : paused ? "Motion: Off" : "Motion: On"}
         </button>
       </div>
     </aside>

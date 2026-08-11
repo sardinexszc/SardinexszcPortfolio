@@ -19,14 +19,14 @@ type NodeDef = {
   position: [number, number, number];
   color: string;
   accent: string;
-  geometry: "box" | "cylinder" | "torus" | "sphere";
+  geometry: "box" | "cylinder" | "torus" | "sphere" | "octahedron";
   sectionId: string;
   summary: string;
 };
 
 const nodes: NodeDef[] = [
   { key: "web", label: "Product Interfaces", position: [-1.7, 1.2, 0.25], color: "#8ec5ff", accent: "#d9ebff", geometry: "box", sectionId: "work", summary: "Client-facing applications and operational workflows" },
-  { key: "api", label: "Service Layer", position: [-0.8, 0.85, -0.05], color: "#7fe9d4", accent: "#dffbf6", geometry: "cylinder", sectionId: "about", summary: "Backend services, integrations, and application logic" },
+  { key: "api", label: "Service Layer", position: [-0.8, 0.85, -0.05], color: "#7fe9d4", accent: "#dffbf6", geometry: "octahedron", sectionId: "about", summary: "Backend services, integrations, and application logic" },
   { key: "db", label: "Data Platform", position: [-0.2, 0.15, 0.2], color: "#b8f38a", accent: "#eafbcf", geometry: "torus", sectionId: "about", summary: "Persistent data structures and system state" },
   { key: "ai", label: "Intelligence & Automation", position: [0.65, -0.22, 0.18], color: "#ffe48c", accent: "#fff7d8", geometry: "sphere", sectionId: "work", summary: "Workflow automation and AI-enabled decision support" },
   { key: "iot", label: "Connected Systems", position: [1.1, -1.0, -0.15], color: "#ffb38f", accent: "#ffe8dc", geometry: "cylinder", sectionId: "work", summary: "Monitoring, telemetry, and device-connected operations" },
@@ -104,6 +104,8 @@ function NodeVisual({
         return <cylinderGeometry args={[0.16, 0.16, 0.25, 12]} />;
       case "torus":
         return <torusGeometry args={[0.16, 0.06, 10, 18]} />;
+      case "octahedron":
+        return <octahedronGeometry args={[0.17, 0]} />;
       default:
         return <sphereGeometry args={[0.16, 16, 16]} />;
     }
@@ -127,6 +129,36 @@ function NodeVisual({
         {renderGeometry()}
         <meshStandardMaterial color={node.color} roughness={0.28} metalness={0.08} emissive={node.color} emissiveIntensity={0.14} />
       </mesh>
+      {node.key === "ai" ? (
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <ringGeometry args={[0.14, 0.19, 24]} />
+          <meshBasicMaterial color={node.color} transparent opacity={0.24} depthWrite={false} />
+        </mesh>
+      ) : null}
+      {node.key === "api" ? (
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.07, 0.07, 0.16, 8]} />
+          <meshBasicMaterial color={node.accent} transparent opacity={0.32} depthWrite={false} />
+        </mesh>
+      ) : null}
+      {node.key === "db" ? (
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.05, 0.05, 0.2, 8]} />
+          <meshBasicMaterial color={node.color} transparent opacity={0.2} depthWrite={false} />
+        </mesh>
+      ) : null}
+      {node.key === "iot" ? (
+        <mesh position={[0.11, 0.08, 0.02]}>
+          <boxGeometry args={[0.08, 0.08, 0.06]} />
+          <meshBasicMaterial color={node.accent} transparent opacity={0.32} depthWrite={false} />
+        </mesh>
+      ) : null}
+      {node.key === "research" ? (
+        <mesh rotation={[0, 0, Math.PI / 4]}>
+          <boxGeometry args={[0.18, 0.06, 0.06]} />
+          <meshBasicMaterial color={node.color} transparent opacity={0.24} depthWrite={false} />
+        </mesh>
+      ) : null}
       <mesh scale={1.3}>
         <sphereGeometry args={[0.08, 8, 8]} />
         <meshBasicMaterial color={node.color} transparent opacity={0.25} depthWrite={false} />
@@ -209,7 +241,7 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress, hoveredNode, 
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial color="#95a3b0" transparent opacity={0.42} depthWrite={false} />
+        <lineBasicMaterial color="#95a3b0" transparent opacity={0.44} depthWrite={false} />
       </lineSegments>
 
       {links.map(([start, end], index) => {
