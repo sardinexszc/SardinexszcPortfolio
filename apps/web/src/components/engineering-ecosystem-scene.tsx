@@ -8,6 +8,9 @@ type SceneProps = {
   reducedMotion: boolean;
   paused: boolean;
   scrollProgress: number;
+  hoveredNode: string | null;
+  onNodeHover: (key: string | null) => void;
+  onNodeSelect: (key: string) => void;
 };
 
 type NodeDef = {
@@ -15,30 +18,126 @@ type NodeDef = {
   label: string;
   position: [number, number, number];
   color: string;
+  accent: string;
+  geometry: "box" | "cylinder" | "torus" | "sphere";
+  sectionId: string;
+  summary: string;
 };
 
 const nodes: NodeDef[] = [
-  { key: "web", label: "Web Applications", position: [-1.5, 1.2, 0], color: "#8ec5ff" },
-  { key: "api", label: "APIs", position: [-0.85, 0.65, 0.15], color: "#7fe9d4" },
-  { key: "db", label: "Databases", position: [-0.25, 0.1, -0.1], color: "#b8f38a" },
-  { key: "ai", label: "AI / Automation", position: [0.4, -0.45, 0.1], color: "#ffe48c" },
-  { key: "iot", label: "IoT", position: [1.05, -0.98, -0.15], color: "#ffb38f" },
-  { key: "research", label: "Research Systems", position: [1.75, -1.45, 0], color: "#ff9fb3" },
+  { key: "web", label: "Product Interfaces", position: [-1.7, 1.2, 0.25], color: "#8ec5ff", accent: "#d9ebff", geometry: "box", sectionId: "work", summary: "Client-facing applications and operational workflows" },
+  { key: "api", label: "Service Layer", position: [-0.8, 0.85, -0.05], color: "#7fe9d4", accent: "#dffbf6", geometry: "cylinder", sectionId: "about", summary: "Backend services, integrations, and application logic" },
+  { key: "db", label: "Data Platform", position: [-0.2, 0.15, 0.2], color: "#b8f38a", accent: "#eafbcf", geometry: "torus", sectionId: "about", summary: "Persistent data structures and system state" },
+  { key: "ai", label: "Intelligence & Automation", position: [0.65, -0.22, 0.18], color: "#ffe48c", accent: "#fff7d8", geometry: "sphere", sectionId: "work", summary: "Workflow automation and AI-enabled decision support" },
+  { key: "iot", label: "Connected Systems", position: [1.1, -1.0, -0.15], color: "#ffb38f", accent: "#ffe8dc", geometry: "cylinder", sectionId: "work", summary: "Monitoring, telemetry, and device-connected operations" },
+  { key: "research", label: "Research Infrastructure", position: [1.8, -1.45, 0.05], color: "#ff9fb3", accent: "#fde4ea", geometry: "box", sectionId: "about", summary: "Research workflows, evidence, and information systems" },
 ];
 
 const links: Array<[number, number]> = [
   [0, 1],
   [1, 2],
+  [1, 3],
   [2, 3],
   [3, 4],
-  [4, 5],
+  [3, 5],
+  [2, 4],
 ];
 
-function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps) {
-  const rootRef = useRef<THREE.Group | null>(null);
-  const particleRef = useRef<THREE.Points | null>(null);
-  const beadRefs = useRef<Array<THREE.Mesh | null>>([]);
+const flowLinks = [0, 2, 4];
 
+function NodeVisual({
+  node,
+  isActive,
+  isConnected,
+  reducedMotion,
+  paused,
+  onNodeHover,
+  onNodeSelect,
+}: {
+  node: NodeDef;
+  isActive: boolean;
+  isConnected: boolean;
+  reducedMotion: boolean;
+  paused: boolean;
+  onNodeHover: (key: string | null) => void;
+  onNodeSelect: (key: string) => void;
+}) {
+  const groupRef = useRef<THREE.Group | null>(null);
+  const shellRef = useRef<THREE.Mesh | null>(null);
+  const coreRef = useRef<THREE.Mesh | null>(null);
+
+  useFrame((state) => {
+    const group = groupRef.current;
+    const shell = shellRef.current;
+    const core = coreRef.current;
+    if (!group || !shell || !core) return;
+
+    const time = state.clock.elapsedTime;
+    if (!paused && !reducedMotion) {
+      group.position.set(
+        node.position[0] + Math.sin(time * 0.9 + node.position[0]) * 0.028,
+        node.position[1] + Math.cos(time * 0.7 + node.position[1] * 2) * 0.02,
+        node.position[2] + Math.sin(time * 0.6 + node.position[2]) * 0.018,
+      );
+      group.rotation.y = Math.sin(time * 0.5 + node.position[0]) * 0.06;
+      group.rotation.z = Math.cos(time * 0.4 + node.position[1]) * 0.04;
+    } else {
+      group.position.set(node.position[0], node.position[1], node.position[2]);
+      group.rotation.set(0, 0, 0);
+    }
+
+    const scale = isActive ? 1.18 : isConnected ? 1.05 : 0.92;
+    const shellMaterial = (Array.isArray(shell.material) ? shell.material[0] : shell.material) as THREE.MeshStandardMaterial;
+    const coreMaterial = (Array.isArray(core.material) ? core.material[0] : core.material) as THREE.MeshStandardMaterial;
+
+    shell.scale.setScalar(scale * 1.16);
+    core.scale.setScalar(scale);
+    shellMaterial.opacity = isActive ? 0.85 : isConnected ? 0.62 : 0.34;
+    coreMaterial.emissiveIntensity = isActive ? 0.34 : isConnected ? 0.2 : 0.12;
+  });
+
+  const renderGeometry = () => {
+    switch (node.geometry) {
+      case "box":
+        return <boxGeometry args={[0.24, 0.24, 0.24]} />;
+      case "cylinder":
+        return <cylinderGeometry args={[0.16, 0.16, 0.25, 12]} />;
+      case "torus":
+        return <torusGeometry args={[0.16, 0.06, 10, 18]} />;
+      default:
+        return <sphereGeometry args={[0.16, 16, 16]} />;
+    }
+  };
+
+  return (
+    <group ref={groupRef}>
+      <mesh
+        ref={shellRef}
+        onPointerOver={(event) => {
+          event.stopPropagation();
+          onNodeHover(node.key);
+        }}
+        onPointerOut={() => onNodeHover(null)}
+        onClick={() => onNodeSelect(node.key)}
+      >
+        {renderGeometry()}
+        <meshStandardMaterial color={node.accent} transparent opacity={0.48} roughness={0.25} metalness={0.08} />
+      </mesh>
+      <mesh ref={coreRef}>
+        {renderGeometry()}
+        <meshStandardMaterial color={node.color} roughness={0.28} metalness={0.08} emissive={node.color} emissiveIntensity={0.14} />
+      </mesh>
+      <mesh scale={1.3}>
+        <sphereGeometry args={[0.08, 8, 8]} />
+        <meshBasicMaterial color={node.color} transparent opacity={0.25} depthWrite={false} />
+      </mesh>
+    </group>
+  );
+}
+
+function EcosystemContent({ reducedMotion, paused, scrollProgress, hoveredNode, onNodeHover, onNodeSelect }: SceneProps) {
+  const rootRef = useRef<THREE.Group | null>(null);
+  const beadRefs = useRef<Array<THREE.Mesh | null>>([]);
   const linePositions = useMemo(() => {
     const values = new Float32Array(links.length * 2 * 3);
     links.forEach(([start, end], index) => {
@@ -55,22 +154,7 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
     return values;
   }, []);
 
-  const particlePositions = useMemo(() => {
-    const count = 64;
-    const values = new Float32Array(count * 3);
-    for (let i = 0; i < count; i += 1) {
-      const base = i * 3;
-      const xWave = Math.sin(i * 1.7);
-      const yWave = Math.cos(i * 1.13);
-      const zWave = Math.sin(i * 0.79 + 0.6);
-      values[base] = xWave * 2.2;
-      values[base + 1] = yWave * 1.55;
-      values[base + 2] = zWave * 1.05;
-    }
-    return values;
-  }, []);
-
-  useFrame((state, delta) => {
+  useFrame((state) => {
     const root = rootRef.current;
     if (!root) return;
 
@@ -79,102 +163,117 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
     const time = state.clock.elapsedTime;
 
     if (!paused && !reducedMotion) {
-      const targetX = pointerY * 0.24 + scrollProgress * 0.12;
-      const targetY = pointerX * 0.28;
-      const targetZ = scrollProgress * 0.08 + Math.sin(time * 0.8) * 0.08;
+      const targetX = pointerY * 0.16 + scrollProgress * 0.08;
+      const targetY = pointerX * 0.12;
+      const targetZ = scrollProgress * 0.04 + Math.sin(time * 0.7) * 0.04;
 
       root.rotation.x += (targetX - root.rotation.x) * 0.08;
       root.rotation.y += (targetY - root.rotation.y) * 0.08;
-      root.rotation.z += (targetZ - root.rotation.z) * 0.06;
-      root.position.x = Math.sin(time * 0.42) * 0.08;
-      root.position.y = Math.sin(time * 0.9) * 0.1;
-      root.position.z = Math.cos(time * 0.66) * 0.06;
-      root.scale.setScalar(1 + Math.sin(time * 1.2) * 0.025);
-
-      if (particleRef.current) {
-        particleRef.current.rotation.y += delta * 0.22;
-        particleRef.current.rotation.x += delta * 0.07;
-      }
-
-      links.forEach(([start, end], index) => {
-        const bead = beadRefs.current[index];
-        if (!bead) return;
-        const startPos = nodes[start].position;
-        const endPos = nodes[end].position;
-        const t = (time * 0.9 + index * 0.16 + scrollProgress * 0.35) % 1;
-
-        bead.position.set(
-          startPos[0] + (endPos[0] - startPos[0]) * t,
-          startPos[1] + (endPos[1] - startPos[1]) * t,
-          startPos[2] + (endPos[2] - startPos[2]) * t,
-        );
-        bead.scale.setScalar(1 + 0.6 * Math.sin(time * 7 + index * 1.2));
-      });
+      root.rotation.z = targetZ;
+      root.position.x = Math.sin(time * 0.52) * 0.05;
+      root.position.y = Math.sin(time * 0.86) * 0.06;
+      root.position.z = Math.cos(time * 0.62) * 0.04;
+      root.scale.setScalar(1 + Math.sin(time * 1.1) * 0.015);
+    } else {
+      root.rotation.set(0.02, 0, 0);
+      root.position.set(0, 0, 0);
+      root.scale.setScalar(1);
     }
+
+    flowLinks.forEach((linkIndex, beadIndex) => {
+      const bead = beadRefs.current[beadIndex];
+      if (!bead) return;
+      const [start, end] = links[linkIndex];
+      const startPos = nodes[start].position;
+      const endPos = nodes[end].position;
+      const progress = (time * 0.18 + beadIndex * 0.16 + scrollProgress * 0.08) % 1;
+      bead.position.set(
+        startPos[0] + (endPos[0] - startPos[0]) * progress,
+        startPos[1] + (endPos[1] - startPos[1]) * progress,
+        startPos[2] + (endPos[2] - startPos[2]) * progress,
+      );
+      bead.scale.setScalar(1 + 0.5 * Math.sin(time * 6 + beadIndex));
+    });
   });
+
+  const hoveredIndex = hoveredNode ? nodes.findIndex((node) => node.key === hoveredNode) : -1;
 
   return (
     <group ref={rootRef}>
-      <mesh position={[0.2, -2.15, -0.7]} rotation={[-Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[6, 4, 1, 1]} />
-        <meshBasicMaterial color="#9ba7b5" transparent opacity={0.08} />
+      <mesh position={[0.15, -2.05, -0.9]} rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+        <planeGeometry args={[6.4, 4.2, 1, 1]} />
+        <meshStandardMaterial color="#8c95a3" transparent opacity={0.08} roughness={0.9} />
       </mesh>
 
       <lineSegments>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[linePositions, 3]} />
         </bufferGeometry>
-        <lineBasicMaterial color="#9aa7b3" transparent opacity={0.5} />
+        <lineBasicMaterial color="#95a3b0" transparent opacity={0.42} depthWrite={false} />
       </lineSegments>
 
-      {nodes.map((node) => (
-        <group key={node.key} position={node.position}>
-          <mesh>
-            <sphereGeometry args={[0.17, 14, 14]} />
-            <meshStandardMaterial color={node.color} roughness={0.32} metalness={0.08} emissive={node.color} emissiveIntensity={0.18} />
-          </mesh>
-          <mesh scale={1.75}>
-            <sphereGeometry args={[0.12, 10, 10]} />
-            <meshBasicMaterial color={node.color} transparent opacity={0.12} />
-          </mesh>
-        </group>
-      ))}
+      {links.map(([start, end], index) => {
+        const isHighlight = hoveredIndex >= 0 && (start === hoveredIndex || end === hoveredIndex);
+        return (
+          <line key={`link-${index}`}>
+            <bufferGeometry>
+              <bufferAttribute attach="attributes-position" args={[new Float32Array([nodes[start].position[0], nodes[start].position[1], nodes[start].position[2], nodes[end].position[0], nodes[end].position[1], nodes[end].position[2]]), 3]} />
+            </bufferGeometry>
+            <lineBasicMaterial color={isHighlight ? "#1f2937" : "#7c8795"} transparent opacity={isHighlight ? 0.7 : 0.32} depthWrite={false} />
+          </line>
+        );
+      })}
 
-      {links.map(([start], index) => (
-        <mesh
-          key={`bead-${nodes[start].key}`}
-          ref={(element: THREE.Mesh | null) => {
-            beadRefs.current[index] = element;
-          }}
-          position={nodes[start].position}
-        >
-          <sphereGeometry args={[0.05, 10, 10]} />
-          <meshStandardMaterial color="#f4f4f0" emissive="#f4f4f0" emissiveIntensity={0.34} roughness={0.2} metalness={0.05} />
-        </mesh>
-      ))}
+      {nodes.map((node) => {
+        const nodeIndex = nodes.findIndex((candidate) => candidate.key === node.key);
+        const isActive = hoveredNode === node.key;
+        const isConnected = hoveredIndex >= 0 && links.some(([start, end]) => (start === hoveredIndex && (end === nodeIndex)) || (end === hoveredIndex && (start === nodeIndex)));
+        return (
+          <NodeVisual
+            key={node.key}
+            node={node}
+            isActive={isActive}
+            isConnected={isConnected}
+            reducedMotion={reducedMotion}
+            paused={paused}
+            onNodeHover={onNodeHover}
+            onNodeSelect={onNodeSelect}
+          />
+        );
+      })}
 
-      <points ref={particleRef}>
-        <bufferGeometry>
-          <bufferAttribute attach="attributes-position" args={[particlePositions, 3]} />
-        </bufferGeometry>
-        <pointsMaterial size={0.028} sizeAttenuation color="#b0bac3" transparent opacity={0.6} depthWrite={false} />
-      </points>
+      {flowLinks.map((linkIndex, beadIndex) => {
+        const [start, end] = links[linkIndex];
+        return (
+          <mesh
+            key={`bead-${beadIndex}`}
+            ref={(element: THREE.Mesh | null) => {
+              beadRefs.current[beadIndex] = element;
+            }}
+            position={nodes[start].position}
+          >
+            <sphereGeometry args={[0.035, 10, 10]} />
+            <meshStandardMaterial color="#f4f4f0" emissive="#f4f4f0" emissiveIntensity={0.32} roughness={0.2} metalness={0.04} />
+          </mesh>
+        );
+      })}
     </group>
   );
 }
 
-export function EngineeringEcosystemScene({ reducedMotion, paused, scrollProgress }: SceneProps) {
+export function EngineeringEcosystemScene({ reducedMotion, paused, scrollProgress, hoveredNode, onNodeHover, onNodeSelect }: SceneProps) {
   return (
     <Canvas
       className="ecosystem-canvas"
       dpr={[1, 1.5]}
-      camera={{ position: [0, 0, 4.8], fov: 42 }}
+      camera={{ position: [0, 0, 5.2], fov: 38 }}
       gl={{ antialias: false, alpha: true, powerPreference: "high-performance" }}
     >
-      <ambientLight intensity={0.55} />
-      <directionalLight position={[3, 4, 2]} intensity={0.82} />
-      <pointLight position={[-2, -1, 1]} intensity={0.32} />
-      <EcosystemContent reducedMotion={reducedMotion} paused={paused} scrollProgress={scrollProgress} />
+      <ambientLight intensity={0.58} />
+      <directionalLight position={[3, 4, 2]} intensity={0.9} />
+      <directionalLight position={[-3, -2, 1]} intensity={0.24} />
+      <pointLight position={[-2, -1, 1]} intensity={0.24} />
+      <EcosystemContent reducedMotion={reducedMotion} paused={paused} scrollProgress={scrollProgress} hoveredNode={hoveredNode} onNodeHover={onNodeHover} onNodeSelect={onNodeSelect} />
     </Canvas>
   );
 }
