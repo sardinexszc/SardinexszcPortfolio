@@ -56,16 +56,16 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
   }, []);
 
   const particlePositions = useMemo(() => {
-    const count = 56;
+    const count = 64;
     const values = new Float32Array(count * 3);
     for (let i = 0; i < count; i += 1) {
       const base = i * 3;
       const xWave = Math.sin(i * 1.7);
       const yWave = Math.cos(i * 1.13);
       const zWave = Math.sin(i * 0.79 + 0.6);
-      values[base] = xWave * 2.1;
-      values[base + 1] = yWave * 1.45;
-      values[base + 2] = zWave * 0.95;
+      values[base] = xWave * 2.2;
+      values[base + 1] = yWave * 1.55;
+      values[base + 2] = zWave * 1.05;
     }
     return values;
   }, []);
@@ -76,19 +76,24 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
 
     const pointerX = state.pointer.x;
     const pointerY = state.pointer.y;
+    const time = state.clock.elapsedTime;
 
     if (!paused && !reducedMotion) {
-      const targetX = pointerY * 0.13 + scrollProgress * 0.07;
-      const targetY = pointerX * 0.18;
-      const targetZ = scrollProgress * 0.04;
+      const targetX = pointerY * 0.24 + scrollProgress * 0.12;
+      const targetY = pointerX * 0.28;
+      const targetZ = scrollProgress * 0.08 + Math.sin(time * 0.8) * 0.08;
 
-      root.rotation.x += (targetX - root.rotation.x) * 0.06;
-      root.rotation.y += (targetY - root.rotation.y) * 0.06;
-      root.rotation.z += (targetZ - root.rotation.z) * 0.04;
-      root.position.y = Math.sin(state.clock.elapsedTime * 0.45) * 0.035;
+      root.rotation.x += (targetX - root.rotation.x) * 0.08;
+      root.rotation.y += (targetY - root.rotation.y) * 0.08;
+      root.rotation.z += (targetZ - root.rotation.z) * 0.06;
+      root.position.x = Math.sin(time * 0.42) * 0.08;
+      root.position.y = Math.sin(time * 0.9) * 0.1;
+      root.position.z = Math.cos(time * 0.66) * 0.06;
+      root.scale.setScalar(1 + Math.sin(time * 1.2) * 0.025);
 
       if (particleRef.current) {
-        particleRef.current.rotation.y += delta * 0.045;
+        particleRef.current.rotation.y += delta * 0.22;
+        particleRef.current.rotation.x += delta * 0.07;
       }
 
       links.forEach(([start, end], index) => {
@@ -96,13 +101,14 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
         if (!bead) return;
         const startPos = nodes[start].position;
         const endPos = nodes[end].position;
-        const t = (state.clock.elapsedTime * 0.35 + index * 0.18 + scrollProgress * 0.25) % 1;
+        const t = (time * 0.9 + index * 0.16 + scrollProgress * 0.35) % 1;
 
         bead.position.set(
           startPos[0] + (endPos[0] - startPos[0]) * t,
           startPos[1] + (endPos[1] - startPos[1]) * t,
           startPos[2] + (endPos[2] - startPos[2]) * t,
         );
+        bead.scale.setScalar(1 + 0.6 * Math.sin(time * 7 + index * 1.2));
       });
     }
   });
@@ -151,7 +157,7 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress }: SceneProps)
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" args={[particlePositions, 3]} />
         </bufferGeometry>
-        <pointsMaterial size={0.02} sizeAttenuation color="#b0bac3" transparent opacity={0.4} depthWrite={false} />
+        <pointsMaterial size={0.028} sizeAttenuation color="#b0bac3" transparent opacity={0.6} depthWrite={false} />
       </points>
     </group>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useMemo, useState, useSyncExternalStore } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 
 const LazyScene = dynamic(
   () => import("./engineering-ecosystem-scene").then((module) => module.EngineeringEcosystemScene),
@@ -19,35 +19,6 @@ const architectureFlow = [
   "IoT",
   "Research Systems",
 ] as const;
-
-function useReducedMotionPreference(): boolean {
-  return useSyncExternalStore(
-    (onStoreChange) => {
-      if (typeof window === "undefined") return () => {};
-      const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-      const listener = () => onStoreChange();
-      media.addEventListener("change", listener);
-      return () => media.removeEventListener("change", listener);
-    },
-    () => {
-      if (typeof window === "undefined") return false;
-      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    },
-    () => false,
-  );
-}
-
-function useCanRenderWebGL(): boolean {
-  return useMemo(() => {
-    if (typeof window === "undefined") return false;
-    try {
-      const canvas = document.createElement("canvas");
-      return Boolean(canvas.getContext("webgl") || canvas.getContext("experimental-webgl"));
-    } catch {
-      return false;
-    }
-  }, []);
-}
 
 function useIsMobile(): boolean {
   return useSyncExternalStore(
@@ -99,14 +70,12 @@ function EcosystemFallback({ reason }: { reason: "mobile" | "reduced" | "webgl" 
 
 export function EngineeringEcosystemVisual() {
   const isClientHydrated = useIsClientHydrated();
-  const reducedMotion = useReducedMotionPreference();
-  const canRenderWebGL = useCanRenderWebGL();
   const isMobile = useIsMobile();
   const [paused, setPaused] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
 
   useEffect(() => {
-    if (reducedMotion || isMobile || !canRenderWebGL) return;
+    if (isMobile) return;
 
     const handleScroll = () => {
       const top = window.scrollY;
@@ -117,15 +86,9 @@ export function EngineeringEcosystemVisual() {
     handleScroll();
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [reducedMotion, isMobile, canRenderWebGL]);
+  }, [isMobile]);
 
-  const mode = useMemo(() => {
-    if (!isClientHydrated) return "webgl" as const;
-    if (isMobile) return "mobile" as const;
-    if (reducedMotion) return "reduced" as const;
-    if (!canRenderWebGL) return "webgl" as const;
-    return "scene" as const;
-  }, [isClientHydrated, isMobile, reducedMotion, canRenderWebGL]);
+  const mode = !isClientHydrated || isMobile ? (isMobile ? "mobile" : "scene") : "scene";
 
   return (
     <aside className="ecosystem-panel" aria-labelledby="ecosystem-title">
@@ -137,7 +100,7 @@ export function EngineeringEcosystemVisual() {
 
       <div className="ecosystem-stage" aria-hidden="true">
         {mode === "scene" ? (
-          <LazyScene reducedMotion={reducedMotion} paused={paused} scrollProgress={scrollProgress} />
+          <LazyScene reducedMotion={false} paused={paused} scrollProgress={scrollProgress} />
         ) : (
           <EcosystemFallback reason={mode} />
         )}
