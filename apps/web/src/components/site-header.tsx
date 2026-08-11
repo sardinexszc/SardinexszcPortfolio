@@ -16,13 +16,13 @@ export function SiteHeader() {
         S<span>.</span>
       </Link>
       <nav className="header-nav" aria-label="Primary navigation">
-        <a href="#work" onClick={(e) => handleNavClick(e, 'work')}>
+        <a href="#work" onClick={(e) => handleNavClick(e, 'work')} aria-label="Go to selected work section">
           Work
         </a>
-        <a href="#about" onClick={(e) => handleNavClick(e, 'about')}>
+        <a href="#about" onClick={(e) => handleNavClick(e, 'about')} aria-label="Go to about section">
           About
         </a>
-        <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, 'contact')}>
+        <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, 'contact')} aria-label="Go to contact section">
           Let&apos;s talk <ArrowUpRight size={15} />
         </a>
       </nav>

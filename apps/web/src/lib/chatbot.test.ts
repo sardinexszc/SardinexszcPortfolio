@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { answerPortfolioQuestion } from "./chatbot";
+import { answerPortfolioQuestion, buildPortfolioChatResponse } from "./chatbot";
 import type { Portfolio } from "./types";
 
 const portfolio: Portfolio = {
@@ -12,6 +12,16 @@ const portfolio: Portfolio = {
       image_url: null,
       tech_stack: ["Next.js", "React", "TypeScript"],
       live_url: "https://example.com",
+      github_url: null,
+      featured: true,
+    },
+    {
+      id: 2,
+      title: "RTMS",
+      description: "Monitoring and evaluation system",
+      image_url: null,
+      tech_stack: ["Laravel", "PHP", "MySQL"],
+      live_url: "https://rtms.example.com",
       github_url: null,
       featured: true,
     },
@@ -38,4 +48,11 @@ test("answers background questions from the portfolio data", () => {
 test("answers technology questions with portfolio examples", () => {
   const answer = answerPortfolioQuestion("What technologies do you use?", portfolio);
   assert.match(answer, /TypeScript|Next\.js|React/i);
+});
+
+test("returns linked Laravel project guidance", () => {
+  const response = buildPortfolioChatResponse("Which projects use Laravel?", portfolio);
+  assert.match(response.answer, /Laravel|PHP/i);
+  assert.ok(response.links.length > 0);
+  assert.match(response.links[0]?.label ?? "", /View/i);
 });

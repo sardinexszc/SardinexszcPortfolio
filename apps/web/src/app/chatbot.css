@@ -35,6 +35,10 @@
   gap: 14px;
 }
 
+.chatbot-panel.minimized {
+  max-width: min(92vw, 320px);
+}
+
 .chatbot-panel-header {
   align-items: start;
   display: flex;
@@ -66,6 +70,24 @@
   font-size: 0.62rem;
   gap: 6px;
   padding: 7px 10px;
+}
+
+.chatbot-controls {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.chatbot-controls button {
+  background: rgba(23, 23, 23, 0.06);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  padding: 7px 10px;
+  text-transform: uppercase;
 }
 
 .chatbot-quick-actions {
@@ -127,6 +149,35 @@
   padding: 10px 12px;
 }
 
+.chatbot-bubble p {
+  margin: 0;
+}
+
+.chatbot-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.chatbot-links a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  text-transform: uppercase;
+}
+
+.chatbot-references {
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.56rem;
+  letter-spacing: 0.03em;
+  margin-top: 8px;
+}
+
 .chatbot-source-badge {
   background: rgba(23, 23, 23, 0.08);
   border: 1px solid rgba(23, 23, 23, 0.12);
@@ -138,6 +189,13 @@
   margin-top: 8px;
   padding: 4px 8px;
   text-transform: uppercase;
+}
+
+.chatbot-error {
+  color: #b42318;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  margin: 0;
 }
 
 .chatbot-form {
@@ -179,8 +237,17 @@
 
 .dark .chatbot-quick-actions button,
 .dark .chatbot-bubble,
-.dark .chatbot-avatar {
+.dark .chatbot-avatar,
+.dark .chatbot-controls button {
   background: rgba(244, 244, 240, 0.09);
+}
+
+.dark .chatbot-links a {
+  border-color: rgba(244, 244, 240, 0.24);
+}
+
+.dark .chatbot-error {
+  color: #ffb4ab;
 }
 
 .dark .chatbot-panel {
@@ -199,5 +266,13 @@
     max-width: none;
     right: 12px;
     width: auto;
+  }
+
+  .chatbot-controls {
+    justify-content: stretch;
+  }
+
+  .chatbot-controls button {
+    flex: 1;
   }
 }

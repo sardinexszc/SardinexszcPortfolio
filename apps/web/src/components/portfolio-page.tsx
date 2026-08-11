@@ -2,25 +2,16 @@
 
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { CapabilitiesSection } from "./capabilities-section";
-import { HeroScrambleText } from "./hero-scramble";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
 import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
 import { PortfolioChatbot } from "./chatbot";
+import { SelectedWorkSection } from "./selected-work-section";
+import { EngineeringEcosystemVisual } from "./engineering-ecosystem-visual";
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2></div>;
-}
-
-function getProjectDomain(url: string | null): string {
-  if (!url) return "Private deployment";
-
-  try {
-    return new URL(url).hostname.replace(/^www\./, "");
-  } catch {
-    return url;
-  }
 }
 
 const aboutParagraphs = [
@@ -29,76 +20,103 @@ const aboutParagraphs = [
   "Currently, I'm exploring AI agents, LLM applications, and intelligent automation to build systems that work alongside people instead of replacing them.",
 ];
 
+function collectTopTechnologies(portfolio: Portfolio): string[] {
+  const counts = new Map<string, number>();
+
+  portfolio.projects.forEach((project) => {
+    project.tech_stack.forEach((tech) => {
+      counts.set(tech, (counts.get(tech) ?? 0) + 1);
+    });
+  });
+
+  return Array.from(counts.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 6)
+    .map(([name]) => name);
+}
+
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
+  const deployedProjects = portfolio.projects.filter((project) => Boolean(project.live_url));
+  const featuredProjects = portfolio.projects.filter((project) => project.featured);
+  const strongestProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 2);
+  const topTechnologies = collectTopTechnologies(portfolio);
+
   return (
     <div className="page-shell">
       <SiteHeader />
-      <main>
-        <PortfolioChatbot portfolio={portfolio} />
+      <main id="main-content">
+        <PortfolioChatbot />
         <section className="hero" aria-labelledby="hero-title">
-          <img src="/images/hero-photo.jpg" alt="Ivan Christian Salinas" className="hero-photo-mobile" />
-          <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
-          <HeroScrambleText>Building software that solves<br /><em>real-world problems.</em></HeroScrambleText>
-          <div className="hero-bottom">
-            <p>I&apos;m Ivan Christian Salinas, a Full Stack Software Engineer specializing in web applications, AI automation, and business process digitalization.</p>
-            <a className="scroll-cue" href="#work" onClick={(e) => { e.preventDefault(); smoothScrollToId('work'); }}>Scroll to explore <ArrowDown size={16} /></a>
+          <div className="hero-content">
+            <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
+            <h1 id="hero-title">Ivan Christian Salinas<br /><em>Full-Stack Software Engineer</em></h1>
+            <p className="hero-support">I specialize in production software for research and operational environments: full-stack web applications, backend APIs, data systems, AI automation workflows, and IoT-enabled monitoring solutions.</p>
+
+            <div className="hero-scan" aria-label="Recruiter quick scan">
+              <article>
+                <p>What I specialize in</p>
+                <h3>Full-stack systems, AI automation, and research platforms</h3>
+              </article>
+              <article>
+                <p>What I have built</p>
+                <h3>{deployedProjects.length} live public systems shown in selected work</h3>
+              </article>
+              <article>
+                <p>Technologies in active project use</p>
+                <h3>{topTechnologies.join(" • ")}</h3>
+              </article>
+            </div>
+
+            <div className="hero-actions">
+              <a className="hero-cta hero-cta-primary" href="#work" onClick={(e) => { e.preventDefault(); smoothScrollToId('work'); }}>View My Work <ArrowDown size={16} /></a>
+              <a className="hero-cta hero-cta-secondary" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf">Download Resume <ArrowUpRight size={16} /></a>
+              <a className="hero-cta hero-cta-secondary" href="#contact" onClick={(e) => { e.preventDefault(); smoothScrollToId('contact'); }}>Contact Ivan <ArrowUpRight size={16} /></a>
+            </div>
+
+            <div className="hero-proof-links" aria-label="Strongest project shortcuts">
+              <p>Strongest projects:</p>
+              <div>
+                {strongestProjects.map((project) => (
+                  <a key={project.id} href={project.live_url ?? "#work"} target={project.live_url ? "_blank" : undefined} rel={project.live_url ? "noopener noreferrer" : undefined}>
+                    {project.title}
+                  </a>
+                ))}
+              </div>
+            </div>
           </div>
+          <EngineeringEcosystemVisual />
+        </section>
+
+        <section className="disclosure-map" aria-label="How to read this portfolio quickly">
+          <article>
+            <p>Level 1</p>
+            <h3>Quick understanding</h3>
+            <span>Hero + availability + strongest project links + resume and contact access.</span>
+          </article>
+          <article>
+            <p>Level 2</p>
+            <h3>Project summaries</h3>
+            <span>Selected Work cards outline problem, solution, stack, and outcomes.</span>
+          </article>
+          <article>
+            <p>Level 3</p>
+            <h3>Detailed case studies</h3>
+            <span>Open each case study for structured breakdown and technical context.</span>
+          </article>
+          <article>
+            <p>Level 4</p>
+            <h3>Implementation depth</h3>
+            <span>Architecture details and evidence mapping in project and capability sections.</span>
+          </article>
         </section>
 
         <section id="work" className="content-section" aria-labelledby="work-title">
-          <SectionTitle eyebrow="01 / Selected work" title="A few things I&apos;ve made." />
-          <div className="project-grid">
-            {portfolio.projects.map((project, index) => (
-              <article className={`project-card project-card-${index % 2}`} key={project.id}>
-                <div className="project-visual">
-                  <span>{String(index + 1).padStart(2, "0")}</span>
-                  <div className="browser-preview">
-                    <div className="browser-chrome">
-                      <div className="browser-dots"><i /><i /><i /></div>
-                      <div className="browser-address">{getProjectDomain(project.live_url)}</div>
-                    </div>
-                    <div className="browser-body">
-                      <div className="browser-badge">Live project</div>
-                      <h3>{project.title}</h3>
-                      <p>{project.description}</p>
-                      <div className="browser-stack">
-                        {project.tech_stack.slice(0, 4).map((tech) => <span key={tech}>{tech}</span>)}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="tag-row">{project.tech_stack.map((tech) => <span key={tech}>{tech}</span>)}</div>
-                {(project.live_url || project.github_url) ? <div className="project-links">{project.live_url ? <a href={project.live_url} target="_blank" rel="noreferrer">Live site <ArrowUpRight size={16} /></a> : null}{project.github_url ? <a href={project.github_url} target="_blank" rel="noreferrer">Source <ArrowUpRight size={16} /></a> : null}</div> : null}
-              </article>
-            ))}
-            <article className="project-card project-card-1">
-              <div className="project-visual">
-                <span>04</span>
-                <div className="browser-preview">
-                  <div className="browser-chrome">
-                    <div className="browser-dots"><i /><i /><i /></div>
-                    <div className="browser-address">linkedin.com/in/banbansalinas</div>
-                  </div>
-                  <div className="browser-body">
-                    <div className="browser-badge">More projects</div>
-                    <h3>See additional work on LinkedIn</h3>
-                    <p>Visit my LinkedIn profile to explore more shipped projects, experience highlights, and ongoing work beyond the featured portfolio cards.</p>
-                    <div className="browser-stack">
-                      <span>LinkedIn</span>
-                      <span>Case Studies</span>
-                      <span>More Projects</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="tag-row"><span>Professional Profile</span><span>Project Archive</span><span>Experience</span></div>
-              <div className="project-links"><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noreferrer">View LinkedIn <ArrowUpRight size={16} /></a></div>
-            </article>
-          </div>
+          <SectionTitle eyebrow="01 / Selected work (Level 2-4)" title="Systems I&apos;ve built and shipped." />
+          <SelectedWorkSection projects={portfolio.projects} />
         </section>
 
         <section id="about" className="content-section about-section" aria-labelledby="about-title">
-          <SectionTitle eyebrow="02 / About" title="Software shaped by real work." />
+          <SectionTitle eyebrow="02 / About and experience" title="Professional background with implementation context." />
           <div className="about-grid">
             <div className="about-copy">
               <p className="about-lead">I design and build systems that make research, operations, and automation easier to run in the real world.</p>
@@ -108,13 +126,13 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
                 <p>AI agents, LLM-powered applications, workflow automation, and human-centered systems that scale without adding unnecessary complexity.</p>
               </div>
             </div>
-            <div className="timeline">{portfolio.timeline.map((entry) => <div className="timeline-item" key={entry.id}><span>{entry.start_date} — {entry.end_date ?? "Present"}</span><div><h3>{entry.role}</h3><p>{entry.organization}</p><small>{entry.description}</small></div></div>)}</div>
+            <ol className="timeline">{portfolio.timeline.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p><small>{entry.description}</small></div></li>)}</ol>
           </div>
         </section>
 
-        <CapabilitiesSection />
+        <CapabilitiesSection projects={portfolio.projects} timeline={portfolio.timeline} />
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Have a good problem?</p><h2 id="contact-title">Let&apos;s make<br /><em>something clear.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:sardinexszc@gmail.com"><Mail size={19} /> sardinexszc@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href={buildWhatsAppLink('+63 926 745 9456', 'Hi Ivan, I saw your portfolio and would like to discuss a project.')} target="_blank" rel="noreferrer"><MessageCircle size={17} /> WhatsApp</a><a href={buildTelegramLink('@Sardinexszc')} target="_blank" rel="noreferrer"><Send size={17} /> Telegram</a><a href="https://github.com/sardinexszc" target="_blank" rel="noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Available for remote software roles and collaborations</p><h2 id="contact-title">Hire me for<br /><em>real systems delivery.</em></h2><div className="contact-fast-actions"><a href="#work" onClick={(e) => { e.preventDefault(); smoothScrollToId('work'); }}>View strongest projects</a><a href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf">Download resume</a><a href="mailto:sardinexszc@gmail.com">Email now</a></div><div className="contact-links"><a className="contact-link" href="mailto:sardinexszc@gmail.com"><Mail size={19} /> sardinexszc@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href={buildWhatsAppLink('+63 926 745 9456', 'Hi Ivan, I saw your portfolio and would like to discuss a project.')} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp</a><a href={buildTelegramLink('@Sardinexszc')} target="_blank" rel="noopener noreferrer"><Send size={17} /> Telegram</a><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
       </main>
       <footer><span>© 2026 Sardinexszc</span><span>Designed and built with care</span></footer>
     </div>
