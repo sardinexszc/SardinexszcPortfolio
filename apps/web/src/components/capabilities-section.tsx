@@ -44,9 +44,9 @@ const categories: CapabilityCategory[] = [
   {
     title: "Database",
     items: [
-      { technology: "PostgreSQL", level: "Working knowledge", timelineMatchers: ["postgresql"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in professional summary and timeline context." },
+      { technology: "PostgreSQL", level: "Experienced", timelineMatchers: ["postgresql"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in professional summary and timeline context." },
       { technology: "MySQL", level: "Core", projectMatchers: ["mysql"], projectEvidence: "Used in multiple deployed institutional systems." },
-      { technology: "Supabase", level: "Working knowledge", timelineMatchers: ["supabase"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in current full-stack workflow description." },
+      { technology: "Supabase", level: "Experienced", timelineMatchers: ["supabase"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in current full-stack workflow description." },
       { technology: "Database design", level: "Experienced", projectMatchers: ["mysql", "laravel"], projectEvidence: "Required for research and monitoring data models." },
       { technology: "Data management", level: "Experienced", projectMatchers: ["monitoring", "database management", "data management"], projectEvidence: "Project outcomes explicitly mention data management improvements." },
     ],
@@ -65,10 +65,10 @@ const categories: CapabilityCategory[] = [
   {
     title: "IoT and Embedded",
     items: [
-      { technology: "ESP32", level: "Familiar", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit ESP32 tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
-      { technology: "Arduino", level: "Familiar", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit Arduino tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
-      { technology: "PlatformIO", level: "Familiar", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit PlatformIO tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
-      { technology: "Sensors", level: "Working knowledge", timelineMatchers: ["iot", "monitoring"], projectEvidence: "No explicit sensor stack tag in current public project data.", timelineEvidence: "Timeline includes monitoring and IoT platform delivery." },
+      { technology: "ESP32", level: "Experienced", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit ESP32 tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
+      { technology: "Arduino", level: "Experienced", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit Arduino tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
+      { technology: "PlatformIO", level: "Experienced", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit PlatformIO tag in current public project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture platform work." },
+      { technology: "Sensors", level: "Experienced", timelineMatchers: ["iot", "monitoring"], projectEvidence: "No explicit sensor stack tag in current public project data.", timelineEvidence: "Timeline includes monitoring and IoT platform delivery." },
       { technology: "IoT monitoring", level: "Experienced", timelineMatchers: ["iot monitoring", "real-time monitoring", "smart agriculture"], projectEvidence: "Public portfolio highlights monitoring system development.", timelineEvidence: "Timeline explicitly states IoT monitoring platform work." },
       { technology: "Embedded systems", level: "Working knowledge", timelineMatchers: ["iot", "smart agriculture"], projectEvidence: "No explicit embedded stack tag in selected project stack data.", timelineEvidence: "Timeline includes IoT and smart agriculture solutions." },
     ],

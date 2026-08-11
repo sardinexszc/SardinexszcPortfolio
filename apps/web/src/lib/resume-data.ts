@@ -5,7 +5,7 @@ Full Stack Software Engineer and AI Automation Specialist
 Professional Summary
 - 7+ years of experience designing, developing, and deploying enterprise-grade web applications and automated workflows.
 - Skilled in React.js, Next.js, PHP, TypeScript, PostgreSQL, and building scalable cloud-based solutions.
-- Experienced with LLM integrations, n8n automation, Telegram bots, and workflow automation.
+- Experienced with Supabase/PostgreSQL data systems, LLM integrations, n8n automation, Telegram bots, workflow automation, and IoT prototyping with ESP32, Arduino, PlatformIO, and sensors.
 
 Experience
 - Instructor I | Information Systems Developer at Central Luzon State University
@@ -20,6 +20,7 @@ Skills
 - PHP, JavaScript, TypeScript, SQL, Java
 - React.js, Next.js, Tailwind CSS, REST APIs
 - PostgreSQL, Supabase, MySQL, database design
+- ESP32, Arduino, PlatformIO, sensor integration
 - n8n, AI Agent integration, LLM integration, workflow automation, Telegram bot development
 
 Publications

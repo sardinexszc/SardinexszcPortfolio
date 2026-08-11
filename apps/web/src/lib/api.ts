@@ -36,10 +36,12 @@ const demoPortfolio: Portfolio = {
     },
   ],
   skills: [
-    { id: 1, name: "Product design", proficiency: 92, icon: "✦" },
-    { id: 2, name: "TypeScript", proficiency: 88, icon: "TS" },
-    { id: 3, name: "React / Next.js", proficiency: 90, icon: "R" },
-    { id: 4, name: "Laravel / PHP", proficiency: 78, icon: "L" },
+    { id: 1, name: "PostgreSQL", proficiency: 88, icon: "PG" },
+    { id: 2, name: "Supabase", proficiency: 86, icon: "SB" },
+    { id: 3, name: "ESP32", proficiency: 82, icon: "32" },
+    { id: 4, name: "Arduino", proficiency: 82, icon: "AR" },
+    { id: 5, name: "PlatformIO", proficiency: 80, icon: "PIO" },
+    { id: 6, name: "Sensors", proficiency: 84, icon: "SN" },
   ],
   timeline: [
     {
