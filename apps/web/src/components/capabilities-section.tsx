@@ -44,9 +44,9 @@ const categories: CapabilityCategory[] = [
   {
     title: "Database",
     items: [
-      { technology: "PostgreSQL", level: "Experienced", timelineMatchers: ["postgresql"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in professional summary and timeline context." },
+      { technology: "PostgreSQL", level: "Experienced", projectMatchers: ["crops and resources research and development center"], projectEvidence: "Used in the Crops and Resources Research and Development Center platform." },
       { technology: "MySQL", level: "Core", projectMatchers: ["mysql"], projectEvidence: "Used in multiple deployed institutional systems." },
-      { technology: "Supabase", level: "Experienced", timelineMatchers: ["supabase"], projectEvidence: "No direct public project stack tag yet.", timelineEvidence: "Referenced in current full-stack workflow description." },
+      { technology: "Supabase", level: "Experienced", projectMatchers: ["crops and resources research and development center"], projectEvidence: "Used in the Crops and Resources Research and Development Center platform." },
       { technology: "Database design", level: "Experienced", projectMatchers: ["mysql", "laravel"], projectEvidence: "Required for research and monitoring data models." },
       { technology: "Data management", level: "Experienced", projectMatchers: ["monitoring", "database management", "data management"], projectEvidence: "Project outcomes explicitly mention data management improvements." },
     ],

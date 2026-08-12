@@ -15,6 +15,7 @@ import {
   splitStack,
 } from "@/lib/work-projects";
 import { motionTokens } from "@/lib/motion-tokens";
+import { ProjectSystemPreview } from "./project-system-preview";
 
 function WorkCard({ project, index }: { project: Project; index: number }) {
   const category = inferCategory(project);
@@ -89,7 +90,7 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
           <Image src={project.image_url as string} alt={`${projectDisplayTitle(project)} screenshot`} fill sizes="(max-width: 900px) 88vw, 33vw" />
         </figure>
       ) : (
-        <div className="work-evidence-note"><p className="work-eyebrow">Visual evidence</p><p>A project screenshot is not publicly available for this institutional system.</p></div>
+        <ProjectSystemPreview project={project} />
       )}
     </article>
   );
