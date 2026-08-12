@@ -13,6 +13,9 @@ const demoPortfolio: Portfolio = {
       live_url: "https://crrdc.vercel.app/",
       github_url: null,
       featured: true,
+      role_summary: "Full-stack web development for a research and administrative information platform.",
+      outcome: "Centralizes institutional records and supports more consistent knowledge access and operational workflows.",
+      highlights: ["Research and extension records", "Personnel and administrative workflows", "Secure decision-support context"],
     },
     {
       id: 2,
@@ -23,6 +26,9 @@ const demoPortfolio: Portfolio = {
       live_url: "https://rtms.clsu.edu.ph/",
       github_url: null,
       featured: true,
+      role_summary: "Full-stack development for research monitoring, reporting, and data-management workflows.",
+      outcome: "Digitizes reporting and project tracking so member institutions can coordinate oversight more efficiently.",
+      highlights: ["Project reporting workflows", "Monitoring and evaluation records", "Cross-institution visibility"],
     },
     {
       id: 3,
@@ -33,6 +39,9 @@ const demoPortfolio: Portfolio = {
       live_url: "https://claarrdec.clsu.edu.ph/",
       github_url: null,
       featured: true,
+      role_summary: "Full-stack development for public content delivery and authenticated institutional access.",
+      outcome: "Organizes institutional content and e-library access while supporting engagement reporting.",
+      highlights: ["Public and authenticated content access", "E-library organization", "Visitor and user statistics"],
     },
   ],
   skills: [

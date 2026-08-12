@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
+const projectImageHost = process.env.PROJECT_IMAGE_HOST?.trim();
 
 const contentSecurityPolicy = [
   "default-src 'self'",
@@ -20,7 +21,10 @@ const contentSecurityPolicy = [
 const nextConfig: NextConfig = {
   allowedDevOrigins: ["192.168.100.188", "192.168.100.190", "localhost"],
   images: {
-    remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
+    remotePatterns: [
+      { protocol: "https", hostname: "images.unsplash.com" },
+      ...(projectImageHost ? [{ protocol: "https" as const, hostname: projectImageHost }] : []),
+    ],
   },
   async headers() {
     if (isDevelopment) {

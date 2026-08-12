@@ -1,4 +1,8 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/types";
 import {
@@ -10,11 +14,12 @@ import {
   projectSlug,
   splitStack,
 } from "@/lib/work-projects";
+import { motionTokens } from "@/lib/motion-tokens";
 
 function WorkCard({ project, index }: { project: Project; index: number }) {
   const category = inferCategory(project);
   const summary = getProjectSummary(project);
-  const role = getRoleSummary();
+  const role = getRoleSummary(project);
   const stack = splitStack(project);
   const slug = projectSlug(project);
   const hasScreenshot = projectHasScreenshot(project);
@@ -29,6 +34,17 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
       <div className="work-card-core">
         <h3>{projectDisplayTitle(project)}</h3>
         <p>{summary}</p>
+      </div>
+
+      <div className="work-card-proof">
+        <p className="work-eyebrow">Outcome</p>
+        <p>{project.outcome?.trim() || "See the case study for the documented problem, implementation context, and system architecture."}</p>
+      </div>
+
+      <div className="work-links" aria-label={`${projectDisplayTitle(project)} links`}>
+        <Link href={`/work/${slug}`}>Case study <ArrowUpRight size={15} /></Link>
+        {project.live_url ? <a href={project.live_url} target="_blank" rel="noopener noreferrer">Live project <ArrowUpRight size={15} /></a> : null}
+        {project.github_url ? <a href={project.github_url} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} /></a> : null}
       </div>
 
       <details className="work-card-disclosure">
@@ -62,9 +78,7 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
           <section>
             <p className="work-eyebrow">Links</p>
             <div className="work-links">
-              {project.live_url ? <a href={project.live_url} target="_blank" rel="noopener noreferrer">Live project <ArrowUpRight size={15} /></a> : null}
-              {project.github_url ? <a href={project.github_url} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} /></a> : null}
-              <Link href={`/work/${slug}`}>Case study <ArrowUpRight size={15} /></Link>
+              <Link href={`/work/${slug}`}>Open case study <ArrowUpRight size={15} /></Link>
             </div>
           </section>
         </div>
@@ -72,26 +86,49 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
 
       {hasScreenshot ? (
         <figure className="work-screenshot">
-          <img src={project.image_url as string} alt={`${projectDisplayTitle(project)} screenshot`} loading="lazy" decoding="async" />
+          <Image src={project.image_url as string} alt={`${projectDisplayTitle(project)} screenshot`} fill sizes="(max-width: 900px) 88vw, 33vw" />
         </figure>
       ) : (
-        <div className="work-screenshot work-screenshot-placeholder" aria-hidden="true">
-          <p>Screenshot can be added to project data</p>
-        </div>
+        <div className="work-evidence-note"><p className="work-eyebrow">Visual evidence</p><p>A project screenshot is not publicly available for this institutional system.</p></div>
       )}
     </article>
   );
 }
 
 export function SelectedWorkSection({ projects }: { projects: Project[] }) {
+  const reduceMotion = useReducedMotion();
   const featuredProjects = projects.filter((project) => project.featured);
   const visibleProjects = featuredProjects.length > 0 ? featuredProjects : projects;
 
+  const revealInitial = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: motionTokens.distance.subtle };
+  const revealVisible = { opacity: 1, y: 0 };
+
   return (
-    <div className="work-grid" role="list">
+    <motion.div
+      className="work-grid"
+      role="list"
+      initial={revealInitial}
+      whileInView={revealVisible}
+      viewport={{ once: true, amount: 0.15 }}
+      transition={{ duration: motionTokens.duration.normal, ease: motionTokens.ease.standard }}
+    >
       {visibleProjects.map((project, index) => (
-        <WorkCard key={project.id} project={project} index={index} />
+        <motion.div
+          key={project.id}
+          className="work-card-motion"
+          initial={revealInitial}
+          whileInView={revealVisible}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{
+            duration: motionTokens.duration.normal,
+            ease: motionTokens.ease.standard,
+            delay: reduceMotion ? 0 : index * motionTokens.delay.staggerStep,
+          }}
+          whileHover={reduceMotion ? undefined : { y: -2 }}
+        >
+          <WorkCard project={project} index={index} />
+        </motion.div>
       ))}
-    </div>
+    </motion.div>
   );
 }

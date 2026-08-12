@@ -7,6 +7,9 @@ export type Project = {
   live_url: string | null;
   github_url: string | null;
   featured: boolean;
+  role_summary?: string | null;
+  outcome?: string | null;
+  highlights?: string[] | null;
 };
 
 export type Skill = {

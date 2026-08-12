@@ -104,6 +104,7 @@ Project `tech_stack` is entered as a comma-separated value in the admin and stor
 Set-Location apps/web
 npm run typecheck
 npm run lint
+npm run test
 npm run build
 
 Set-Location ../api
@@ -121,6 +122,12 @@ The frontend is statically prerendered and revalidates API content every five mi
 2. Set `NEXT_PUBLIC_API_URL` to the HTTPS Laravel API URL ending in `/api/v1`.
 3. Set `NEXT_PUBLIC_SITE_URL` to the public site URL.
 4. Build with `npm run build` and deploy. Configure the Laravel `FRONTEND_URL` to match the Vercel origin.
+
+`NEXT_PUBLIC_SITE_URL` is required for production canonical URLs, social previews, robots, and the sitemap. On Vercel, the deployment URL is used as a fallback, but the custom production domain should always be set explicitly.
+
+For each project, add a concise role summary, outcome, and one highlight per line in the admin. Add screenshots only when they can be publicly shared; the public portfolio deliberately labels projects without one instead of using a fabricated visual.
+
+Project screenshots may be stored under `apps/web/public/images` and referenced with a local `/images/...` path, or hosted on HTTPS. For an external host, set `PROJECT_IMAGE_HOST` to that hostname during the frontend build so Next.js can safely optimize it.
 
 ### Laravel on PHP hosting
 
