@@ -1,4 +1,5 @@
 import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
 import type { Project } from "@/lib/types";
 import {
   getArchitecture,
@@ -20,7 +21,7 @@ type ProjectCaseStudyProps = {
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const architecture = getArchitecture(project);
   const category = inferCategory(project);
-  const roleSummary = getRoleSummary();
+  const roleSummary = getRoleSummary(project);
   const stack = splitStack(project);
   const features = getKeyFeatures(project);
   const problem = getProblemStatement(project);
@@ -38,7 +39,7 @@ export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
 
       {hasScreenshot ? (
         <figure className="case-study-visual">
-          <img src={project.image_url as string} alt={`${projectDisplayTitle(project)} project visual`} loading="eager" decoding="async" />
+          <Image src={project.image_url as string} alt={`${projectDisplayTitle(project)} project visual`} fill sizes="(max-width: 700px) 88vw, 960px" />
         </figure>
       ) : null}
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { Bot, Send, Sparkles, UserRound } from "lucide-react";
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import type { ChatLink } from "@/lib/chatbot";
 
 type Message = {
@@ -20,6 +20,8 @@ export function PortfolioChatbot() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [messageId, setMessageId] = useState(2);
+  const toggleRef = useRef<HTMLButtonElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState<Message[]>([
     {
       id: 1,
@@ -53,6 +55,21 @@ export function PortfolioChatbot() {
     ]);
     setError(null);
   };
+
+  useEffect(() => {
+    if (!open) return;
+
+    inputRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open]);
 
   const appendMessage = async (question: string) => {
     const trimmedQuestion = question.trim();
@@ -126,6 +143,7 @@ export function PortfolioChatbot() {
   return (
     <>
       <button
+        ref={toggleRef}
         type="button"
         className="chatbot-toggle"
         onClick={() => {
@@ -215,6 +233,7 @@ export function PortfolioChatbot() {
 
             <form className="chatbot-form" onSubmit={handleSubmit}>
               <input
+                ref={inputRef}
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
                 placeholder="Ask about projects, stack, AI, IoT, research, or contact"

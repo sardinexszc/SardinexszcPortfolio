@@ -1,14 +1,21 @@
 'use client';
 
+import { motion, useReducedMotion } from "framer-motion";
+import dynamic from "next/dynamic";
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } from "lucide-react";
 import { CapabilitiesSection } from "./capabilities-section";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
 import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
-import { PortfolioChatbot } from "./chatbot";
 import { SelectedWorkSection } from "./selected-work-section";
 import { EngineeringEcosystemVisual } from "./engineering-ecosystem-visual";
+import { motionTokens } from "@/lib/motion-tokens";
+
+const PortfolioChatbot = dynamic(
+  () => import("./chatbot").then((module) => module.PortfolioChatbot),
+  { ssr: false },
+);
 
 function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
   return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2></div>;
@@ -36,10 +43,18 @@ function collectTopTechnologies(portfolio: Portfolio): string[] {
 }
 
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
+  const reduceMotion = useReducedMotion();
   const deployedProjects = portfolio.projects.filter((project) => Boolean(project.live_url));
   const featuredProjects = portfolio.projects.filter((project) => project.featured);
   const strongestProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 2);
   const topTechnologies = collectTopTechnologies(portfolio);
+
+  const revealInitial = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: motionTokens.distance.subtle };
+  const revealAnimate = { opacity: 1, y: 0 };
+  const revealTransition = {
+    duration: motionTokens.duration.normal,
+    ease: motionTokens.ease.standard,
+  };
 
   return (
     <div className="page-shell">
@@ -47,24 +62,29 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
       <main id="main-content">
         <PortfolioChatbot />
         <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-content">
-            <div className="hero-kicker"><span className="status-dot" /> Available for Remote Opportunities</div>
-            <h1 id="hero-title">Ivan Christian Salinas<br /><em>Full-Stack Software Engineer</em></h1>
-            <p className="hero-support">I specialize in production software for research and operational environments: full-stack web applications, backend APIs, data systems, AI automation workflows, and IoT-enabled monitoring solutions.</p>
+          <motion.div
+            className="hero-content"
+            initial={revealInitial}
+            animate={revealAnimate}
+            transition={{ ...revealTransition, delay: motionTokens.delay.short }}
+          >
+            <motion.div className="hero-kicker" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short }}><span className="status-dot" /> Available for Remote Opportunities</motion.div>
+            <motion.h1 id="hero-title" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep }}>Ivan Christian Salinas<br /><em>Full-Stack Software Engineer</em></motion.h1>
+            <motion.p className="hero-support" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 2 }}>I specialize in production software for research and operational environments: full-stack web applications, backend APIs, data systems, AI automation workflows, and IoT-enabled monitoring solutions.</motion.p>
 
             <div className="hero-scan" aria-label="Recruiter quick scan">
-              <article>
+              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 3 }}>
                 <p>What I specialize in</p>
                 <h3>Full-stack systems, AI automation, and research platforms</h3>
-              </article>
-              <article>
+              </motion.article>
+              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 4 }}>
                 <p>What I have built</p>
                 <h3>{deployedProjects.length} live public systems shown in selected work</h3>
-              </article>
-              <article>
+              </motion.article>
+              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 5 }}>
                 <p>Technologies in active project use</p>
                 <h3>{topTechnologies.join(" • ")}</h3>
-              </article>
+              </motion.article>
             </div>
 
             <div className="hero-actions">
@@ -83,39 +103,75 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
           <EngineeringEcosystemVisual portfolio={portfolio} />
         </section>
 
         <section className="disclosure-map" aria-label="How to read this portfolio quickly">
-          <article>
+          <motion.article
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={revealTransition}
+          >
             <p>Level 1</p>
             <h3>Quick understanding</h3>
             <span>Hero + availability + strongest project links + resume and contact access.</span>
-          </article>
-          <article>
+          </motion.article>
+          <motion.article
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ ...revealTransition, delay: motionTokens.delay.staggerStep }}
+          >
             <p>Level 2</p>
             <h3>Project summaries</h3>
             <span>Selected Work cards outline problem, solution, stack, and outcomes.</span>
-          </article>
-          <article>
+          </motion.article>
+          <motion.article
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ ...revealTransition, delay: motionTokens.delay.staggerStep * 2 }}
+          >
             <p>Level 3</p>
             <h3>Detailed case studies</h3>
             <span>Open each case study for structured breakdown and technical context.</span>
-          </article>
-          <article>
+          </motion.article>
+          <motion.article
+            initial={revealInitial}
+            whileInView={revealAnimate}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ ...revealTransition, delay: motionTokens.delay.staggerStep * 3 }}
+          >
             <p>Level 4</p>
             <h3>Implementation depth</h3>
             <span>Architecture details and evidence mapping in project and capability sections.</span>
-          </article>
+          </motion.article>
         </section>
 
-        <section id="work" className="content-section" aria-labelledby="work-title">
+        <motion.section
+          id="work"
+          className="content-section"
+          aria-labelledby="work-title"
+          initial={revealInitial}
+          whileInView={revealAnimate}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={revealTransition}
+        >
           <SectionTitle eyebrow="01 / Selected work (Level 2-4)" title="Systems I&apos;ve built and shipped." />
           <SelectedWorkSection projects={portfolio.projects} />
-        </section>
+        </motion.section>
 
-        <section id="about" className="content-section about-section" aria-labelledby="about-title">
+        <motion.section
+          id="about"
+          className="content-section about-section"
+          aria-labelledby="about-title"
+          initial={revealInitial}
+          whileInView={revealAnimate}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={revealTransition}
+        >
           <SectionTitle eyebrow="02 / About and experience" title="Professional background with implementation context." />
           <div className="about-grid">
             <div className="about-copy">
@@ -128,7 +184,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             </div>
             <ol className="timeline">{portfolio.timeline.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p><small>{entry.description}</small></div></li>)}</ol>
           </div>
-        </section>
+        </motion.section>
 
         <CapabilitiesSection projects={portfolio.projects} timeline={portfolio.timeline} />
 

@@ -30,12 +30,14 @@ export const metadata: Metadata = {
       "Production-focused software engineer building web systems, APIs, databases, automation workflows, and AI-enabled applications for real organizations.",
     url: "/",
     siteName: "Sardinexszc Portfolio",
+    images: [{ url: "/images/hero-photo.jpg", width: 1200, height: 630, alt: "Ivan Christian Salinas" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Ivan Christian Salinas — Full-Stack Software Engineer",
     description:
       "Portfolio showcasing real-world full-stack engineering work across research systems, web platforms, APIs, databases, and automation.",
+    images: ["/images/hero-photo.jpg"],
   },
   keywords: [
     "Full-Stack Software Engineer",

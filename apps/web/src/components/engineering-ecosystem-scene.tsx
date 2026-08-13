@@ -275,7 +275,7 @@ function EcosystemContent({ reducedMotion, paused, scrollProgress, hoveredNode, 
       })}
 
       {flowLinks.map((linkIndex, beadIndex) => {
-        const [start, end] = links[linkIndex];
+        const [start] = links[linkIndex];
         return (
           <mesh
             key={`bead-${beadIndex}`}

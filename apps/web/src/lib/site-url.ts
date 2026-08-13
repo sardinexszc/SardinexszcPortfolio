@@ -1,18 +1,19 @@
-const FALLBACK_SITE_URL = "http://localhost:3000";
+const LOCAL_SITE_URL = "http://localhost:3000";
 
-export function getSiteOrigin(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): string {
-  const value = rawSiteUrl?.trim();
-  if (!value) return FALLBACK_SITE_URL;
+export function getSiteOrigin(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): string | undefined {
+  const value = rawSiteUrl?.trim() ?? process.env.VERCEL_URL?.trim();
+  if (!value) return process.env.NODE_ENV === "development" ? LOCAL_SITE_URL : undefined;
 
   const withProtocol = /^https?:\/\//i.test(value) ? value : `https://${value}`;
 
   try {
     return new URL(withProtocol).origin;
   } catch {
-    return FALLBACK_SITE_URL;
+    return process.env.NODE_ENV === "development" ? LOCAL_SITE_URL : undefined;
   }
 }
 
-export function getSiteUrl(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): URL {
-  return new URL(getSiteOrigin(rawSiteUrl));
+export function getSiteUrl(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): URL | undefined {
+  const origin = getSiteOrigin(rawSiteUrl);
+  return origin ? new URL(origin) : undefined;
 }

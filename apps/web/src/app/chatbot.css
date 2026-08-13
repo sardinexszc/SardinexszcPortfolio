@@ -49,7 +49,7 @@
 .chatbot-eyebrow {
   color: var(--muted);
   font-family: var(--font-mono), monospace;
-  font-size: 0.64rem;
+  font-size: 0.72rem;
   letter-spacing: 0.08em;
   margin: 0 0 4px;
   text-transform: uppercase;
@@ -67,7 +67,7 @@
   color: var(--ink);
   display: inline-flex;
   font-family: var(--font-mono), monospace;
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   gap: 6px;
   padding: 7px 10px;
 }
@@ -84,7 +84,7 @@
   border-radius: 999px;
   cursor: pointer;
   font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.06em;
   padding: 7px 10px;
   text-transform: uppercase;
@@ -102,7 +102,7 @@
   border-radius: 999px;
   cursor: pointer;
   font-family: var(--font-mono), monospace;
-  font-size: 0.62rem;
+  font-size: 0.75rem;
   padding: 8px 10px;
 }
 
@@ -164,7 +164,7 @@
   border: 1px solid var(--line);
   border-radius: 999px;
   font-family: var(--font-mono), monospace;
-  font-size: 0.56rem;
+  font-size: 0.7rem;
   letter-spacing: 0.04em;
   padding: 6px 8px;
   text-transform: uppercase;
@@ -173,7 +173,7 @@
 .chatbot-references {
   color: var(--muted);
   font-family: var(--font-mono), monospace;
-  font-size: 0.56rem;
+  font-size: 0.68rem;
   letter-spacing: 0.03em;
   margin-top: 8px;
 }
@@ -184,7 +184,7 @@
   border-radius: 999px;
   display: inline-flex;
   font-family: var(--font-mono), monospace;
-  font-size: 0.58rem;
+  font-size: 0.68rem;
   letter-spacing: 0.06em;
   margin-top: 8px;
   padding: 4px 8px;
@@ -222,6 +222,13 @@
   height: 42px;
   justify-content: center;
   min-width: 42px;
+}
+
+.chatbot-controls button:focus-visible,
+.chatbot-quick-actions button:focus-visible,
+.chatbot-links a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
 }
 
 .dark .chatbot-toggle,

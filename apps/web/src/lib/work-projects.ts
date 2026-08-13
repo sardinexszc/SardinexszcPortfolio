@@ -91,8 +91,8 @@ export function splitStack(project: Project): ProjectStacks {
   return { primary, supporting };
 }
 
-export function getRoleSummary(): string {
-  return "Role scope is not explicitly detailed in the current public project dataset.";
+export function getRoleSummary(project?: Project): string {
+  return project?.role_summary?.trim() || "Full-stack delivery across the application interface, workflow logic, and data-backed features documented for this project.";
 }
 
 export function getProblemStatement(project: Project): string | null {
@@ -112,6 +112,7 @@ export function getSolutionStatement(project: Project): string | null {
 }
 
 export function getOutcomeStatement(project: Project): string | null {
+  if (project.outcome?.trim()) return project.outcome.trim();
   const improveMatch = project.description.match(/(improve\s+.+?)(?:\.|$)/i);
   if (improveMatch?.[1]) {
     return sentenceCase(improveMatch[1]);
@@ -124,6 +125,7 @@ export function getOutcomeStatement(project: Project): string | null {
 }
 
 export function getKeyFeatures(project: Project): string[] {
+  if (project.highlights?.length) return project.highlights.filter(Boolean);
   return project.description
     .replace(/\.$/, "")
     .split(",")
