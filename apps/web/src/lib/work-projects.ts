@@ -91,8 +91,18 @@ export function splitStack(project: Project): ProjectStacks {
   return { primary, supporting };
 }
 
-export function getRoleSummary(): string {
-  return "Role scope is not explicitly detailed in the current public project dataset.";
+export function getRoleSummary(project: Project): string {
+  const slug = projectSlug(project);
+  if (slug === "crops-and-resources-rd-center") {
+    return "Full-stack developer responsible for requirements, architecture, database design, implementation, integrations, deployment, and maintenance.";
+  }
+  if (slug === "claarrdec-real-time-monitoring-system") {
+    return "Information systems developer translating monitoring and evaluation workflows into a centralized web platform.";
+  }
+  if (slug === "claarrdec-cms-e-library") {
+    return "Full-stack developer for the public content, authenticated e-library, usage reporting, and administrative workflows.";
+  }
+  return "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }
 
 export function getProblemStatement(project: Project): string | null {
