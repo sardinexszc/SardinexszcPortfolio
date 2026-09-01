@@ -14,7 +14,7 @@ import {
 function WorkCard({ project, index }: { project: Project; index: number }) {
   const category = inferCategory(project);
   const summary = getProjectSummary(project);
-  const role = getRoleSummary();
+  const role = getRoleSummary(project);
   const stack = splitStack(project);
   const slug = projectSlug(project);
   const hasScreenshot = projectHasScreenshot(project);
