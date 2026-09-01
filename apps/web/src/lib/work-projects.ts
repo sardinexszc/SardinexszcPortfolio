@@ -92,7 +92,26 @@ export function splitStack(project: Project): ProjectStacks {
 }
 
 export function getRoleSummary(project?: Project): string {
-  return project?.role_summary?.trim() || "Full-stack delivery across the application interface, workflow logic, and data-backed features documented for this project.";
+  const configuredSummary = project?.role_summary?.trim();
+  if (configuredSummary) {
+    return configuredSummary;
+  }
+
+  if (!project) {
+    return "Full-stack delivery across the application interface, workflow logic, and data-backed features documented for this project.";
+  }
+
+  const slug = projectSlug(project);
+  if (slug === "crops-and-resources-rd-center") {
+    return "Full-stack developer responsible for requirements, architecture, database design, implementation, integrations, deployment, and maintenance.";
+  }
+  if (slug === "claarrdec-real-time-monitoring-system") {
+    return "Information systems developer translating monitoring and evaluation workflows into a centralized web platform.";
+  }
+  if (slug === "claarrdec-cms-e-library") {
+    return "Full-stack developer for the public content, authenticated e-library, usage reporting, and administrative workflows.";
+  }
+  return "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }
 
 export function getProblemStatement(project: Project): string | null {

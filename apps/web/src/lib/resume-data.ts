@@ -3,7 +3,7 @@ Ivan Christian L. Salinas
 Full Stack Software Engineer and AI Automation Specialist
 
 Professional Summary
-- 7+ years of experience designing, developing, and deploying enterprise-grade web applications and automated workflows.
+- Experience designing, developing, and deploying institutional web applications and automated workflows since 2017.
 - Skilled in React.js, Next.js, PHP, TypeScript, PostgreSQL, and building scalable cloud-based solutions.
 - Experienced with Supabase/PostgreSQL data systems, LLM integrations, n8n automation, Telegram bots, workflow automation, and IoT prototyping with ESP32, Arduino, PlatformIO, and sensors.
 
@@ -14,7 +14,7 @@ Experience
 
 Education
 - Bachelor of Science in Information Technology, Central Luzon State University
-- Master of Science in Information Technology, Nueva Ecija University of Science and Technology
+- Master of Science in Information Technology, Nueva Ecija University of Science and Technology (currently enrolled, Data Science track)
 
 Skills
 - PHP, JavaScript, TypeScript, SQL, Java
@@ -29,6 +29,4 @@ Publications
 
 Contact
 - Email: banbansalinas@gmail.com
-- Phone: +63-926-7459-456
-- Portfolio: https://www.sardinexszc.vercel.app
 `;

@@ -6,7 +6,6 @@ import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail, MessageCircle, Send } 
 import { CapabilitiesSection } from "./capabilities-section";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
-import { buildTelegramLink, buildWhatsAppLink } from "@/lib/contact";
 import { SiteHeader } from "./site-header";
 import { SelectedWorkSection } from "./selected-work-section";
 import { EngineeringEcosystemVisual } from "./engineering-ecosystem-visual";
@@ -22,32 +21,17 @@ function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
 }
 
 const aboutParagraphs = [
-  "I build software that connects research, automation, and real-world operations. My work spans full-stack web development, AI-powered applications, workflow automation, and IoT systems, creating tools that solve practical problems rather than simply demonstrating technology.",
-  "Over the past few years, I've developed production systems for government-funded research institutions, including content management systems, research information systems, real-time monitoring platforms, and smart agriculture solutions. I enjoy turning complex workflows into software that is reliable, intuitive, and scalable.",
-  "Currently, I'm exploring AI agents, LLM applications, and intelligent automation to build systems that work alongside people instead of replacing them.",
+  "I am a full-stack developer with experience building institutional web applications, research information systems, and automation workflows. My work covers requirements analysis, database design, frontend and backend development, integrations, deployment, and maintenance.",
+  "My current focus is combining reliable web engineering with AI and workflow automation to reduce repetitive work and improve access to organizational information.",
 ];
 
-function collectTopTechnologies(portfolio: Portfolio): string[] {
-  const counts = new Map<string, number>();
-
-  portfolio.projects.forEach((project) => {
-    project.tech_stack.forEach((tech) => {
-      counts.set(tech, (counts.get(tech) ?? 0) + 1);
-    });
-  });
-
-  return Array.from(counts.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 6)
-    .map(([name]) => name);
-}
+const coreTechnologies = ["Next.js", "React", "TypeScript", "Laravel", "PostgreSQL", "Supabase", "n8n"];
 
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
   const reduceMotion = useReducedMotion();
   const deployedProjects = portfolio.projects.filter((project) => Boolean(project.live_url));
   const featuredProjects = portfolio.projects.filter((project) => project.featured);
   const strongestProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 2);
-  const topTechnologies = collectTopTechnologies(portfolio);
 
   const revealInitial = reduceMotion ? { opacity: 1, y: 0 } : { opacity: 0, y: motionTokens.distance.subtle };
   const revealAnimate = { opacity: 1, y: 0 };
@@ -68,20 +52,21 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             animate={revealAnimate}
             transition={{ ...revealTransition, delay: motionTokens.delay.short }}
           >
-            <motion.div className="hero-kicker" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short }}><span className="status-dot" /> Available for Remote Opportunities</motion.div>
-            <motion.h1 id="hero-title" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep }}>Ivan Christian Salinas<br /><em>Full-Stack Software Engineer</em></motion.h1>
-            <motion.p className="hero-support" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 2 }}>I specialize in production software for research and operational environments: full-stack web applications, backend APIs, data systems, AI automation workflows, and IoT-enabled monitoring solutions.</motion.p>
+            <motion.div className="hero-kicker" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short }}><span className="status-dot" /> Open to remote full-time and contract work</motion.div>
+            <motion.p className="hero-identity" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep }}>Ivan Christian L. Salinas</motion.p>
+            <motion.h1 id="hero-title" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 2 }}>Full-Stack Software Engineer &amp; <em>AI Automation Specialist</em></motion.h1>
+            <motion.p className="hero-support" initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 3 }}>I build production software for research and operational environments: secure web platforms, backend APIs, data systems, and AI automation workflows for teams that have outgrown spreadsheets and manual work.</motion.p>
 
             <div className="hero-scan" aria-label="Recruiter quick scan">
-              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 3 }}>
-                <p>What I specialize in</p>
-                <h3>Full-stack systems, AI automation, and research platforms</h3>
-              </motion.article>
               <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 4 }}>
+                <p>Best fit</p>
+                <h3>Full-Stack Software Engineer · AI Automation Specialist</h3>
+              </motion.article>
+              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 5 }}>
                 <p>What I have built</p>
                 <h3>{deployedProjects.length} live public systems shown in selected work</h3>
               </motion.article>
-              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 5 }}>
+              <motion.article initial={revealInitial} animate={revealAnimate} transition={{ ...revealTransition, delay: motionTokens.delay.short + motionTokens.delay.staggerStep * 6 }}>
                 <p>Technologies in active project use</p>
                 <h3>{topTechnologies.join(" • ")}</h3>
               </motion.article>
@@ -97,7 +82,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
               <p>Strongest projects:</p>
               <div>
                 {strongestProjects.map((project) => (
-                  <a key={project.id} href={project.live_url ?? "#work"} target={project.live_url ? "_blank" : undefined} rel={project.live_url ? "noopener noreferrer" : undefined}>
+                  <a key={project.id} href={`/work/${projectSlug(project)}`}>
                     {project.title}
                   </a>
                 ))}
@@ -188,9 +173,9 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
         <CapabilitiesSection projects={portfolio.projects} timeline={portfolio.timeline} />
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Available for remote software roles and collaborations</p><h2 id="contact-title">Hire me for<br /><em>real systems delivery.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:sardinexszc@gmail.com"><Mail size={19} /> sardinexszc@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href={buildWhatsAppLink('+63 926 745 9456', 'Hi Ivan, I saw your portfolio and would like to discuss a project.')} target="_blank" rel="noopener noreferrer"><MessageCircle size={17} /> WhatsApp</a><a href={buildTelegramLink('@Sardinexszc')} target="_blank" rel="noopener noreferrer"><Send size={17} /> Telegram</a><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
+        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Available for remote software roles and collaborations</p><h2 id="contact-title">Hire me for<br /><em>real systems delivery.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
       </main>
-      <footer><span>© 2026 Sardinexszc</span><span>Designed and built with care</span></footer>
+      <footer><span>© 2026 Ivan Christian L. Salinas</span><span>Designed and built with care</span></footer>
     </div>
   );
 }

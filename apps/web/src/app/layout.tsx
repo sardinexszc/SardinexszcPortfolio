@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     description:
       "Production-focused software engineer building web systems, APIs, databases, automation workflows, and AI-enabled applications for real organizations.",
     url: "/",
-    siteName: "Sardinexszc Portfolio",
+    siteName: "Ivan Christian L. Salinas Portfolio",
     images: [{ url: "/images/hero-photo.jpg", width: 1200, height: 630, alt: "Ivan Christian Salinas" }],
   },
   twitter: {
