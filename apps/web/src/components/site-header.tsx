@@ -12,8 +12,8 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <Link className="wordmark" href="/" aria-label="Sardinexszc home">
-        S<span>.</span>
+      <Link className="wordmark" href="/" aria-label="Ivan Christian Salinas home">
+        I<span>S</span>
       </Link>
       <nav className="header-nav" aria-label="Primary navigation">
         <a href="#work" onClick={(e) => handleNavClick(e, 'work')} aria-label="Go to selected work section">
