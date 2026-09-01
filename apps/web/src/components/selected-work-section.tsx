@@ -2,7 +2,6 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/types";
 import {
-  getProjectSummary,
   getRoleSummary,
   inferCategory,
   projectDisplayTitle,
@@ -11,13 +10,35 @@ import {
   splitStack,
 } from "@/lib/work-projects";
 
+const projectDetails: Record<string, { problem: string; implementation: string; outcome: string }> = {
+  "crops-and-resources-rd-center": {
+    problem: "Research, extension, personnel, and administrative records needed a centralized institutional system.",
+    implementation: "A web platform that organizes records and supports institutional information access and administrative workflows.",
+    outcome: "A deployed central source for research, extension, personnel, and administrative information.",
+  },
+  "claarrdec-real-time-monitoring-system": {
+    problem: "Consortium reporting, project tracking, and monitoring and evaluation workflows required centralized data management.",
+    implementation: "A Laravel and MySQL system for reporting, project records, and monitoring and evaluation activities across member institutions.",
+    outcome: "A deployed system supporting CLAARRDEC reporting, project tracking, and oversight workflows.",
+  },
+  "claarrdec-cms-e-library": {
+    problem: "Institutional content and library resources needed both public delivery and controlled access.",
+    implementation: "A Laravel content management and e-library platform with public pages, authenticated access, administrative functions, and usage reporting.",
+    outcome: "A deployed institutional website combining content publishing, e-library access, and usage reporting.",
+  },
+};
+
 function WorkCard({ project, index }: { project: Project; index: number }) {
   const category = inferCategory(project);
-  const summary = getProjectSummary(project);
   const role = getRoleSummary(project);
   const stack = splitStack(project);
   const slug = projectSlug(project);
   const hasScreenshot = projectHasScreenshot(project);
+  const details = projectDetails[slug] ?? {
+    problem: project.description,
+    implementation: project.description,
+    outcome: project.description,
+  };
 
   return (
     <article className="work-card" role="listitem">
@@ -28,12 +49,16 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
 
       <div className="work-card-core">
         <h3>{projectDisplayTitle(project)}</h3>
-        <p>{summary}</p>
+        <p>{project.description}</p>
       </div>
 
       <details className="work-card-disclosure">
         <summary>Project details</summary>
         <div className="work-card-detail-grid">
+          <section><p className="work-eyebrow">Problem</p><p>{details.problem}</p></section>
+          <section><p className="work-eyebrow">Implementation</p><p>{details.implementation}</p></section>
+          <section><p className="work-eyebrow">Contribution</p><p>{role}</p></section>
+          <section><p className="work-eyebrow">Verified outcome</p><p>{details.outcome}</p></section>
           <section>
             <p className="work-eyebrow">Primary stack</p>
             <div className="work-stack">
@@ -53,11 +78,6 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
               </div>
             </section>
           ) : null}
-
-          <section>
-            <p className="work-eyebrow">My role</p>
-            <p>{role}</p>
-          </section>
 
           <section>
             <p className="work-eyebrow">Links</p>

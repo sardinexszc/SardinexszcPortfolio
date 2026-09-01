@@ -1,28 +1,33 @@
 'use client';
 
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
-import { CapabilitiesSection } from "./capabilities-section";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
-import { SiteHeader } from "./site-header";
+import { projectSlug } from "@/lib/work-projects";
+import { CapabilitiesSection } from "./capabilities-section";
 import { PortfolioChatbot } from "./chatbot";
 import { SelectedWorkSection } from "./selected-work-section";
-import { projectSlug } from "@/lib/work-projects";
+import { SiteHeader } from "./site-header";
 
-function SectionTitle({ eyebrow, title }: { eyebrow: string; title: string }) {
-  return <div className="section-title"><span>{eyebrow}</span><h2>{title}</h2></div>;
+function SectionTitle({ eyebrow, title, id }: { eyebrow: string; title: string; id: string }) {
+  return <div className="section-title"><span>{eyebrow}</span><h2 id={id}>{title}</h2></div>;
 }
 
 const aboutParagraphs = [
-  "I am a full-stack developer with experience building institutional web applications, research information systems, and automation workflows. My work covers requirements analysis, database design, frontend and backend development, integrations, deployment, and maintenance.",
-  "My current focus is combining reliable web engineering with AI and workflow automation to reduce repetitive work and improve access to organizational information.",
+  "I am a full-stack software engineer with experience building institutional web applications, research information systems, databases, APIs, and automation workflows. My work covers requirements analysis, system design, frontend and backend development, integrations, deployment, and maintenance.",
+  "I have also worked as an Information Technology instructor and published researcher, connecting software delivery with research and institutional operations.",
 ];
 
-const coreTechnologies = ["Next.js", "React", "TypeScript", "Laravel", "PostgreSQL", "Supabase", "n8n"];
+const research = [
+  { title: "Development of a Web-based Research Consortium Database Management System: Advancing Data-driven and Knowledge-based Project Management", published: "May 24, 2024", doi: "10.1145/3670105.3670120" },
+  { title: "Senior Digital World: Social Media Usage and Online Identity Expression Among Senior Citizens in Selected Barangays of Talavera, Nueva Ecija", published: "March 11, 2025", doi: "10.70059/nv6q0j65" },
+];
 
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
   const featuredProjects = portfolio.projects.filter((project) => project.featured);
   const strongestProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 2);
+  const experience = portfolio.timeline.filter((entry) => entry.type === "experience");
+  const education = portfolio.timeline.filter((entry) => entry.type === "education");
 
   return (
     <div className="page-shell">
@@ -33,75 +38,59 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <div className="hero-content">
             <div className="hero-kicker"><span className="status-dot" /> Open to remote full-time and contract work</div>
             <p className="hero-identity">Ivan Christian L. Salinas</p>
-            <h1 id="hero-title">Full-Stack Developer &amp; <em>AI Automation Specialist</em></h1>
-            <p className="hero-support">I&apos;m Ivan, a full-stack developer and AI automation specialist from the Philippines. I build secure web platforms, APIs, data systems, and automations for teams that have outgrown spreadsheets and manual work.</p>
-
-            <div className="hero-scan" aria-label="Recruiter quick scan">
-              <article>
-                <p>Best fit</p>
-                <h3>Full-Stack Developer · AI Automation Specialist</h3>
-              </article>
-              <article>
-                <p>Delivery experience</p>
-                <h3>Requirements to deployment — including architecture, databases, integrations, and support</h3>
-              </article>
-              <article>
-                <p>Technologies in active project use</p>
-                <h3>{coreTechnologies.join(" • ")}</h3>
-              </article>
-            </div>
-
+            <h1 id="hero-title">Full-Stack Software Engineer.</h1>
+            <p className="hero-support">I build web applications, information systems, APIs, databases, and automation workflows for research and institutional operations. My work spans requirements analysis, system design, implementation, deployment, and support.</p>
             <div className="hero-actions">
-              <a className="hero-cta hero-cta-primary" href="#work" onClick={(e) => { e.preventDefault(); smoothScrollToId('work'); }}>View My Work <ArrowDown size={16} /></a>
+              <a className="hero-cta hero-cta-primary" href="#work" onClick={(event) => { event.preventDefault(); smoothScrollToId("work"); }}>View My Work <ArrowDown size={16} /></a>
               <a className="hero-cta hero-cta-secondary" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf">Download Resume <ArrowUpRight size={16} /></a>
-              <a className="hero-cta hero-cta-secondary" href="#contact" onClick={(e) => { e.preventDefault(); smoothScrollToId('contact'); }}>Contact Ivan <ArrowUpRight size={16} /></a>
+              <a className="hero-cta hero-cta-secondary" href="#contact" onClick={(event) => { event.preventDefault(); smoothScrollToId("contact"); }}>Contact Ivan <ArrowUpRight size={16} /></a>
             </div>
-
-            <div className="hero-proof-links" aria-label="Strongest project shortcuts">
-              <p>Strongest projects:</p>
-              <div>
-                {strongestProjects.map((project) => (
-                  <a key={project.id} href={`/work/${projectSlug(project)}`}>
-                    {project.title}
-                  </a>
-                ))}
-              </div>
-            </div>
+            <div className="hero-proof-links" aria-label="Selected project shortcuts"><p>Selected projects:</p><div>{strongestProjects.map((project) => <a key={project.id} href={`/work/${projectSlug(project)}`}>{project.title}</a>)}</div></div>
           </div>
-          <aside className="hire-panel" aria-label="Reasons to hire Ivan">
-            <p className="hire-panel-label">What I bring to a team</p>
+          <aside className="hire-panel" aria-label="Engineering capabilities">
+            <p className="hire-panel-label">Engineering scope</p>
             <ol>
-              <li><span>01</span><div><strong>Ownership</strong><p>I can take a system from requirements and data modeling through deployment.</p></div></li>
-              <li><span>02</span><div><strong>Operational thinking</strong><p>I build around the people, approvals, records, and reporting behind the interface.</p></div></li>
-              <li><span>03</span><div><strong>Practical AI</strong><p>I use LLMs and n8n where they reduce real work—not as decoration.</p></div></li>
+              <li><span>01</span><div><strong>End-to-end delivery</strong><p>Requirements, data modeling, application development, deployment, and maintenance.</p></div></li>
+              <li><span>02</span><div><strong>Institutional systems</strong><p>Research management, monitoring, records, content, and administrative workflows.</p></div></li>
+              <li><span>03</span><div><strong>Automation and AI integration</strong><p>n8n workflows, LLM integrations, webhooks, chatbots, and external APIs.</p></div></li>
             </ol>
             <a href="mailto:banbansalinas@gmail.com?subject=Opportunity%20for%20Ivan%20Salinas">Discuss an opportunity <ArrowUpRight size={16} /></a>
           </aside>
         </section>
 
         <section id="work" className="content-section" aria-labelledby="work-title">
-          <SectionTitle eyebrow="01 / Selected work" title="Real systems for real organizations." />
+          <SectionTitle id="work-title" eyebrow="01 / Selected work" title="Systems for research, monitoring, and institutional information delivery." />
           <SelectedWorkSection projects={portfolio.projects} />
         </section>
 
         <section id="about" className="content-section about-section" aria-labelledby="about-title">
-          <SectionTitle eyebrow="02 / About and experience" title="A developer who understands the operation behind the software." />
+          <SectionTitle id="about-title" eyebrow="02 / About and experience" title="Software engineering informed by institutional operations, research, and teaching." />
           <div className="about-grid">
             <div className="about-copy">
-              <p className="about-lead">I design and build systems that make research, operations, and automation easier to run in the real world.</p>
+              <p className="about-lead">I design and build systems for research, information delivery, monitoring, and operational workflows.</p>
               {aboutParagraphs.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
-              <div className="about-note">
-                <span>Current focus</span>
-                <p>AI agents, LLM-powered applications, workflow automation, and human-centered systems that scale without adding unnecessary complexity.</p>
-              </div>
+              <div className="about-note"><span>Current focus</span><p>Full-stack applications, database-backed information systems, APIs, and workflow automation with AI integrations where they serve a defined operational need.</p></div>
             </div>
-            <ol className="timeline">{portfolio.timeline.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p><small>{entry.description}</small></div></li>)}</ol>
+            <div><p className="subsection-label">Professional experience</p><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p><small>{entry.description}</small></div></li>)}</ol></div>
           </div>
         </section>
 
-        <CapabilitiesSection projects={portfolio.projects} timeline={portfolio.timeline} />
+        <section className="content-section research-education-section" aria-labelledby="research-education-title">
+          <SectionTitle id="research-education-title" eyebrow="03 / Research and education" title="Published research and academic background." />
+          <div className="research-education-grid">
+            <div><p className="subsection-label">Research</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h3>{publication.title}</h3><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <ArrowUpRight size={15} /></a></li>)}</ol></div>
+            <div><p className="subsection-label">Education</p><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p></div></li>)}</ol></div>
+          </div>
+        </section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title"><p className="contact-eyebrow">Available for remote software roles and collaborations</p><h2 id="contact-title">Hire me for<br /><em>real systems delivery.</em></h2><div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div><div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div></section>
+        <CapabilitiesSection />
+
+        <section id="contact" className="contact-section" aria-labelledby="contact-title">
+          <p className="contact-eyebrow">Available for remote software roles and collaborations</p>
+          <h2 id="contact-title">Let&apos;s discuss<br /><em>software and systems work.</em></h2>
+          <div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download my resume (PDF)</a></div>
+          <div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div>
+        </section>
       </main>
       <footer><span>© 2026 Ivan Christian L. Salinas</span><span>Designed and built with care</span></footer>
     </div>
