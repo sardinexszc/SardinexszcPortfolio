@@ -266,7 +266,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
 
   if (/contact|email|reach|linkedin|github|whatsapp|telegram|phone|address|website/i.test(text)) {
     return {
-      answer: "Contact options include email at sardinexszc@gmail.com or banbansalinas@gmail.com, plus LinkedIn and GitHub links in the contact section. Resume data also includes phone and portfolio website references.",
+      answer: "Contact Ivan at banbansalinas@gmail.com, or use the LinkedIn and GitHub links in the contact section.",
       links: [{ label: "Go to Contact", href: "#contact" }, { label: "Download Resume", href: resumeFileHref }],
       references: ["Contact section", "Resume: Contact"],
       source: "mixed",
