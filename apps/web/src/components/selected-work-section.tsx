@@ -14,7 +14,7 @@ import {
 function WorkCard({ project, index }: { project: Project; index: number }) {
   const category = inferCategory(project);
   const summary = getProjectSummary(project);
-  const role = getRoleSummary();
+  const role = getRoleSummary(project);
   const stack = splitStack(project);
   const slug = projectSlug(project);
   const hasScreenshot = projectHasScreenshot(project);
@@ -74,11 +74,7 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
         <figure className="work-screenshot">
           <img src={project.image_url as string} alt={`${projectDisplayTitle(project)} screenshot`} loading="lazy" decoding="async" />
         </figure>
-      ) : (
-        <div className="work-screenshot work-screenshot-placeholder" aria-hidden="true">
-          <p>Screenshot can be added to project data</p>
-        </div>
-      )}
+      ) : null}
     </article>
   );
 }
