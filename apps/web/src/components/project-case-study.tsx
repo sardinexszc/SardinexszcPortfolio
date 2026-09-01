@@ -20,7 +20,7 @@ type ProjectCaseStudyProps = {
 export function ProjectCaseStudy({ project }: ProjectCaseStudyProps) {
   const architecture = getArchitecture(project);
   const category = inferCategory(project);
-  const roleSummary = getRoleSummary();
+  const roleSummary = getRoleSummary(project);
   const stack = splitStack(project);
   const features = getKeyFeatures(project);
   const problem = getProblemStatement(project);
