@@ -9,8 +9,10 @@ Professional Summary
 
 Experience
 - Instructor I | Information Systems Developer at Central Luzon State University
-- Developed research management systems, workflow automation tools, and web-based enterprise systems.
-- Led the software development lifecycle for institutional and research projects.
+- Led and co-developed institutional research and monitoring systems on government-funded initiatives, coordinating with 3-5 person project teams and institutional stakeholders (DOST-PCAARRD, DA-BPI, CHED-British Council).
+- Translated operational requirements into scalable software solutions through project planning, requirements gathering, and regular team coordination meetings.
+- Developed research management systems, workflow automation tools, web-based enterprise systems, monitoring platforms, and smart agriculture applications.
+- Taught undergraduate programming courses and supervised software development capstone projects.
 
 Education
 - Bachelor of Science in Information Technology, Central Luzon State University

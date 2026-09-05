@@ -14,8 +14,8 @@ function SectionTitle({ eyebrow, title, id }: { eyebrow: string; title: string; 
 }
 
 const aboutParagraphs = [
-  "I am a full-stack software engineer with experience building institutional web applications, research information systems, databases, APIs, and automation workflows. My work covers requirements analysis, system design, frontend and backend development, integrations, deployment, and maintenance.",
-  "I have also worked as an Information Technology instructor and published researcher, connecting software delivery with research and institutional operations.",
+  "I am a full-stack software engineer with experience building institutional web applications, research information systems, databases, APIs, and automation workflows. My work covers requirements analysis, system design, frontend and backend development, integrations, deployment, and maintenance—often in collaborative settings with researchers, project teams, and institutional stakeholders.",
+  "I have worked as an Information Technology instructor, published researcher, and technical leader on government-funded research projects, combining software delivery with institutional operations and research methodology. I lead small project teams, translate research requirements into scalable systems, and coordinate with stakeholders to align technical work with institutional goals.",
 ];
 
 const research = [
