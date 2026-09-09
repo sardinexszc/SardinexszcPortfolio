@@ -7,27 +7,27 @@ type CapabilityGroup = {
 const capabilityGroups: CapabilityGroup[] = [
   {
     title: "Full-Stack Web Development",
-    description: "Web applications and institutional information systems from interface to deployment.",
+    description: "Web applications and institutional information systems built from interface to deployment.",
     technologies: ["PHP", "JavaScript", "TypeScript", "Java", "React", "Next.js", "Laravel"],
   },
   {
     title: "Backend APIs and Databases",
-    description: "Application logic, integrations, relational data models, and data access.",
+    description: "Application logic, integrations, relational data models, and data access for operational use.",
     technologies: ["SQL", "MySQL", "PostgreSQL", "Supabase", "REST APIs"],
   },
   {
-    title: "Automation and AI Integration",
+    title: "Automation and Integration",
     description: "Workflow automation using webhooks, chatbots, LLM integrations, and external APIs.",
     technologies: ["n8n", "REST APIs"],
   },
   {
     title: "IoT and Monitoring Systems",
-    description: "Connected monitoring and data-collection systems for institutional and field use.",
+    description: "Connected monitoring and data-collection systems for research and field operations.",
     technologies: ["ESP32", "Arduino", "PlatformIO", "ArcGIS", "QGIS"],
   },
   {
-    title: "Delivery and Collaboration Tools",
-    description: "Source control, collaborative development, and web application deployment.",
+    title: "Delivery and Collaboration",
+    description: "Source control, team coordination, and deployment workflows for web applications.",
     technologies: ["Git", "GitHub", "Vercel"],
   },
 ];

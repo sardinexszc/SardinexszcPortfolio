@@ -112,7 +112,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
 
   if (/(which projects involve ai|projects use ai|ai work|llm)/i.test(text)) {
     return {
-      answer: "AI-focused work is currently documented in your experience and resume context (LLM integrations, AI applications, and automation workflows). Selected public project cards do not yet include explicit AI-tagged stacks.",
+      answer: "AI-related work appears in the resume context through LLM integrations, automation workflows, and chatbot-like tooling. The public project cards emphasize institutional systems, monitoring, and content platforms rather than AI-themed product branding.",
       links: [
         { label: "See Experience", href: "#about" },
         { label: "Download Resume", href: resumeFileHref },
@@ -157,9 +157,9 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
     const summaryPoints = collectResumeBulletLines("Professional Summary", "Experience");
     const summary = summaryPoints.length
       ? summaryPoints.slice(0, 2).join(" ")
-      : "I am a full stack software engineer and AI automation specialist with 7+ years of experience building enterprise web applications and automated workflows.";
+      : "I design and develop institutional web applications, operational workflows, and data systems for research and academic settings.";
     return {
-      answer: "Here is your professional summary from the resume: " + summary,
+      answer: "Here is the resume summary: " + summary,
       links: [{ label: "Download Resume", href: resumeFileHref }],
       references: ["Resume: Professional Summary"],
       source: "resume",
@@ -174,10 +174,10 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
           "PHP, JavaScript, TypeScript, SQL, Java",
           "React.js, Next.js, Tailwind CSS, REST APIs",
           "PostgreSQL, Supabase, MySQL",
-          "n8n, AI agent integration, LLM integration",
+          "n8n, workflow automation, LLM integration",
         ];
     return {
-      answer: "Here are your core skills from the resume: " + conciseSkills.join("; ") + ".",
+      answer: "Core skills from the resume include: " + conciseSkills.join("; ") + ".",
       links: [{ label: "See Capabilities", href: "#skills-title" }],
       references: ["Resume: Skills", "Capabilities section"],
       source: "mixed",
@@ -202,7 +202,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
   if (/who are you|about you|your background|what do you do|what kind of work/i.test(text)) {
     if (resumeContext) {
       return {
-        answer: "Ivan Christian Salinas is a full-stack software engineer and AI automation specialist with 7+ years of experience. Resume and portfolio content highlight web applications, research systems, workflow automation, and AI integration work.",
+        answer: "Ivan Christian Salinas is a full-stack software engineer with experience building research and institutional systems, database-backed web applications, and workflow automation tools in academic and government project settings.",
         links: [{ label: "See About", href: "#about" }, { label: "Download Resume", href: resumeFileHref }],
         references: ["About section", "Resume: Professional Summary"],
         source: "mixed",
@@ -210,7 +210,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
     }
 
     return {
-      answer: "Ivan builds full-stack web applications, AI-supported automation tools, and research/operations systems, with experience delivering platforms for institutional and research environments.",
+      answer: "Ivan builds web applications, research systems, monitoring platforms, and institutional workflow tools for research and operational environments.",
       links: [{ label: "See About", href: "#about" }],
       references: ["About section"],
       source: "portfolio",
@@ -225,7 +225,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
       ]),
     );
     return {
-      answer: "Technologies shown in portfolio and resume include " + technologies.slice(0, 10).join(", ") + ". Recent portfolio systems prominently show React/Next.js, TypeScript, Laravel/PHP, and MySQL, while resume context adds PostgreSQL, Supabase, n8n, and LLM integration work.",
+      answer: "Portfolio and resume technologies include " + technologies.slice(0, 10).join(", ") + ". The strongest examples in the portfolio reflect React/Next.js, TypeScript, Laravel/PHP, MySQL, and PostgreSQL, with supplementary work in workflow automation and system integrations.",
       links: [{ label: "See Capabilities", href: "#skills-title" }, { label: "See Selected Work", href: "#work" }],
       references: ["Capabilities section", "Selected Work", "Resume: Skills"],
       source: "mixed",
@@ -257,7 +257,7 @@ export function buildPortfolioChatResponse(question: string, portfolio: Portfoli
       .map((entry) => entry.role + " at " + entry.organization)
       .join("; ");
     return {
-      answer: "Experience includes " + timelineSummary + ". Resume content also emphasizes 7+ years of software engineering, research systems work, teaching, and AI-enabled workflow automation.",
+      answer: "Experience includes " + timelineSummary + ". The resume context also emphasizes research systems work, teaching, and workflow automation for institutional operations.",
       links: [{ label: "See Experience Timeline", href: "#about" }, { label: "Download Resume", href: resumeFileHref }],
       references: ["About timeline", "Resume: Experience"],
       source: "mixed",

@@ -40,14 +40,16 @@ const portfolio: Portfolio = {
   ],
 };
 
-test("answers background questions from the portfolio data", () => {
+test("answers background questions with specific systems work", () => {
   const answer = answerPortfolioQuestion("What do you do?", portfolio);
-  assert.match(answer, /full-stack|software engineer/i);
+  assert.match(answer, /research|monitoring|institutional|full-stack/i);
+  assert.doesNotMatch(answer, /AI automation specialist/i);
 });
 
-test("answers technology questions with portfolio examples", () => {
+test("answers technology questions with concrete portfolio evidence", () => {
   const answer = answerPortfolioQuestion("What technologies do you use?", portfolio);
-  assert.match(answer, /TypeScript|Next\.js|React/i);
+  assert.match(answer, /TypeScript|Next\.js|React|Laravel|MySQL/i);
+  assert.doesNotMatch(answer, /cutting-edge|modern|innovative/i);
 });
 
 test("returns linked Laravel project guidance", () => {

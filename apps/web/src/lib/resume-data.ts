@@ -1,11 +1,11 @@
 export const resumeKnowledge = `
 Ivan Christian L. Salinas
-Full Stack Software Engineer and AI Automation Specialist
+Full Stack Software Engineer focused on research systems, institutional workflows, and database-backed web applications
 
 Professional Summary
-- Experience designing, developing, and deploying institutional web applications and automated workflows since 2017.
-- Skilled in React.js, Next.js, PHP, TypeScript, PostgreSQL, and building scalable cloud-based solutions.
-- Experienced with Supabase/PostgreSQL data systems, LLM integrations, n8n automation, Telegram bots, workflow automation, and IoT prototyping with ESP32, Arduino, PlatformIO, and sensors.
+- Experience designing, developing, and deploying institutional web applications and operational workflows since 2017.
+- Skilled in React.js, Next.js, PHP, TypeScript, PostgreSQL, and building reliable web and data systems for research and institutional settings.
+- Experienced with database design, workflow automation, LLM integrations, n8n automation, Telegram bots, and IoT prototyping with ESP32, Arduino, PlatformIO, and sensors.
 
 Experience
 - Instructor I | Information Systems Developer at Central Luzon State University

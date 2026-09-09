@@ -52,6 +52,11 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
         <p>{project.description}</p>
       </div>
 
+      <div className="work-card-scanline">
+        <div><span className="work-eyebrow">Contribution</span><strong>{role}</strong></div>
+        <div><span className="work-eyebrow">Stack</span><strong>{stack.primary.slice(0, 3).join(" · ")}</strong></div>
+      </div>
+
       <details className="work-card-disclosure">
         <summary>Project details</summary>
         <div className="work-card-detail-grid">

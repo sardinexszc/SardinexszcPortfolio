@@ -25,19 +25,19 @@ export function PortfolioChatbot() {
       id: 1,
       role: "assistant",
       content:
-        "Hi! I can help you navigate Ivan’s portfolio and answer questions using portfolio and resume data. Ask about projects, technologies, research, AI work, IoT work, experience, education, resume, or contact info.",
+        "Hi. I can answer questions from Ivan’s portfolio and resume data. Ask about projects, research systems, technologies, experience, or contact details.",
     },
   ]);
 
   const quickQuestions = useMemo(
     () => [
-      "What are your strongest backend projects?",
       "Which projects use Laravel?",
-      "Which projects involve AI?",
-      "What systems have you deployed?",
-      "Tell me about your IoT work.",
-      "What can you build for a research organization?",
-      "Show me your strongest full-stack project.",
+      "What research systems have you built?",
+      "What monitoring or reporting systems are in your portfolio?",
+      "What technologies appear in your work?",
+      "Tell me about your institutional systems work.",
+      "What systems are deployed online?",
+      "Show me the strongest full-stack example.",
     ],
     [],
   );
@@ -48,7 +48,7 @@ export function PortfolioChatbot() {
         id: 1,
         role: "assistant",
         content:
-          "Conversation reset. Ask about projects, technologies, experience, research, AI work, IoT work, education, resume, or contact info.",
+          "Conversation reset. Ask about projects, systems, research, experience, tech stack, or contact information.",
       },
     ]);
     setError(null);
@@ -137,7 +137,7 @@ export function PortfolioChatbot() {
         aria-haspopup="dialog"
       >
         <Bot size={18} />
-        <span>{open ? "Close chat" : "Ask about Ivan"}</span>
+        <span>{open ? "Close Q&A" : "Portfolio Q&A"}</span>
       </button>
 
       <div
@@ -149,12 +149,12 @@ export function PortfolioChatbot() {
       >
         <div className="chatbot-panel-header">
           <div>
-            <p className="chatbot-eyebrow">Portfolio concierge</p>
-            <h3 id="chatbot-title">Ask about Ivan</h3>
+            <p className="chatbot-eyebrow">Portfolio notes</p>
+            <h3 id="chatbot-title">Project Q&A</h3>
           </div>
           <div className="chatbot-badge">
             <Sparkles size={14} />
-            Portfolio-based answers
+            Based on portfolio
           </div>
         </div>
 
@@ -217,8 +217,8 @@ export function PortfolioChatbot() {
               <input
                 value={input}
                 onChange={(event) => setInput(event.target.value)}
-                placeholder="Ask about projects, stack, AI, IoT, research, or contact"
-                aria-label="Ask a question about Ivan"
+                placeholder="Ask about projects, stack, research, or contact"
+                aria-label="Ask a question about the portfolio"
                 maxLength={500}
                 disabled={loading}
               />
