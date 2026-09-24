@@ -103,6 +103,7 @@ async function getResource<T>(resource: string): Promise<T> {
       : "&order=sort_order.asc";
   const response = await fetch(`${supabaseUrl}/rest/v1/${resource}?select=${columns}${filters}`, {
     headers: { apikey: supabasePublishableKey },
+    signal: AbortSignal.timeout(5000),
     next: { revalidate: 300 },
   });
   if (!response.ok) throw new Error(`Unable to load ${resource}`);
