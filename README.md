@@ -55,7 +55,16 @@ Set-Location apps/web
 npm run dev
 ```
 
-Open `http://localhost:3000` for the portfolio and `http://localhost:8000/admin/login` for the admin.
+Open `http://localhost:3000` for the portfolio and `http://localhost:8000/admin/login` for the admin. After authentication, `/admin` shows the dashboard; `/admin/content` contains the existing editors.
+
+### GitHub sign-in for the admin
+
+1. Create a GitHub OAuth App in GitHub Developer Settings. Set its authorization callback URL to `https://YOUR_API_HOST/admin/auth/github/callback` (or `http://localhost:8000/admin/auth/github/callback` locally).
+2. In the Laravel API `.env`, set `APP_URL` to the exact API origin, `GITHUB_OAUTH_CLIENT_ID` and `GITHUB_OAUTH_CLIENT_SECRET` from the OAuth App, `GITHUB_ALLOWED_USER_ID` to the numeric ID of your GitHub account (see `https://api.github.com/users/YOUR_LOGIN`), and `ADMIN_EMAIL` to the email of your seeded Laravel admin. Run `php artisan migrate --seed` if that admin does not exist yet.
+3. Run `php artisan config:cache` after changing production environment settings. Use HTTPS for production and keep the client secret server-side. The GitHub button on `/admin/login` opens the OAuth flow.
+
+Only the configured GitHub account ID can sign in, and it signs in as the existing admin. GitHub OAuth does not create accounts. The existing email/password sign-in remains available.
+
 
 ## MySQL
 
