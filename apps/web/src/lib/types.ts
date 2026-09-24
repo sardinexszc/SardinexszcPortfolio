@@ -7,6 +7,7 @@ export type Project = {
   live_url: string | null;
   github_url: string | null;
   featured: boolean;
+  sort_order?: number;
 };
 
 export type Skill = {
@@ -14,6 +15,7 @@ export type Skill = {
   name: string;
   proficiency: number;
   icon: string | null;
+  sort_order?: number;
 };
 
 export type TimelineEntry = {
@@ -24,6 +26,7 @@ export type TimelineEntry = {
   description: string;
   start_date: string;
   end_date: string | null;
+  sort_order?: number;
 };
 
 export type Portfolio = {

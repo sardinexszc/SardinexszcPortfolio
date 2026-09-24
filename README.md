@@ -1,110 +1,54 @@
 # Sardinexszc Portfolio
 
-A production-minded, content-managed portfolio built as a small monorepo. The public site is a statically rendered Next.js application. A Laravel API supplies portfolio content and includes a protected Blade admin panel for updates without editing source code.
-
-## Stack
-
-- **Next.js 16 + React 19 + TypeScript**: server rendering, SEO metadata, and incremental revalidation.
-- **Tailwind CSS 4**: utility-first responsive styling with a small custom visual system in `apps/web/src/app/globals.css`.
-- **Laravel 12 + PHP 8.2**: REST API, validation, sessions, CSRF protection, and the Blade admin.
-- **SQLite by default**: no database service is required for local development. Laravel's standard MySQL driver is supported by changing environment variables.
-- **Open-source only**: React, Next.js, Laravel, Tailwind, Lucide, and next-themes are permissively licensed open-source packages.
+The public portfolio is a Next.js application deployed on Vercel. Supabase provides Google sign-in and PostgreSQL storage. Plain PHP Vercel Functions provide the admin content API; Laravel has been removed.
 
 ## Project structure
 
 ```text
 apps/
-  web/  Next.js public portfolio
-  api/  Laravel API and Blade admin
+  web/       Next.js portfolio and admin UI
+  web/api/   PHP serverless API functions
+  web/php/   Shared PHP API helpers
+supabase/
+  migrations/
+  seed.sql
 ```
 
-## Requirements
+## Supabase setup
 
-- Node.js 22 or newer and npm (pnpm can be substituted in the frontend folder).
-- PHP 8.2 or newer with `pdo_sqlite` enabled. PHP 8.3+ is recommended.
-- Composer 2.
-- VS Code with the ESLint extension and PHP Intelephense are recommended.
+1. Create a Supabase project.
+2. In the SQL Editor, run `supabase/migrations/202609240001_portfolio_and_admin.sql`.
+3. Run `supabase/seed.sql` once to load the starter portfolio content.
+4. In **Authentication → Providers**, enable Google. Create a Web OAuth client in Google Cloud. Add the portfolio origin (for example `https://ivansalinas.vercel.app`) as an authorized JavaScript origin, and add the Supabase callback URI shown on the Google provider setup page as an authorized redirect URI.
+5. In Supabase **Authentication → URL Configuration**, set the Site URL to `https://ivansalinas.vercel.app` and allow `https://ivansalinas.vercel.app/auth/callback`. Add local/preview URLs only when needed.
+6. Sign in once at `/loginauthentication`. In the SQL Editor, find that Google user in `auth.users` by email and add their UUID to `public.admin_users`:
 
-## Setup from scratch
-
-From the repository root in PowerShell:
-
-```powershell
-Copy-Item apps/api/.env.example apps/api/.env
-Copy-Item apps/web/.env.example apps/web/.env.local
-New-Item -ItemType File -Force apps/api/database/database.sqlite
-Set-Location apps/api
-composer install
-php artisan key:generate
-php artisan migrate --seed
-Set-Location ../web
-npm install
+```sql
+insert into public.admin_users (user_id)
+select id from auth.users where email = 'YOUR_GOOGLE_EMAIL';
 ```
 
-Admin access uses GitHub OAuth. Create a GitHub OAuth App and configure its callback URL and credentials as described below before signing in.
+The database policies make the portfolio content publicly readable and permit writes only for UUIDs in `admin_users`. Never add a service-role key to the frontend or PHP function environment.
 
-Start both applications in separate VS Code terminals:
+## Vercel deployment
 
-```powershell
-# Terminal 1
-Set-Location apps/api
-php artisan serve
+Set the Vercel project root to `apps/web`, then add these variables for Production:
 
-# Terminal 2
-Set-Location apps/web
-npm run dev
-```
+| Variable | Value |
+| --- | --- |
+| `SITE_URL` | `https://ivansalinas.vercel.app` |
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Supabase publishable key (`sb_publishable_...`) |
+| `SUPABASE_URL` | Same Supabase project URL |
+| `SUPABASE_PUBLISHABLE_KEY` | Same Supabase publishable key |
 
-Open `http://localhost:3000` for the portfolio and `http://localhost:3000/loginauthentication` for admin login. The frontend path redirects to the Laravel login page. Configure `API_URL` in the web deployment to the Laravel API URL ending in `/api/v1`.
+The `NEXT_PUBLIC_` values are used by Next.js for Google Auth and public content reads. The server-side values are used by PHP functions. Publishable keys are safe for client use when RLS is enabled; never use a Supabase secret key here.
 
-### GitHub admin sign-in
+Vercel builds the site and PHP functions from `apps/web/vercel.json`. The PHP functions use Vercel’s community PHP runtime. After setting environment variables, redeploy the project.
 
-1. Create a GitHub OAuth App. Set its callback URL to `https://YOUR_API_HOST/admin/auth/github/callback` (use `http://localhost:8000/admin/auth/github/callback` locally).
-2. Set `APP_URL` to the Laravel API origin, `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, and `GITHUB_ALLOWED_USER_ID` to your numeric GitHub account ID.
-3. Keep the client secret server-side, use HTTPS in production, and run `php artisan config:cache` after configuring production values.
+## Local development
 
-Only the configured GitHub account ID can sign in. Its Laravel admin account is created on its first successful sign-in. Email and password sign-in is disabled.
-
-## MySQL
-
-Create a database and change the database section of `apps/api/.env`:
-
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=portfolio
-DB_USERNAME=portfolio
-DB_PASSWORD=your-local-password
-```
-
-Then run `php artisan migrate --seed` again. No application code changes are required.
-
-## API
-
-The public API is versioned under `/api/v1`. Every response uses Laravel's resource envelope: `{ "data": [...] }`.
-
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| GET | `/api/v1/projects` | Featured projects ordered for display |
-| GET | `/api/v1/skills` | Skills and proficiency percentages |
-| GET | `/api/v1/timeline` | Experience and education entries |
-
-Example:
-
-```powershell
-Invoke-RestMethod http://localhost:8000/api/v1/projects
-```
-
-Admin operations are session-authenticated Blade routes and should be used through the admin UI:
-
-| Method | Endpoint | Purpose |
-| --- | --- | --- |
-| POST / PUT / DELETE | `/admin/projects` and `/admin/projects/{project}` | Manage projects |
-| POST / PUT / DELETE | `/admin/skills` and `/admin/skills/{skill}` | Manage skills |
-| POST / PUT / DELETE | `/admin/timeline` and `/admin/timeline/{timelineEntry}` | Manage experience and education |
-
-Project `tech_stack` is entered as a comma-separated value in the admin and stored as a JSON array. URL fields are validated as URLs, proficiency is restricted to 0-100, and timeline type is restricted to `experience` or `education`.
+Copy `apps/web/.env.example` to `apps/web/.env.local` and add your Supabase values. Run the Next.js site with `npm run dev` from `apps/web`. PHP API functions are available locally through Vercel CLI (`vercel dev`) with PHP installed.
 
 ## Quality checks
 
@@ -113,32 +57,6 @@ Set-Location apps/web
 npm run typecheck
 npm run lint
 npm run build
-
-Set-Location ../api
-vendor/bin/pint --test
-php artisan test
 ```
 
-The frontend is statically prerendered and revalidates API content every five minutes. The fallback demo content keeps the public page usable while the API is unavailable during local frontend-only work; configure `API_URL` in the Vercel project to the Laravel API URL ending in `/api/v1`.
-
-## Deployment
-
-### Frontend on Vercel
-
-1. Import the repository and set the project root to `apps/web`.
-2. Set `API_URL` to the HTTPS Laravel API URL ending in `/api/v1`.
-3. Set `NEXT_PUBLIC_SITE_URL` to the public site URL.
-4. Build with `npm run build` and deploy. Configure the Laravel `FRONTEND_URL` to match the Vercel origin.
-
-### Laravel on PHP hosting
-
-1. Upload `apps/api` or deploy it with a PHP 8.2+ container.
-2. Run `composer install --no-dev --optimize-autoloader`.
-3. Create the production `.env`, run `php artisan key:generate`, then `php artisan migrate --seed`.
-4. Point the web server document root at `apps/api/public` and make `storage` and `bootstrap/cache` writable.
-5. Set `APP_ENV=production`, `APP_DEBUG=false`, HTTPS `APP_URL`, the deployed frontend origin, and the GitHub OAuth settings above.
-6. Run `php artisan config:cache` and `php artisan route:cache` after environment configuration.
-
-## License
-
-Released under the [MIT License](LICENSE).
+The portfolio homepage remains at `/`. Admin sign-in is available directly at `/loginauthentication`; the protected content editor is at `/admin`.

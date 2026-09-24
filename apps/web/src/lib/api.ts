@@ -1,6 +1,7 @@
 import type { Portfolio } from "./types";
 
-const apiUrl = process.env.API_URL ?? "http://localhost:8000/api/v1";
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabasePublishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
 
 const verifiedTechnologies = ["PHP", "JavaScript", "TypeScript", "SQL", "Java", "React", "Next.js", "Laravel", "MySQL", "PostgreSQL", "Supabase", "n8n", "REST APIs", "Git", "GitHub", "Vercel", "ESP32", "Arduino", "PlatformIO", "ArcGIS", "QGIS"];
 
@@ -88,10 +89,24 @@ const demoPortfolio: Portfolio = {
 };
 
 async function getResource<T>(resource: string): Promise<T> {
-  const response = await fetch(`${apiUrl}/${resource}`, { next: { revalidate: 300 } });
+  if (!supabaseUrl || !supabasePublishableKey) throw new Error("Supabase is not configured.");
+
+  const columns = {
+    projects: "id,title,description,image_url,tech_stack,live_url,github_url,featured,sort_order",
+    skills: "id,name,proficiency,icon,sort_order",
+    timeline_entries: "id,type,organization,role,description,start_date,end_date,sort_order",
+  }[resource];
+  if (!columns) throw new Error(`Unknown portfolio resource: ${resource}`);
+
+  const filters = resource === "projects" ? "&featured=eq.true&order=sort_order.asc"
+    : resource === "timeline_entries" ? "&order=start_date.desc,sort_order.asc"
+      : "&order=sort_order.asc";
+  const response = await fetch(`${supabaseUrl}/rest/v1/${resource}?select=${columns}${filters}`, {
+    headers: { apikey: supabasePublishableKey },
+    next: { revalidate: 300 },
+  });
   if (!response.ok) throw new Error(`Unable to load ${resource}`);
-  const body = (await response.json()) as { data: T };
-  return body.data;
+  return (await response.json()) as T;
 }
 
 export async function getPortfolio(): Promise<Portfolio> {
@@ -99,7 +114,7 @@ export async function getPortfolio(): Promise<Portfolio> {
     const [projects, skills, timeline] = await Promise.all([
       getResource<Portfolio["projects"]>("projects"),
       getResource<Portfolio["skills"]>("skills"),
-      getResource<Portfolio["timeline"]>("timeline"),
+      getResource<Portfolio["timeline"]>("timeline_entries"),
     ]);
     return { projects, skills, timeline };
   } catch {
