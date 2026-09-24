@@ -39,7 +39,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <p className="hero-support">I design and deliver database-backed web applications, monitoring platforms, and workflow automation tools for research teams and institutions. From requirements and architecture to deployment and support, I build practical software that keeps real processes running.</p>
             <div className="hero-actions">
               <a className="hero-cta hero-cta-primary" href="#work" onClick={(event) => { event.preventDefault(); smoothScrollToId("work"); }}>View selected work <ArrowDown size={16} /></a>
-              <a className="hero-cta hero-cta-secondary" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf">Download resume <ArrowUpRight size={16} /></a>
+              <a className="hero-cta hero-cta-secondary" href="/api/track-download" download="2026_ICLSalinas_Resume.pdf">Download resume <ArrowUpRight size={16} /></a>
               <a className="hero-cta hero-cta-secondary" href="#contact" onClick={(event) => { event.preventDefault(); smoothScrollToId("contact"); }}>Contact Ivan <ArrowUpRight size={16} /></a>
             </div>
             <div className="hero-proof-list" aria-label="Core strengths">
@@ -91,7 +91,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <section id="contact" className="contact-section" aria-labelledby="contact-title">
           <p className="contact-eyebrow">Available for remote software roles and collaborations</p>
           <h2 id="contact-title">Let&apos;s discuss<br /><em>research systems and software work.</em></h2>
-          <div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/files/2026_ICLSalinas_Resume.pdf" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download resume (PDF)</a></div>
+          <div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><a className="contact-link" href="/api/track-download" download="2026_ICLSalinas_Resume.pdf"><ArrowUpRight size={19} /> Download resume (PDF)</a></div>
           <div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div>
         </section>
       </main>

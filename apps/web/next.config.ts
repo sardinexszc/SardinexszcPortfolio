@@ -18,6 +18,9 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  outputFileTracingIncludes: {
+    '/api/track-download': ['./public/files/2026_ICLSalinas_Resume.pdf'],
+  },
   allowedDevOrigins: ["192.168.100.188", "192.168.100.190", "localhost"],
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
