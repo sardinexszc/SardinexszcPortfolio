@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/types";
 import {
@@ -89,7 +88,6 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
             <div className="work-links">
               {project.live_url ? <a href={project.live_url} target="_blank" rel="noopener noreferrer">Live project <ArrowUpRight size={15} /></a> : null}
               {project.github_url ? <a href={project.github_url} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} /></a> : null}
-              <Link href={`/work/${slug}`}>Case study <ArrowUpRight size={15} /></Link>
             </div>
           </section>
         </div>

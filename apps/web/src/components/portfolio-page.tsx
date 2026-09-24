@@ -3,9 +3,7 @@
 import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
 import { smoothScrollToId } from "@/lib/smooth-scroll";
 import type { Portfolio } from "@/lib/types";
-import { projectSlug } from "@/lib/work-projects";
 import { CapabilitiesSection } from "./capabilities-section";
-import { PortfolioChatbot } from "./chatbot";
 import { SelectedWorkSection } from "./selected-work-section";
 import { SiteHeader } from "./site-header";
 
@@ -33,7 +31,6 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
     <div className="page-shell">
       <SiteHeader />
       <main id="main-content">
-        <PortfolioChatbot />
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-content">
             <div className="hero-kicker"><span className="status-dot" /> Available for full-time, contract, and remote software roles</div>
@@ -51,7 +48,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
               <span>Backend + APIs</span>
               <span>Workflow automation</span>
             </div>
-            <div className="hero-proof-links" aria-label="Selected project shortcuts"><p>Selected projects:</p><div>{strongestProjects.map((project) => <a key={project.id} href={`/work/${projectSlug(project)}`}>{project.title}</a>)}</div></div>
+            <div className="hero-proof-links" aria-label="Selected project shortcuts"><p>Selected projects:</p><div>{strongestProjects.map((project) => <a key={project.id} href="#work">{project.title}</a>)}</div></div>
           </div>
           <aside className="hire-panel" aria-label="Engineering capabilities">
             <p className="hire-panel-label">Work focus</p>
