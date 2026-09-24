@@ -13,7 +13,8 @@ class AdminController extends Controller
     public function login(): mixed { return view('admin.login'); }
     public function authenticate(Request $request): mixed { $credentials = $request->validate(['email' => ['required', 'email'], 'password' => ['required', 'string']]); if (Auth::attempt($credentials, $request->boolean('remember'))) { $request->session()->regenerate(); return redirect()->route('admin.dashboard'); } return back()->withErrors(['email' => 'Those credentials could not be verified.'])->onlyInput('email'); }
     public function logout(Request $request): mixed { Auth::logout(); $request->session()->invalidate(); $request->session()->regenerateToken(); return redirect()->route('admin.login'); }
-    public function dashboard(): mixed { return view('admin.dashboard', ['projects' => Project::orderBy('sort_order')->get(), 'skills' => Skill::orderBy('sort_order')->get(), 'timeline' => TimelineEntry::orderByDesc('start_date')->get()]); }
+    public function dashboard(): mixed { return view('admin.home'); }
+    public function content(): mixed { return view('admin.dashboard', ['projects' => Project::orderBy('sort_order')->get(), 'skills' => Skill::orderBy('sort_order')->get(), 'timeline' => TimelineEntry::orderByDesc('start_date')->get()]); }
     public function storeProject(Request $request): mixed { Project::create($this->projectData($request)); return back()->with('status', 'Project added.'); }
     public function updateProject(Request $request, Project $project): mixed { $project->update($this->projectData($request)); return back()->with('status', 'Project updated.'); }
     public function destroyProject(Project $project): mixed { $project->delete(); return back()->with('status', 'Project deleted.'); }
