@@ -6,9 +6,7 @@ The public portfolio is a Next.js application deployed on Vercel. Supabase provi
 
 ```text
 apps/
-  web/       Next.js portfolio and admin UI
-api/         PHP serverless API functions
-php/         Shared PHP API helpers
+  web/       Next.js portfolio, admin UI, and PHP API functions
 supabase/
   migrations/
   seed.sql
@@ -32,7 +30,7 @@ The database policies make the portfolio content publicly readable and permit wr
 
 ## Vercel deployment
 
-Set the Vercel project root to the repository root (`.`), then add these variables for Production:
+Set the Vercel project root to `apps/web`, then add these variables for Production:
 
 | Variable | Value |
 | --- | --- |
