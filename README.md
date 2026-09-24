@@ -41,7 +41,7 @@ Set-Location ../web
 npm install
 ```
 
-The seeder creates a local admin using `ADMIN_EMAIL` and `ADMIN_PASSWORD`. Set those variables in `apps/api/.env` before seeding. The default credentials are intentionally simple for local setup only; replace them immediately.
+Admin access uses GitHub OAuth. Create a GitHub OAuth App and configure its callback URL and credentials as described below before signing in.
 
 Start both applications in separate VS Code terminals:
 
@@ -55,7 +55,15 @@ Set-Location apps/web
 npm run dev
 ```
 
-Open `http://localhost:3000` for the portfolio and `http://localhost:8000/admin/login` for the admin.
+Open `http://localhost:3000` for the portfolio and `http://localhost:3000/loginauthentication` for admin login. The frontend path redirects to the Laravel login page. Configure `API_URL` in the web deployment to the Laravel API URL ending in `/api/v1`.
+
+### GitHub admin sign-in
+
+1. Create a GitHub OAuth App. Set its callback URL to `https://YOUR_API_HOST/admin/auth/github/callback` (use `http://localhost:8000/admin/auth/github/callback` locally).
+2. Set `APP_URL` to the Laravel API origin, `GITHUB_OAUTH_CLIENT_ID`, `GITHUB_OAUTH_CLIENT_SECRET`, and `GITHUB_ALLOWED_USER_ID` to your numeric GitHub account ID.
+3. Keep the client secret server-side, use HTTPS in production, and run `php artisan config:cache` after configuring production values.
+
+Only the configured GitHub account ID can sign in. Its Laravel admin account is created on its first successful sign-in. Email and password sign-in is disabled.
 
 ## MySQL
 
@@ -111,14 +119,14 @@ vendor/bin/pint --test
 php artisan test
 ```
 
-The frontend is statically prerendered and revalidates API content every five minutes. The fallback demo content keeps the public page usable while the API is unavailable during local frontend-only work; production deployments should configure `NEXT_PUBLIC_API_URL` to the Laravel API.
+The frontend is statically prerendered and revalidates API content every five minutes. The fallback demo content keeps the public page usable while the API is unavailable during local frontend-only work; configure `API_URL` in the Vercel project to the Laravel API URL ending in `/api/v1`.
 
 ## Deployment
 
 ### Frontend on Vercel
 
 1. Import the repository and set the project root to `apps/web`.
-2. Set `NEXT_PUBLIC_API_URL` to the HTTPS Laravel API URL ending in `/api/v1`.
+2. Set `API_URL` to the HTTPS Laravel API URL ending in `/api/v1`.
 3. Set `NEXT_PUBLIC_SITE_URL` to the public site URL.
 4. Build with `npm run build` and deploy. Configure the Laravel `FRONTEND_URL` to match the Vercel origin.
 
@@ -128,7 +136,7 @@ The frontend is statically prerendered and revalidates API content every five mi
 2. Run `composer install --no-dev --optimize-autoloader`.
 3. Create the production `.env`, run `php artisan key:generate`, then `php artisan migrate --seed`.
 4. Point the web server document root at `apps/api/public` and make `storage` and `bootstrap/cache` writable.
-5. Set `APP_ENV=production`, `APP_DEBUG=false`, strong admin credentials, HTTPS `APP_URL`, and the deployed frontend origin.
+5. Set `APP_ENV=production`, `APP_DEBUG=false`, HTTPS `APP_URL`, the deployed frontend origin, and the GitHub OAuth settings above.
 6. Run `php artisan config:cache` and `php artisan route:cache` after environment configuration.
 
 ## License

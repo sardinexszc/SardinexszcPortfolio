@@ -5,18 +5,12 @@ namespace Database\Seeders;
 use App\Models\Project;
 use App\Models\Skill;
 use App\Models\TimelineEntry;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        User::updateOrCreate(
-            ['email' => env('ADMIN_EMAIL', 'admin@example.com')],
-            ['name' => 'Portfolio Admin', 'password' => env('ADMIN_PASSWORD', 'change-me-now')]
-        );
-
         Project::query()->delete();
         Skill::query()->delete();
         TimelineEntry::query()->delete();

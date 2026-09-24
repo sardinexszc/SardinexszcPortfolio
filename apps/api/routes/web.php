@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GithubLoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::redirect('/', '/admin/login');
-Route::get('/admin/login', [AdminController::class, 'login'])->name('admin.login');
-Route::post('/admin/login', [AdminController::class, 'authenticate'])->name('admin.authenticate');
+Route::redirect('/', '/loginauthentication');
+Route::get('/loginauthentication', [AdminController::class, 'login'])->name('login');
+Route::get('/admin/auth/github', [GithubLoginController::class, 'redirect'])->name('admin.github.redirect');
+Route::get('/admin/auth/github/callback', [GithubLoginController::class, 'callback'])->name('admin.github.callback');
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function (): void {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::post('/logout', [AdminController::class, 'logout'])->name('logout');
