@@ -32,7 +32,7 @@ The database policies make the portfolio content publicly readable and permit wr
 
 ## Vercel deployment
 
-Set the Vercel project root to `apps/web`, then add these variables for Production:
+Set the Vercel project root to the repository root (`.`), then add these variables for Production:
 
 | Variable | Value |
 | --- | --- |
