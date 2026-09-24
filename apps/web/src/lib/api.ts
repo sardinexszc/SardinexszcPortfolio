@@ -1,6 +1,6 @@
 import type { Portfolio } from "./types";
 
-const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000/api/v1";
+const apiUrl = process.env.API_URL ?? "http://localhost:8000/api/v1";
 
 const verifiedTechnologies = ["PHP", "JavaScript", "TypeScript", "SQL", "Java", "React", "Next.js", "Laravel", "MySQL", "PostgreSQL", "Supabase", "n8n", "REST APIs", "Git", "GitHub", "Vercel", "ESP32", "Arduino", "PlatformIO", "ArcGIS", "QGIS"];
 

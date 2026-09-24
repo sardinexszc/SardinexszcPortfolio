@@ -1,6 +1,6 @@
 const FALLBACK_SITE_URL = "http://localhost:3000";
 
-export function getSiteOrigin(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): string {
+export function getSiteOrigin(rawSiteUrl = process.env.SITE_URL): string {
   const value = rawSiteUrl?.trim();
   if (!value) return FALLBACK_SITE_URL;
 
@@ -13,6 +13,6 @@ export function getSiteOrigin(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): st
   }
 }
 
-export function getSiteUrl(rawSiteUrl = process.env.NEXT_PUBLIC_SITE_URL): URL {
+export function getSiteUrl(rawSiteUrl = process.env.SITE_URL): URL {
   return new URL(getSiteOrigin(rawSiteUrl));
 }
