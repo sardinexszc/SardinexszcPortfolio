@@ -19,6 +19,7 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  distDir: "../../.next",
   // This app is an npm workspace; use the repository root consistently in local and Vercel builds.
   turbopack: {
     root: path.resolve(process.cwd(), "../.."),
