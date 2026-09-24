@@ -7,8 +7,8 @@ The public portfolio is a Next.js application deployed on Vercel. Supabase provi
 ```text
 apps/
   web/       Next.js portfolio and admin UI
-  web/api/   PHP serverless API functions
-  web/php/   Shared PHP API helpers
+api/         PHP serverless API functions
+php/         Shared PHP API helpers
 supabase/
   migrations/
   seed.sql
