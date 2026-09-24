@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -18,6 +19,10 @@ const contentSecurityPolicy = [
 ].join("; ");
 
 const nextConfig: NextConfig = {
+  // This app is an npm workspace; use the repository root consistently in local and Vercel builds.
+  turbopack: {
+    root: path.resolve(process.cwd(), "../.."),
+  },
   allowedDevOrigins: ["192.168.100.188", "192.168.100.190", "localhost"],
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.unsplash.com" }],
