@@ -248,6 +248,9 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .analytics-form input { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: inherit; padding: 12px; }
 .analytics-form button, .analytics-header button { background: var(--ink); border: 0; border-radius: 8px; color: var(--paper); cursor: pointer; font: inherit; margin-top: 12px; padding: 12px 20px; }
 .analytics-error { color: #b42318 !important; }
+.analytics-social-form { margin-top: 18px; }
+.analytics-social-form button { width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; font: inherit; padding: 12px 20px; }
+.analytics-social-form button:hover { border-color: var(--ink); }
 .analytics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 38px; }
 .analytics-header { display: flex; justify-content: space-between; align-items: center; }
 @media (max-width: 650px) { .analytics-grid { grid-template-columns: 1fr; } }
