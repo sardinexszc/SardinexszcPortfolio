@@ -2,7 +2,6 @@
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
 
 export async function signIn(formData: FormData) {
   const email = formData.get("email");
@@ -31,20 +30,18 @@ export async function signOut() {
   redirect("/loginauthentication");
 }
 
-export async function signInWithGoogle() {
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
-    redirect("/loginauthentication?error=unavailable");
+export async function setPassword(formData: FormData) {
+  const password = formData.get("password");
+  const confirmation = formData.get("confirmation");
+  if (typeof password !== "string" || password.length < 12 || password !== confirmation) {
+    redirect("/analytics?password=invalid");
   }
-
-  const origin = (await headers()).get("origin");
-  if (!origin) redirect("/loginauthentication?error=invalid");
-
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: new URL("/auth/callback", origin).toString() },
-  });
-
-  if (error || !data.url) redirect("/loginauthentication?error=invalid");
-  redirect(data.url);
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user || user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
+    redirect("/loginauthentication?error=unauthorized");
+  }
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) redirect("/analytics?password=failed");
+  redirect("/analytics?password=updated");
 }
