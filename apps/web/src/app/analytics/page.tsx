@@ -47,10 +47,10 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <section className="analytics-card"><h2>Resume downloads</h2><strong>{downloadCount ?? "—"}</strong><p>Recorded PDF responses.</p></section>
       </div>
       <section className="analytics-card analytics-password-card">
-        <h2>Set an email password</h2>
-        <p>Signed in with Google? Create a password to use the email sign-in form next time.</p>
-        {password && <p role="status" className={password === "updated" ? "" : "analytics-error"}>
-          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "invalid" ? "Use at least 12 characters and matching passwords." : "Could not save the password. Please try again."}
+        <h2>Set or change your email password</h2>
+        <p>Use this password with your email address to sign in next time.</p>
+        {password && <p role="status" className={password === "updated" || password === "unchanged" ? "" : "analytics-error"}>
+          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "unchanged" ? "This password is already saved. You can sign in with your email and password." : password === "invalid" ? "Use at least 12 characters and matching passwords." : "Could not save the password. Please try again."}
         </p>}
         <form action={setPassword} className="analytics-form">
           <label htmlFor="new-password">New password</label>
