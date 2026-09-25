@@ -15,9 +15,12 @@ export async function signIn(formData: FormData) {
   }
   const supabase = await createClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error || !data.user || data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
+  if (error || !data.user) {
+    redirect("/loginauthentication?error=credentials");
+  }
+  if (data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     await supabase.auth.signOut();
-    redirect("/loginauthentication?error=invalid");
+    redirect("/loginauthentication?error=unauthorized");
   }
   redirect("/analytics");
 }
