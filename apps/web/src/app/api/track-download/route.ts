@@ -23,6 +23,7 @@ export async function GET() {
     });
   } catch (error) {
     console.error("Resume delivery failed", error);
-    return NextResponse.json({ error: "Resume temporarily unavailable" }, { status: 503 });
+    const missingFile = error instanceof Error && "code" in error && error.code === "ENOENT";
+    return NextResponse.json({ success: false, code: missingFile ? "resume_missing" : "download_unavailable", message: "Resume download is temporarily unavailable. Please try again." }, { status: missingFile ? 404 : 503, headers: { "Cache-Control": "no-store" } });
   }
 }

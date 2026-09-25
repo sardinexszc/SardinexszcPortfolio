@@ -7,27 +7,40 @@ export async function signIn(formData: FormData) {
   const email = formData.get("email");
   const password = formData.get("password");
   if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
-    redirect("/loginauthentication?error=invalid");
+    redirect("/loginauthentication?error=missing-fields");
   }
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     redirect("/loginauthentication?error=unavailable");
   }
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  let result;
+  try {
+    result = await supabase.auth.signInWithPassword({ email, password });
+  } catch (error) {
+    console.error("Email sign-in request failed", error);
+    redirect("/loginauthentication?error=unavailable");
+  }
+  const { data, error } = result;
   if (error || !data.user) {
-    redirect("/loginauthentication?error=credentials");
+    redirect(error?.code === "email_not_confirmed" ? "/loginauthentication?error=unconfirmed" : "/loginauthentication?error=credentials");
   }
   if (data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     await supabase.auth.signOut();
     redirect("/loginauthentication?error=unauthorized");
   }
-  redirect("/analytics");
+  redirect("/analytics?notice=signed-in");
 }
 
 export async function signOut() {
   const supabase = await createClient();
-  await supabase.auth.signOut();
-  redirect("/loginauthentication");
+  try {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
+  } catch (error) {
+    console.error("Sign-out failed", error);
+    redirect("/analytics?notice=signout-failed");
+  }
+  redirect("/loginauthentication?notice=signed-out");
 }
 
 export async function setPassword(formData: FormData) {
@@ -41,8 +54,15 @@ export async function setPassword(formData: FormData) {
   if (!user || user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     redirect("/loginauthentication?error=unauthorized");
   }
-  const { error } = await supabase.auth.updateUser({ password });
+  let error;
+  try {
+    ({ error } = await supabase.auth.updateUser({ password }));
+  } catch (failure) {
+    console.error("Password update request failed", failure);
+    redirect("/analytics?password=failed");
+  }
   if (error?.code === "same_password") redirect("/analytics?password=unchanged");
+  if (error?.code === "weak_password") redirect("/analytics?password=weak");
   if (error) redirect("/analytics?password=failed");
   redirect("/analytics?password=updated");
 }

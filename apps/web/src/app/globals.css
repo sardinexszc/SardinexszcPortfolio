@@ -248,6 +248,18 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .analytics-form input { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); font: inherit; padding: 12px; }
 .analytics-form button, .analytics-header button { background: var(--ink); border: 0; border-radius: 8px; color: var(--paper); cursor: pointer; font: inherit; margin-top: 12px; padding: 12px 20px; }
 .analytics-error { color: #b42318 !important; }
+.analytics-success { color: #147d4b !important; }
+.analytics-retry { background: var(--ink); border: 0; border-radius: 8px; color: var(--paper); cursor: pointer; font: inherit; padding: 12px 20px; }
+.resume-download-control { align-items: flex-start; display: inline-flex; flex-direction: column; gap: 6px; }
+.resume-download-control button { cursor: pointer; }
+.resume-download-control button:disabled { cursor: wait; opacity: .65; }
+.resume-download-control button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.resume-download-control .contact-link { background: transparent; border: 0; border-bottom: 1px solid #555; color: inherit; text-align: left; }
+.download-notice { color: var(--muted); font-family: var(--font-mono), monospace; font-size: .68rem; }
+.download-notice-error { color: #b42318; }
+.contact-section .download-notice { color: #d8d8d3; }
+.contact-section .download-notice-error { color: #ffaba5; }
+@media (max-width: 700px) { .hero-actions .resume-download-control { align-items: stretch; width: 100%; } }
 .analytics-social-form { margin-top: 18px; }
 .analytics-social-form a { display: block; width: 100%; background: var(--surface); border: 1px solid var(--line); border-radius: 8px; color: var(--ink); cursor: pointer; font: inherit; padding: 12px 20px; text-align: center; text-decoration: none; }
 .analytics-social-form a:hover, .analytics-social-form a:focus-visible { border-color: var(--ink); }

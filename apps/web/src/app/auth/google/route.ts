@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/auth/google", canonicalOrigin));
   }
 
-  const response = NextResponse.redirect(new URL("/loginauthentication?error=unavailable", request.url));
+  const response = NextResponse.redirect(new URL("/loginauthentication?error=google", request.url));
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !publishableKey) {

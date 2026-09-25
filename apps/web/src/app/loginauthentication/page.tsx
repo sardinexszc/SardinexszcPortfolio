@@ -6,11 +6,14 @@ export const dynamic = "force-dynamic";
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; notice?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, notice } = await searchParams;
   const messages: Record<string, string> = {
-    unavailable: "Authentication is not configured yet.",
+    unavailable: "Sign-in is unavailable right now. Please try again shortly.",
+    google: "Google sign-in could not start. Please try again.",
+    "missing-fields": "Enter your email and password.",
+    unconfirmed: "Confirm your email address before signing in.",
     credentials: "Email or password is incorrect.",
     unauthorized: "This account is not authorized to view analytics.",
     callback: "Google sign-in could not be completed. Please try again.",
@@ -23,6 +26,7 @@ export default async function LoginPage({
         <h1>Sign in</h1>
         <p>Access private portfolio engagement analytics.</p>
         {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
+        {notice === "signed-out" && <p role="status" className="analytics-success">You have signed out.</p>}
         <form action={signIn} className="analytics-form">
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" autoComplete="username" required />

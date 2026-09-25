@@ -9,7 +9,7 @@ const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}
 
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) {
-    return NextResponse.json({ error: "Invalid origin" }, { status: 403 });
+    return NextResponse.json({ success: false, code: "invalid_origin", message: "Visit could not be recorded." }, { status: 403 });
   }
   const existing = request.cookies.get(cookieName)?.value;
   const visitorId = existing && uuidPattern.test(existing) ? existing : randomUUID();
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       .from("visitors")
       .upsert({ visitor_id: visitorId }, { onConflict: "visitor_id", ignoreDuplicates: true });
     if (error) throw error;
-    const response = new NextResponse(null, { status: 204, headers: { "Cache-Control": "no-store" } });
+    const response = NextResponse.json({ success: true, recorded: true, newVisitor: !existing || !uuidPattern.test(existing) }, { headers: { "Cache-Control": "no-store" } });
     response.cookies.set(cookieName, visitorId, {
       httpOnly: true, secure: process.env.NODE_ENV === "production", sameSite: "lax",
       path: "/", maxAge: 60 * 60 * 24 * 365,
@@ -26,6 +26,6 @@ export async function POST(request: NextRequest) {
     return response;
   } catch (error) {
     console.error("Visit tracking failed", error);
-    return NextResponse.json({ error: "Tracking unavailable" }, { status: 503 });
+    return NextResponse.json({ success: false, code: "tracking_unavailable", message: "Visit tracking is temporarily unavailable." }, { status: 503 });
   }
 }

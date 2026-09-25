@@ -17,7 +17,14 @@ export async function GET(request: NextRequest) {
       },
     },
   });
-  const { data, error } = await supabase.auth.exchangeCodeForSession(code);
+  let result;
+  try {
+    result = await supabase.auth.exchangeCodeForSession(code);
+  } catch (error) {
+    console.error("Google callback request failed", error);
+    return response;
+  }
+  const { data, error } = result;
   if (error || !data.user) {
     console.warn("Google callback exchange failed", error?.code ?? "no_user");
     return response;
@@ -28,6 +35,6 @@ export async function GET(request: NextRequest) {
     return response;
   }
 
-  response.headers.set("Location", new URL("/analytics", url.origin).toString());
+  response.headers.set("Location", new URL("/analytics?notice=signed-in", url.origin).toString());
   return response;
 }

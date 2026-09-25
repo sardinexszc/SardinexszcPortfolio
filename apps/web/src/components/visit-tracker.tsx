@@ -12,8 +12,10 @@ export function VisitTracker() {
       method: "POST",
       credentials: "same-origin",
       cache: "no-store",
+    }).then((response) => {
+      if (!response.ok) console.warn("Visit tracking is temporarily unavailable.");
     }).catch(() => {
-      // Analytics should never block the portfolio.
+      console.warn("Visit tracking is temporarily unavailable.");
     });
   }, []);
   return null;
