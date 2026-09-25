@@ -30,9 +30,9 @@ export default async function LoginPage({
           <input id="password" name="password" type="password" autoComplete="current-password" required />
           <button type="submit">Sign in</button>
         </form>
-        <form action="/auth/google" method="post" className="analytics-social-form">
-          <button type="submit">Continue with Google</button>
-        </form>
+        <div className="analytics-social-form">
+          <a href="/auth/google">Continue with Google</a>
+        </div>
       </div>
     </main>
   );
