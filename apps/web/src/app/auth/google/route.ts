@@ -1,8 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function POST(request: NextRequest) {
-  const response = NextResponse.redirect(new URL("/loginauthentication?error=invalid", request.url), 303);
+export async function GET(request: NextRequest) {
+  const response = NextResponse.redirect(new URL("/loginauthentication?error=unavailable", request.url));
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
   if (!supabaseUrl || !publishableKey) {
@@ -18,10 +18,18 @@ export async function POST(request: NextRequest) {
       },
     },
   });
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: "google",
-    options: { redirectTo: new URL("/auth/callback", request.nextUrl.origin).toString() },
-  });
-  if (!error && data.url) response.headers.set("Location", data.url);
+  try {
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: { redirectTo: new URL("/auth/callback", request.nextUrl.origin).toString() },
+    });
+    if (error || !data.url) {
+      console.warn("Google sign-in initiation failed", error?.code ?? "missing_url");
+      return response;
+    }
+    response.headers.set("Location", data.url);
+  } catch (error) {
+    console.error("Google sign-in initiation threw", error instanceof Error ? error.name : "unknown");
+  }
   return response;
 }
