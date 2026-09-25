@@ -12,9 +12,12 @@ export async function GET(request: Request) {
 
   const supabase = await createClient();
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
-  if (error || !data.user || data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
+  if (error || !data.user) {
+    return NextResponse.redirect(new URL("/loginauthentication?error=callback", url.origin));
+  }
+  if (data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     await supabase.auth.signOut();
-    return NextResponse.redirect(loginUrl);
+    return NextResponse.redirect(new URL("/loginauthentication?error=unauthorized", url.origin));
   }
 
   return NextResponse.redirect(new URL("/analytics", url.origin));
