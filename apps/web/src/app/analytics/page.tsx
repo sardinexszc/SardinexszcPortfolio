@@ -2,11 +2,12 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { signOut } from "../loginauthentication/actions";
+import { setPassword, signOut } from "../loginauthentication/actions";
 
 export const dynamic = "force-dynamic";
 
-export default async function AnalyticsPage() {
+export default async function AnalyticsPage({ searchParams }: { searchParams: Promise<{ password?: string }> }) {
+  const { password } = await searchParams;
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     redirect("/loginauthentication?error=unavailable");
   }
@@ -45,6 +46,20 @@ export default async function AnalyticsPage() {
         <section className="analytics-card"><h2>Unique visitors</h2><strong>{visitorCount ?? "—"}</strong><p>Browser cookies counted once.</p></section>
         <section className="analytics-card"><h2>Resume downloads</h2><strong>{downloadCount ?? "—"}</strong><p>Recorded PDF responses.</p></section>
       </div>
+      <section className="analytics-card analytics-password-card">
+        <h2>Set an email password</h2>
+        <p>Signed in with Google? Create a password to use the email sign-in form next time.</p>
+        {password && <p role="status" className={password === "updated" ? "" : "analytics-error"}>
+          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "invalid" ? "Use at least 12 characters and matching passwords." : "Could not save the password. Please try again."}
+        </p>}
+        <form action={setPassword} className="analytics-form">
+          <label htmlFor="new-password">New password</label>
+          <input id="new-password" name="password" type="password" autoComplete="new-password" minLength={12} required />
+          <label htmlFor="confirm-password">Confirm password</label>
+          <input id="confirm-password" name="confirmation" type="password" autoComplete="new-password" minLength={12} required />
+          <button type="submit">Save password</button>
+        </form>
+      </section>
     </main>
   );
 }
