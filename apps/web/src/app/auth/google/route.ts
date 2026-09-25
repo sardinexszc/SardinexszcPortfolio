@@ -2,6 +2,14 @@ import { createServerClient } from "@supabase/ssr";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
+  const productionOrigin = "https://ivansalinas.vercel.app";
+  const previewOrigin = "https://portfolio-sardinexszc-git-backend-e57fb2-sardinexszcs-projects.vercel.app";
+  const origin = request.nextUrl.origin;
+  if (process.env.VERCEL_ENV && origin !== productionOrigin && origin !== previewOrigin) {
+    const canonicalOrigin = process.env.VERCEL_ENV === "preview" ? previewOrigin : productionOrigin;
+    return NextResponse.redirect(new URL("/auth/google", canonicalOrigin));
+  }
+
   const response = NextResponse.redirect(new URL("/loginauthentication?error=unavailable", request.url));
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
@@ -21,7 +29,7 @@ export async function GET(request: NextRequest) {
   try {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options: { redirectTo: new URL("/auth/callback", request.nextUrl.origin).toString() },
+      options: { redirectTo: new URL("/auth/callback", origin).toString() },
     });
     if (error || !data.url) {
       console.warn("Google sign-in initiation failed", error?.code ?? "missing_url");
