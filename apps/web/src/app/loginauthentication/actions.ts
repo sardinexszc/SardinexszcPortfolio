@@ -42,6 +42,7 @@ export async function setPassword(formData: FormData) {
     redirect("/loginauthentication?error=unauthorized");
   }
   const { error } = await supabase.auth.updateUser({ password });
+  if (error?.code === "same_password") redirect("/analytics?password=unchanged");
   if (error) redirect("/analytics?password=failed");
   redirect("/analytics?password=updated");
 }
