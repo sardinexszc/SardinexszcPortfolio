@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { signIn } from "./actions";
+import { AuthNotice, AuthSubmitButton, GoogleSignInLink } from "@/components/auth-feedback";
 
 export const dynamic = "force-dynamic";
 
@@ -26,16 +27,16 @@ export default async function LoginPage({
         <h1>Sign in</h1>
         <p>Access private portfolio engagement analytics.</p>
         {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
-        {notice === "signed-out" && <p role="status" className="analytics-success">You have signed out.</p>}
+        {notice === "signed-out" && <AuthNotice message="Signed out successfully." />}
         <form action={signIn} className="analytics-form">
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" autoComplete="username" required />
           <label htmlFor="password">Password</label>
           <input id="password" name="password" type="password" autoComplete="current-password" required />
-          <button type="submit">Sign in</button>
+          <AuthSubmitButton action="sign-in" />
         </form>
         <div className="analytics-social-form">
-          <a href="/auth/google">Continue with Google</a>
+          <GoogleSignInLink />
         </div>
       </div>
     </main>

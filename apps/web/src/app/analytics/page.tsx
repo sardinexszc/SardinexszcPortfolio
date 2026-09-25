@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { setPassword, signOut } from "../loginauthentication/actions";
+import { AuthNotice, AuthSubmitButton } from "@/components/auth-feedback";
 
 export const dynamic = "force-dynamic";
 
@@ -40,13 +41,13 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
     <main id="main-content" className="analytics-shell">
       <header className="analytics-header">
         <Link href="/" className="analytics-back">← Portfolio</Link>
-        <form action={signOut}><button type="submit">Sign out</button></form>
+        <form action={signOut}><AuthSubmitButton action="sign-out" /></form>
       </header>
       <p className="analytics-eyebrow">PORTFOLIO / ADMIN</p>
       <h1>Engagement dashboard</h1>
       <p>Unique browsers and resume downloads since tracking was enabled.</p>
-      {notice === "signed-in" && <p role="status" className="analytics-success">Signed in successfully.</p>}
-      {notice === "signout-failed" && <p role="alert" className="analytics-error">Could not sign out. Please try again.</p>}
+      {notice === "signed-in" && <AuthNotice message="Signed in successfully." />}
+      {notice === "signout-failed" && <AuthNotice message="Could not sign out. Please try again." error />}
       {!process.env.SUPABASE_SECRET_KEY && <p role="status">Analytics data will appear after the Supabase server key is configured.</p>}
       {countsError && <p role="alert" className="analytics-error">Analytics counts could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
       <div className="analytics-grid">

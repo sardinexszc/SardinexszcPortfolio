@@ -266,4 +266,11 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .analytics-password-card { margin-top: 24px; max-width: 560px; }
 .analytics-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 38px; }
 .analytics-header { display: flex; justify-content: space-between; align-items: center; }
+.analytics-auth-notice { animation: auth-notice-in .32s ease-out both; background: var(--surface); border: 1px solid #81c6a0; border-radius: 10px; box-shadow: 0 8px 24px rgba(0,0,0,.07); color: #147d4b !important; max-width: min(360px, calc(100vw - 32px)); padding: 13px 17px; position: fixed; right: 20px; top: 20px; z-index: 1100; }
+.analytics-auth-notice-error { border-color: #e0a29c; color: #b42318 !important; }
+.analytics-auth-button, .analytics-social-form a { transition: opacity .2s ease, transform .2s ease; }
+.analytics-auth-button:disabled { cursor: wait; opacity: .75; }
+.analytics-auth-button[data-pending="true"], .analytics-social-form a[data-pending="true"] { opacity: .75; transform: translateY(1px); }
+@keyframes auth-notice-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) { .analytics-auth-notice { animation: none; } .analytics-auth-button, .analytics-social-form a { transition: none; } }
 @media (max-width: 650px) { .analytics-grid { grid-template-columns: 1fr; } }
