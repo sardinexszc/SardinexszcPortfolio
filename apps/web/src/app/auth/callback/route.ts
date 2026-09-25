@@ -1,24 +1,33 @@
-import { createClient } from "@/lib/supabase/server";
-import { NextResponse } from "next/server";
+import { createServerClient } from "@supabase/ssr";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: Request) {
-  const url = new URL(request.url);
-  const loginUrl = new URL("/loginauthentication?error=invalid", url.origin);
+export async function GET(request: NextRequest) {
+  const url = request.nextUrl;
+  const response = NextResponse.redirect(new URL("/loginauthentication?error=callback", url.origin));
   const code = url.searchParams.get("code");
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const publishableKey = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY;
+  if (!code || !supabaseUrl || !publishableKey) return response;
 
-  if (!code || !process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
-    return NextResponse.redirect(loginUrl);
-  }
-
-  const supabase = await createClient();
+  const supabase = createServerClient(supabaseUrl, publishableKey, {
+    cookies: {
+      getAll() { return request.cookies.getAll(); },
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
+      },
+    },
+  });
   const { data, error } = await supabase.auth.exchangeCodeForSession(code);
   if (error || !data.user) {
-    return NextResponse.redirect(new URL("/loginauthentication?error=callback", url.origin));
+    console.warn("Google callback exchange failed", error?.code ?? "no_user");
+    return response;
   }
   if (data.user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     await supabase.auth.signOut();
-    return NextResponse.redirect(new URL("/loginauthentication?error=unauthorized", url.origin));
+    response.headers.set("Location", new URL("/loginauthentication?error=unauthorized", url.origin).toString());
+    return response;
   }
 
-  return NextResponse.redirect(new URL("/analytics", url.origin));
+  response.headers.set("Location", new URL("/analytics", url.origin).toString());
+  return response;
 }
