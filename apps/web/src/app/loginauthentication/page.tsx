@@ -9,6 +9,12 @@ export default async function LoginPage({
   searchParams: Promise<{ error?: string }>;
 }) {
   const { error } = await searchParams;
+  const messages: Record<string, string> = {
+    unavailable: "Authentication is not configured yet.",
+    credentials: "Email or password is incorrect.",
+    unauthorized: "This account is not authorized to view analytics.",
+    callback: "Google sign-in could not be completed. Please try again.",
+  };
   return (
     <main id="main-content" className="analytics-shell">
       <Link href="/" className="analytics-back">← Back to portfolio</Link>
@@ -16,7 +22,7 @@ export default async function LoginPage({
         <p className="analytics-eyebrow">PORTFOLIO / ADMIN</p>
         <h1>Sign in</h1>
         <p>Access private portfolio engagement analytics.</p>
-        {error && <p role="alert" className="analytics-error">{error === "unavailable" ? "Authentication is not configured yet." : "Sign-in failed or this account is not authorized."}</p>}
+        {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
         <form action={signIn} className="analytics-form">
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" autoComplete="username" required />
