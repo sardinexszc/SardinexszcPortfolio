@@ -295,7 +295,7 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .dashboard-nav-link { align-items: center; border: 1px solid transparent; border-radius: 11px; color: var(--muted); display: flex; font-size: .86rem; gap: 13px; min-height: 46px; padding: 0 13px; transition: background .2s ease, color .2s ease, border-color .2s ease; }
 .dashboard-nav-link svg { flex: none; }
 .dashboard-nav-link:hover { background: var(--paper); color: var(--ink); }
-.dashboard-nav-link-active, .dashboard-nav-link-active:hover { background: var(--ink); color: var(--paper); }
+.dashboard-nav-link-active, .dashboard-nav-link-active:hover { background: #303827; border-color: #8aa83a; color: #f4f4f0; }
 .dashboard-nav-link-active svg { color: var(--accent); }
 .dashboard-sidebar-footer { border-top: 1px solid var(--line); display: grid; gap: 6px; margin-top: auto; padding: 22px 8px 0; }
 .dashboard-account-email { font-size: .76rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
