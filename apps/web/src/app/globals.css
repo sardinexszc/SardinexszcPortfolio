@@ -310,6 +310,29 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .dashboard-content > .analytics-card { margin-top: 32px; }
 .dashboard-content .analytics-grid { margin-top: 34px; }
 .dashboard-content .analytics-card { box-shadow: 0 14px 40px rgba(0,0,0,.025); }
+.engagement-panels { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 20px; }
+.engagement-panel { min-width: 0; }
+.engagement-panel-heading { align-items: flex-start; display: flex; gap: 12px; justify-content: space-between; }
+.engagement-panel-heading h2 { font-size: 1.2rem; letter-spacing: -.035em; margin: 12px 0 22px; }
+.engagement-panel-heading > span { color: var(--muted); flex: none; font-family: var(--font-mono), monospace; font-size: .6rem; padding-top: 4px; text-transform: uppercase; }
+.engagement-list { list-style: none; margin: 0; padding: 0; }
+.engagement-list li { align-items: center; border-top: 1px solid var(--line); display: flex; gap: 14px; justify-content: space-between; padding: 15px 0; }
+.engagement-list li > div { min-width: 0; }
+.engagement-list strong { display: block; font-size: .85rem; font-weight: 500; line-height: 1.4; }
+.engagement-list small { color: var(--muted); display: block; font-size: .72rem; margin-top: 5px; }
+.engagement-list li > span:last-child { font-family: var(--font-mono), monospace; font-size: .84rem; font-weight: 500; }
+.engagement-total { font-size: 2.7rem; font-weight: 500; letter-spacing: -.08em; line-height: 1; margin: 0 0 20px; }
+.engagement-list-compact li { font-size: .85rem; }
+.engagement-footnote { color: var(--muted); font-size: .75rem; margin-top: 18px; }
+.audience-panels { display: grid; gap: 20px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 28px; }
+.audience-panels h2, .session-panel h2 { font-size: 1.2rem; letter-spacing: -.035em; margin: 12px 0 8px; }
+.audience-panels h3 { font-family: var(--font-mono), monospace; font-size: .67rem; font-weight: 500; letter-spacing: .07em; margin: 24px 0 9px; text-transform: uppercase; }
+.audience-note { color: var(--muted); font-size: .77rem; line-height: 1.6; margin: 0; }
+.session-panel { display: grid; gap: 24px; margin-top: 20px; }
+.session-metrics { display: grid; gap: 20px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.session-metrics > div { border-top: 1px solid var(--line); display: grid; gap: 12px; padding-top: 15px; }
+.session-metrics span { color: var(--muted); font-size: .76rem; }
+.session-metrics strong { font-size: clamp(1.5rem, 3vw, 2.3rem); font-weight: 500; letter-spacing: -.05em; }
 .dashboard-placeholder { min-height: 240px; }
 .dashboard-placeholder-mark { color: var(--muted); display: block; font-family: var(--font-mono), monospace; font-size: .67rem; letter-spacing: .1em; margin-bottom: 48px; }
 .dashboard-placeholder h2 { font-size: clamp(1.2rem, 2.4vw, 1.75rem); letter-spacing: -.04em; margin-bottom: 10px; }
@@ -325,6 +348,8 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 .dashboard-layout-collapsed .dashboard-sidebar-footer button span { clip: rect(0,0,0,0); clip-path: inset(50%); height: 1px; overflow: hidden; position: absolute; white-space: nowrap; width: 1px; }
 .dashboard-nav-link:focus-visible, .dashboard-brand:focus-visible, .dashboard-sidebar-toggle:focus-visible, .dashboard-sidebar-footer button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 800px) {
+  .engagement-panels { grid-template-columns: 1fr; }
+  .audience-panels { grid-template-columns: 1fr; }
   .dashboard-layout { grid-template-columns: 1fr; }
   .dashboard-sidebar { min-height: auto; padding: 20px 5vw 12px; position: static; }
   .dashboard-sidebar-top { margin: 0 0 20px; }
@@ -363,3 +388,4 @@ footer { display: flex; justify-content: space-between; padding: 25px 0; }
 @keyframes auth-notice-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
 @media (prefers-reduced-motion: reduce) { .analytics-auth-notice { animation: none; } .analytics-auth-button, .analytics-social-form a { transition: none; } }
 @media (max-width: 650px) { .analytics-grid { grid-template-columns: 1fr; } }
+@media (max-width: 650px) { .session-metrics { grid-template-columns: 1fr; } }

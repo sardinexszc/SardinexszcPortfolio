@@ -1,5 +1,8 @@
+"use client";
+
 import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/lib/types";
+import { trackEngagement } from "@/lib/track-engagement";
 import {
   getRoleSummary,
   inferCategory,
@@ -56,7 +59,9 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
         <div><span className="work-eyebrow">Stack</span><strong>{stack.primary.slice(0, 3).join(" · ")}</strong></div>
       </div>
 
-      <details className="work-card-disclosure">
+      <details className="work-card-disclosure" onToggle={(event) => {
+        if (event.currentTarget.open) trackEngagement({ type: "project_open", projectId: project.id });
+      }}>
         <summary>Project details</summary>
         <div className="work-card-detail-grid">
           <section><p className="work-eyebrow">Problem</p><p>{details.problem}</p></section>
@@ -86,8 +91,8 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
           <section>
             <p className="work-eyebrow">Links</p>
             <div className="work-links">
-              {project.live_url ? <a href={project.live_url} target="_blank" rel="noopener noreferrer">Live project <ArrowUpRight size={15} /></a> : null}
-              {project.github_url ? <a href={project.github_url} target="_blank" rel="noopener noreferrer">GitHub <ArrowUpRight size={15} /></a> : null}
+              {project.live_url ? <a href={project.live_url} target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", projectId: project.id, linkKind: "live_project" })}>Live project <ArrowUpRight size={15} /></a> : null}
+              {project.github_url ? <a href={project.github_url} target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", projectId: project.id, linkKind: "github_repository" })}>GitHub <ArrowUpRight size={15} /></a> : null}
             </div>
           </section>
         </div>
