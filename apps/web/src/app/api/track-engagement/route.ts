@@ -39,11 +39,16 @@ export async function POST(request: NextRequest) {
     }
 
     const { error } = await createAdminClient().from("portfolio_events").insert(record);
-    if (error) throw error;
+    if (error) {
+      console.error("Engagement database write failed", error);
+      return NextResponse.json({ success: false, code: "database_write_failed" }, { status: 503 });
+    }
     return new NextResponse(null, { status: 204, headers: { "Cache-Control": "no-store" } });
   } catch (error) {
     if (error instanceof SyntaxError) return NextResponse.json({ success: false, code: "invalid_event" }, { status: 400 });
     console.error("Engagement tracking failed", error);
-    return NextResponse.json({ success: false, code: "tracking_unavailable" }, { status: 503 });
+    const code = error instanceof Error && error.message === "Supabase server credentials are missing"
+      ? "server_configuration_missing" : "tracking_unavailable";
+    return NextResponse.json({ success: false, code }, { status: 503 });
   }
 }
