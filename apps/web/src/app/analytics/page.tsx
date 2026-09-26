@@ -1,22 +1,13 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { setPassword, signOut } from "../loginauthentication/actions";
-import { AuthNotice, AuthSubmitButton } from "@/components/auth-feedback";
+import { requireAdmin } from "@/lib/supabase/require-admin";
+import { AuthNotice } from "@/components/auth-feedback";
 
 export const dynamic = "force-dynamic";
 
-export default async function AnalyticsPage({ searchParams }: { searchParams: Promise<{ password?: string; notice?: string }> }) {
-  const { password, notice } = await searchParams;
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
-    redirect("/loginauthentication?error=unavailable");
-  }
-  const supabase = await createClient();
-  const { data: { user }, error: authError } = await supabase.auth.getUser();
-  if (authError || !user || !process.env.SUPABASE_ADMIN_USER_ID || user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
-    redirect("/loginauthentication");
-  }
+export default async function AnalyticsPage({ searchParams }: { searchParams: Promise<{ notice?: string }> }) {
+  await requireAdmin();
+  const { notice } = await searchParams;
 
   let visitorCount: number | null = null;
   let downloadCount: number | null = null;
@@ -38,14 +29,12 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   }
 
   return (
-    <main id="main-content" className="analytics-shell">
-      <header className="analytics-header">
-        <Link href="/" className="analytics-back">← Portfolio</Link>
-        <form action={signOut}><AuthSubmitButton action="sign-out" /></form>
+    <div className="dashboard-content">
+      <header className="dashboard-page-header">
+        <p className="analytics-eyebrow">OVERVIEW / 01</p>
+        <h1>Engagement dashboard</h1>
+        <p>Unique browsers and resume downloads since tracking was enabled.</p>
       </header>
-      <p className="analytics-eyebrow">PORTFOLIO / ADMIN</p>
-      <h1>Engagement dashboard</h1>
-      <p>Unique browsers and resume downloads since tracking was enabled.</p>
       {notice === "signed-in" && <AuthNotice message="Signed in successfully." />}
       {notice === "signout-failed" && <AuthNotice message="Could not sign out. Please try again." error />}
       {!process.env.SUPABASE_SECRET_KEY && <p role="status">Analytics data will appear after the Supabase server key is configured.</p>}
@@ -54,20 +43,6 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <section className="analytics-card"><h2>Unique visitors</h2><strong>{visitorCount ?? "—"}</strong><p>Browser cookies counted once.</p></section>
         <section className="analytics-card"><h2>Resume downloads</h2><strong>{downloadCount ?? "—"}</strong><p>Recorded PDF responses.</p></section>
       </div>
-      <section className="analytics-card analytics-password-card">
-        <h2>Set or change your email password</h2>
-        <p>Use this password with your email address to sign in next time.</p>
-        {password && <p role={password === "updated" || password === "unchanged" ? "status" : "alert"} className={password === "updated" || password === "unchanged" ? "analytics-success" : "analytics-error"}>
-          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "unchanged" ? "This password is already saved. You can sign in with your email and password." : password === "invalid" ? "Use at least 12 characters and matching passwords." : password === "weak" ? "Choose a stronger password and try again." : "Could not save the password. Please try again."}
-        </p>}
-        <form action={setPassword} className="analytics-form">
-          <label htmlFor="new-password">New password</label>
-          <input id="new-password" name="password" type="password" autoComplete="new-password" minLength={12} required />
-          <label htmlFor="confirm-password">Confirm password</label>
-          <input id="confirm-password" name="confirmation" type="password" autoComplete="new-password" minLength={12} required />
-          <button type="submit">Save password</button>
-        </form>
-      </section>
-    </main>
+    </div>
   );
 }
