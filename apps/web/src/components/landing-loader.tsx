@@ -26,7 +26,7 @@ export function LandingLoader() {
             <span className="landing-loader-square" style={{ animationDelay: `${index * 75}ms` }} key={index} />
           ))}
         </span>
-        <span className="landing-loader-caption">Preparing selected work</span>
+        <span className="landing-loader-caption">Loading portfolio</span>
       </div>
     </div>
   );
