@@ -7,8 +7,8 @@ export function LandingLoader() {
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const fadeTimer = window.setTimeout(() => setLeaving(true), 850);
-    const removeTimer = window.setTimeout(() => setVisible(false), 1100);
+    const fadeTimer = window.setTimeout(() => setLeaving(true), 5000);
+    const removeTimer = window.setTimeout(() => setVisible(false), 5250);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(removeTimer);
