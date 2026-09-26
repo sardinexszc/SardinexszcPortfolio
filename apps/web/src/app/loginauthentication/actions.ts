@@ -4,10 +4,19 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
 export async function signIn(formData: FormData) {
-  const email = formData.get("email");
-  const password = formData.get("password");
-  if (typeof email !== "string" || typeof password !== "string" || !email || !password) {
+  const emailValues = formData.getAll("email");
+  const passwordValues = formData.getAll("password");
+  if (emailValues.length !== 1 || passwordValues.length !== 1) {
+    redirect("/loginauthentication?error=invalid-input");
+  }
+  const email = emailValues[0];
+  const password = passwordValues[0];
+  if (typeof email !== "string" || typeof password !== "string" || !email.trim() || !password) {
     redirect("/loginauthentication?error=missing-fields");
+  }
+  const normalizedEmail = email.trim();
+  if (normalizedEmail.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail) || password.length > 1024) {
+    redirect("/loginauthentication?error=invalid-input");
   }
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     redirect("/loginauthentication?error=unavailable");
@@ -15,7 +24,7 @@ export async function signIn(formData: FormData) {
   const supabase = await createClient();
   let result;
   try {
-    result = await supabase.auth.signInWithPassword({ email, password });
+    result = await supabase.auth.signInWithPassword({ email: normalizedEmail, password });
   } catch (error) {
     console.error("Email sign-in request failed", error);
     redirect("/loginauthentication?error=unavailable");

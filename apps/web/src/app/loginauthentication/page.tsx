@@ -14,6 +14,7 @@ export default async function LoginPage({
     unavailable: "Sign-in is unavailable right now. Please try again shortly.",
     google: "Google sign-in could not start. Please try again.",
     "missing-fields": "Enter your email and password.",
+    "invalid-input": "Enter a valid email and password.",
     unconfirmed: "Confirm your email address before signing in.",
     credentials: "Email or password is incorrect.",
     unauthorized: "This account is not authorized to view analytics.",
@@ -30,9 +31,9 @@ export default async function LoginPage({
         {notice === "signed-out" && <AuthNotice message="Signed out successfully." />}
         <form action={signIn} className="analytics-form">
           <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" autoComplete="username" required />
+          <input id="email" name="email" type="email" autoComplete="username" maxLength={254} required />
           <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" autoComplete="current-password" required />
+          <input id="password" name="password" type="password" autoComplete="current-password" maxLength={1024} required />
           <AuthSubmitButton action="sign-in" />
         </form>
         <div className="analytics-social-form">
