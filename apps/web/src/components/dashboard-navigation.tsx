@@ -13,10 +13,10 @@ const items = [
 export function DashboardNavigation() {
   const pathname = usePathname();
   return (
-    <nav className="dashboard-nav" aria-label="Dashboard modules">
+    <nav id="dashboard-modules" className="dashboard-nav" aria-label="Dashboard modules">
       <span className="dashboard-nav-label">Modules</span>
       {items.map(({ href, label, icon: Icon }) => (
-        <Link key={href} href={href} className={`dashboard-nav-link${pathname === href ? " dashboard-nav-link-active" : ""}`} aria-current={pathname === href ? "page" : undefined}>
+        <Link key={href} href={href} title={label} className={`dashboard-nav-link${pathname === href ? " dashboard-nav-link-active" : ""}`} aria-current={pathname === href ? "page" : undefined}>
           <Icon size={18} strokeWidth={1.8} aria-hidden="true" />
           <span>{label}</span>
         </Link>

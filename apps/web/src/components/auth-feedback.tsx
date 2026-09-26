@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useFormStatus } from "react-dom";
+import { LogOut } from "lucide-react";
 
 export function AuthNotice({ message, error = false }: { message: string; error?: boolean }) {
   return <p role={error ? "alert" : "status"} className={`analytics-auth-notice${error ? " analytics-auth-notice-error" : ""}`}>{message}</p>;
@@ -20,7 +21,10 @@ export function AuthSubmitButton({ action }: { action: "sign-in" | "sign-out" })
   const { pending } = useFormStatus();
   const label = action === "sign-in" ? (pending ? "Signing in…" : "Sign in") : (pending ? "Signing out…" : "Sign out");
   return <>
-    <button className="analytics-auth-button" type="submit" disabled={pending} aria-disabled={pending} data-pending={pending}>{label}</button>
+    <button className="analytics-auth-button" type="submit" disabled={pending} aria-disabled={pending} data-pending={pending} title={action === "sign-out" ? label : undefined}>
+      {action === "sign-out" && <LogOut size={17} strokeWidth={1.8} aria-hidden="true" />}
+      <span>{label}</span>
+    </button>
     {pending && <AuthPendingOverlay message={label} />}
   </>;
 }
