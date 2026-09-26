@@ -1,10 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormStatus } from "react-dom";
 import { LogOut } from "lucide-react";
 
-export function AuthNotice({ message, error = false }: { message: string; error?: boolean }) {
+export function AuthNotice({ message, error = false, successNotice }: { message: string; error?: boolean; successNotice?: "signed-in" | "signed-out" }) {
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    if (!successNotice) return;
+    const timer = window.setTimeout(() => {
+      setVisible(false);
+      const url = new URL(window.location.href);
+      if (url.searchParams.get("notice") === successNotice) {
+        url.searchParams.delete("notice");
+        window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+      }
+    }, 5000);
+    return () => window.clearTimeout(timer);
+  }, [successNotice]);
+
+  if (!visible) return null;
   return <p role={error ? "alert" : "status"} className={`analytics-auth-notice${error ? " analytics-auth-notice-error" : ""}`}>{message}</p>;
 }
 

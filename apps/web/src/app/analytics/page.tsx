@@ -35,7 +35,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <h1>Engagement dashboard</h1>
         <p>Unique browsers and resume downloads since tracking was enabled.</p>
       </header>
-      {notice === "signed-in" && <AuthNotice message="Signed in successfully." />}
+      {notice === "signed-in" && <AuthNotice message="Signed in successfully." successNotice="signed-in" />}
       {notice === "signout-failed" && <AuthNotice message="Could not sign out. Please try again." error />}
       {!process.env.SUPABASE_SECRET_KEY && <p role="status">Analytics data will appear after the Supabase server key is configured.</p>}
       {countsError && <p role="alert" className="analytics-error">Analytics counts could not be loaded. <Link href="/analytics">Try again</Link>.</p>}

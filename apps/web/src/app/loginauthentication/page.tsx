@@ -28,7 +28,7 @@ export default async function LoginPage({
         <h1>Sign in</h1>
         <p>Access private portfolio engagement analytics.</p>
         {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
-        {notice === "signed-out" && <AuthNotice message="Signed out successfully." />}
+        {notice === "signed-out" && <AuthNotice message="Signed out successfully." successNotice="signed-out" />}
         <form action={signIn} className="analytics-form">
           <label htmlFor="email">Email</label>
           <input id="email" name="email" type="email" autoComplete="username" maxLength={254} required />
