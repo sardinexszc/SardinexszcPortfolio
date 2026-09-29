@@ -3,10 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
   const productionOrigin = "https://ivansalinas.vercel.app";
-  const previewOrigin = "https://portfolio-sardinexszc-git-backend-e57fb2-sardinexszcs-projects.vercel.app";
   const origin = request.nextUrl.origin;
-  if (process.env.VERCEL_ENV && origin !== productionOrigin && origin !== previewOrigin) {
-    const canonicalOrigin = process.env.VERCEL_ENV === "preview" ? previewOrigin : productionOrigin;
+  const branchHost = process.env.VERCEL_BRANCH_URL;
+  if (process.env.VERCEL_ENV === "preview" && !branchHost) {
+    return NextResponse.redirect(new URL("/loginauthentication?error=unavailable", request.url));
+  }
+  const canonicalOrigin = process.env.VERCEL_ENV === "preview" && branchHost
+    ? `https://${branchHost}` : productionOrigin;
+  if (process.env.VERCEL_ENV && origin !== canonicalOrigin) {
     return NextResponse.redirect(new URL("/auth/google", canonicalOrigin));
   }
 
