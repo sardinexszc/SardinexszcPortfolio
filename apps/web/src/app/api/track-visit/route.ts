@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { consumeTrackingLimit, trackingLimitResponse } from "@/lib/tracking-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
       ? (payload as Record<string, unknown>).sessionId : null;
     const sessionId = typeof suppliedSession === "string" && uuidPattern.test(suppliedSession)
       ? suppliedSession : randomUUID();
+    if (!await consumeTrackingLimit(request, "visit", 60)) return trackingLimitResponse();
     const db = createAdminClient();
     const { error } = await db
       .from("visitors")

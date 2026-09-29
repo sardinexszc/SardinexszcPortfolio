@@ -170,7 +170,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
         <div className="session-metrics">
           <div><span>Average active time</span><strong>{audienceAvailable && totalSessions ? activeTime : "—"}</strong></div>
           <div><span>Engaged visits</span><strong>{audienceAvailable ? engagedSessions : "—"}</strong></div>
-          <div><span>Non-engaged visits</span><strong>{audienceAvailable && nonEngagedRate !== null ? `${nonEngagedRate}%` : "—"}</strong></div>
+          <div><span>Non-engaged rate</span><strong>{audienceAvailable && nonEngagedRate !== null ? `${nonEngagedRate}%` : "—"}</strong></div>
         </div>
         <p className="audience-note">A visit is engaged after 10 active seconds or a recorded project/link interaction. Session details begin when tracking was enabled and include recorded deployments.</p>
       </section>

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getPortfolio } from "@/lib/api";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { consumeTrackingLimit, trackingLimitResponse } from "@/lib/tracking-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, code: "invalid_event" }, { status: 400 });
     }
 
+    if (!await consumeTrackingLimit(request, "engagement", 120)) return trackingLimitResponse();
     const { error } = await createAdminClient().from("portfolio_events").insert(record);
     if (error) {
       console.error("Engagement database write failed", error);
