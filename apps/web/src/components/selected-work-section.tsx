@@ -12,21 +12,18 @@ import {
   splitStack,
 } from "@/lib/work-projects";
 
-const projectDetails: Record<string, { problem: string; implementation: string; outcome: string }> = {
+const projectDetails: Record<string, { problem: string; outcome: string }> = {
   "crops-and-resources-rd-center": {
-    problem: "Research, extension, personnel, and administrative records needed a centralized institutional system.",
-    implementation: "A web platform that organizes records and supports institutional information access and administrative workflows.",
-    outcome: "A deployed central source for research, extension, personnel, and administrative information.",
+    problem: "Records were spread across research and administrative teams.",
+    outcome: "Deployed a shared platform for staff to access and manage these records.",
   },
   "claarrdec-real-time-monitoring-system": {
-    problem: "Consortium reporting, project tracking, and monitoring and evaluation workflows required centralized data management.",
-    implementation: "A Laravel and MySQL system for reporting, project records, and monitoring and evaluation activities across member institutions.",
-    outcome: "A deployed system supporting CLAARRDEC reporting, project tracking, and oversight workflows.",
+    problem: "Member institutions needed a shared way to report and monitor projects.",
+    outcome: "Deployed reporting and project tracking tools for consortium oversight.",
   },
   "claarrdec-cms-e-library": {
-    problem: "Institutional content and library resources needed both public delivery and controlled access.",
-    implementation: "A Laravel content management and e-library platform with public pages, authenticated access, administrative functions, and usage reporting.",
-    outcome: "A deployed institutional website combining content publishing, e-library access, and usage reporting.",
+    problem: "Public content and library resources needed different access levels.",
+    outcome: "Deployed a website with publishing, e-library access, and usage reports.",
   },
 };
 
@@ -38,7 +35,6 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
   const hasScreenshot = projectHasScreenshot(project);
   const details = projectDetails[slug] ?? {
     problem: project.description,
-    implementation: project.description,
     outcome: project.description,
   };
 
@@ -64,10 +60,9 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
       }}>
         <summary>Project details</summary>
         <div className="work-card-detail-grid">
-          <section><p className="work-eyebrow">Problem</p><p>{details.problem}</p></section>
-          <section><p className="work-eyebrow">Implementation</p><p>{details.implementation}</p></section>
-          <section><p className="work-eyebrow">Contribution</p><p>{role}</p></section>
-          <section><p className="work-eyebrow">Verified outcome</p><p>{details.outcome}</p></section>
+          <section><p className="work-eyebrow">Challenge</p><p>{details.problem}</p></section>
+          <section><p className="work-eyebrow">My role</p><p>{role}</p></section>
+          <section><p className="work-eyebrow">Result</p><p>{details.outcome}</p></section>
           <section>
             <p className="work-eyebrow">Primary stack</p>
             <div className="work-stack">
