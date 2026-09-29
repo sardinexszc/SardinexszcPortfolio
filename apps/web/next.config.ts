@@ -19,7 +19,7 @@ const contentSecurityPolicy = [
 
 const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
-    '/api/track-download': ['./public/files/2026_ICLSalinas_Resume.pdf'],
+    '/api/track-download': ['./assets/resume/2026_ICLSalinas_Resume.pdf'],
   },
   allowedDevOrigins: ["192.168.100.188", "192.168.100.190", "localhost"],
   images: {

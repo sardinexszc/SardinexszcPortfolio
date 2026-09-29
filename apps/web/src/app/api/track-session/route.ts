@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { consumeTrackingLimit, trackingLimitResponse } from "@/lib/tracking-limit";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -21,6 +22,7 @@ export async function POST(request: NextRequest) {
       typeof activeSeconds !== "number" || !Number.isInteger(activeSeconds) || activeSeconds < 1 || activeSeconds > 86400) {
       return NextResponse.json({ success: false, code: "invalid_activity" }, { status: 400 });
     }
+    if (!await consumeTrackingLimit(request, "session", 60)) return trackingLimitResponse();
     const { error } = await createAdminClient().from("portfolio_sessions")
       .update({ active_seconds: activeSeconds, last_active_at: new Date().toISOString() })
       .eq("session_id", sessionId)

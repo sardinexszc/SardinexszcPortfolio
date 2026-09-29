@@ -16,6 +16,11 @@ export function ResumeDownloadLink({ children, className }: { children: ReactNod
     setFailed(false);
     try {
       const response = await fetch("/api/track-download", { cache: "no-store" });
+      if (response.status === 429) {
+        setNotice("Too many download requests. Please try again in a minute.");
+        setFailed(true);
+        return;
+      }
       if (!response.ok) throw new Error("Download unavailable");
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
