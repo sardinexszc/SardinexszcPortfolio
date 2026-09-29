@@ -19,11 +19,11 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   let eventCounts: Array<{ event_type: string; project_id: number | null; link_kind: string | null; total: number }> = [];
   let locationCounts: Array<{ country_code: string; city: string; visits: number }> = [];
   let deviceCounts: Array<{ device_type: string; browser: string; visits: number }> = [];
-  let sessionSummary: { visits: number; engaged_visits: number; average_active_seconds: number } | null = null;
+  let sessionSummaries: Array<{ visits: number; engaged_visits: number; average_active_seconds: number }> = [];
   const projects = (await getPortfolio()).projects;
-  if (process.env.SUPABASE_SECRET_KEY) {
-    const db = createAdminClient();
+  if (process.env.SUPABASE_SECRET_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
+      const db = createAdminClient();
       const [visitors, downloads] = await Promise.all([
         db.from("visitors").select("*", { count: "exact", head: true }),
         db.from("resume_downloads").select("*", { count: "exact", head: true }),
@@ -36,9 +36,9 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       countsError = true;
     }
     try {
+      const db = createAdminClient();
       const { data, error } = await db.from("portfolio_event_counts")
-        .select("event_type, project_id, link_kind, total")
-        .eq("site_host", "ivansalinas.vercel.app");
+        .select("event_type, project_id, link_kind, total");
       if (error) throw error;
       eventCounts = data ?? [];
     } catch (error) {
@@ -46,15 +46,16 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       engagementError = true;
     }
     try {
+      const db = createAdminClient();
       const [locations, devices, sessions] = await Promise.all([
-        db.from("portfolio_location_counts").select("country_code, city, visits").eq("site_host", "ivansalinas.vercel.app"),
-        db.from("portfolio_device_counts").select("device_type, browser, visits").eq("site_host", "ivansalinas.vercel.app"),
-        db.from("portfolio_session_summary").select("visits, engaged_visits, average_active_seconds").eq("site_host", "ivansalinas.vercel.app").maybeSingle(),
+        db.from("portfolio_location_counts").select("country_code, city, visits"),
+        db.from("portfolio_device_counts").select("device_type, browser, visits"),
+        db.from("portfolio_session_summary").select("visits, engaged_visits, average_active_seconds"),
       ]);
       if (locations.error || devices.error || sessions.error) throw locations.error ?? devices.error ?? sessions.error;
       locationCounts = locations.data ?? [];
       deviceCounts = devices.data ?? [];
-      sessionSummary = sessions.data;
+      sessionSummaries = sessions.data ?? [];
     } catch (error) {
       console.error("Audience insights could not be loaded", error);
       audienceError = true;
@@ -62,7 +63,8 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   }
 
   const countFor = (type: string, projectId: number | null, linkKind: string | null = null) =>
-    Number(eventCounts.find((row) => row.event_type === type && row.project_id === projectId && row.link_kind === linkKind)?.total ?? 0);
+    eventCounts.filter((row) => row.event_type === type && row.project_id === projectId && row.link_kind === linkKind)
+      .reduce((total, row) => total + Number(row.total), 0);
   const rankedProjects = projects.map((project) => ({
     id: project.id,
     title: projectDisplayTitle(project),
@@ -72,20 +74,23 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   })).sort((a, b) => b.opens - a.opens);
   const totalOutbound = eventCounts.filter((row) => row.event_type === "outbound_click")
     .reduce((total, row) => total + Number(row.total), 0);
-  const engagementAvailable = !engagementError && Boolean(process.env.SUPABASE_SECRET_KEY);
+  const configured = Boolean(process.env.SUPABASE_SECRET_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL);
+  const engagementAvailable = !engagementError && configured;
   const displayCount = (count: number) => engagementAvailable ? count : "—";
-  const totalSessions = Number(sessionSummary?.visits ?? 0);
-  const engagedSessions = Number(sessionSummary?.engaged_visits ?? 0);
-  const averageSeconds = Number(sessionSummary?.average_active_seconds ?? 0);
+  const totalSessions = sessionSummaries.reduce((total, row) => total + Number(row.visits), 0);
+  const engagedSessions = sessionSummaries.reduce((total, row) => total + Number(row.engaged_visits), 0);
+  const averageSeconds = totalSessions ? Math.round(sessionSummaries.reduce((total, row) =>
+    total + Number(row.average_active_seconds) * Number(row.visits), 0) / totalSessions) : 0;
   const nonEngagedRate = totalSessions ? Math.round((1 - engagedSessions / totalSessions) * 100) : null;
-  const audienceAvailable = !audienceError && Boolean(process.env.SUPABASE_SECRET_KEY);
+  const audienceAvailable = !audienceError && configured;
   const groupCounts = <T extends { visits: number }>(rows: T[], key: (row: T) => string) => {
     const grouped = new Map<string, number>();
     for (const row of rows) grouped.set(key(row), (grouped.get(key(row)) ?? 0) + Number(row.visits));
     return [...grouped.entries()].sort((a, b) => b[1] - a[1]);
   };
   const countries = groupCounts(locationCounts, (row) => row.country_code);
-  const cities = [...locationCounts].sort((a, b) => Number(b.visits) - Number(a.visits));
+  const cities = groupCounts(locationCounts, (row) => `${row.country_code}\u0000${row.city}`)
+    .map(([label, visits]) => { const [country_code, city] = label.split("\u0000"); return { country_code, city, visits }; });
   const devices = groupCounts(deviceCounts, (row) => row.device_type);
   const browsers = groupCounts(deviceCounts, (row) => row.browser);
   const countryNames = new Intl.DisplayNames(["en"], { type: "region" });
@@ -97,11 +102,11 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       <header className="dashboard-page-header">
         <p className="analytics-eyebrow">OVERVIEW / 01</p>
         <h1>Engagement dashboard</h1>
-        <p>Unique browsers and resume downloads since tracking was enabled.</p>
+        <p>Portfolio activity across recorded deployments, including historical visitor and resume totals.</p>
       </header>
       {notice === "signed-in" && <AuthNotice message="Signed in successfully." successNotice="signed-in" />}
       {notice === "signout-failed" && <AuthNotice message="Could not sign out. Please try again." error />}
-      {!process.env.SUPABASE_SECRET_KEY && <p role="status">Analytics data will appear after the Supabase server key is configured.</p>}
+      {!configured && <p role="status">Analytics data will appear when this deployment can access its Supabase server credentials.</p>}
       {countsError && <p role="alert" className="analytics-error">Analytics counts could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
       {engagementError && <p role="alert" className="analytics-error">Engagement counts could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
       {audienceError && <p role="alert" className="analytics-error">Audience insights could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
@@ -130,7 +135,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
           </ul>
         </section>
       </div>
-      <p className="engagement-footnote">Project activity is counted from this release onward on the production site. Preview activity is excluded.</p>
+      <p className="engagement-footnote">Project activity includes recorded deployments from the date engagement tracking was enabled.</p>
       <div className="audience-panels">
         <section className="analytics-card engagement-panel">
           <p className="analytics-eyebrow">AUDIENCE</p>
@@ -142,7 +147,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
           <h3>Cities</h3>
           <ul className="engagement-list engagement-list-compact">{cities.slice(0, 5).map((row) =>
             <li key={`${row.country_code}-${row.city}`}><span>{row.city}, {row.country_code}</span><span>{row.visits}</span></li>)}</ul>
-          {audienceAvailable && !countries.length && <p className="audience-note">No visits recorded yet.</p>}
+          {audienceAvailable && !countries.length && <p className="audience-note">No session details recorded yet. Historical visitor totals are included above.</p>}
           {!audienceAvailable && <p className="audience-note">—</p>}
         </section>
         <section className="analytics-card engagement-panel">
@@ -155,7 +160,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
           <h3>Browser</h3>
           <ul className="engagement-list engagement-list-compact">{browsers.map(([browser, visits]) =>
             <li key={browser}><span>{browser}</span><span>{visits}</span></li>)}</ul>
-          {audienceAvailable && !devices.length && <p className="audience-note">No visits recorded yet.</p>}
+          {audienceAvailable && !devices.length && <p className="audience-note">No session details recorded yet. Historical visitor totals are included above.</p>}
           {!audienceAvailable && <p className="audience-note">—</p>}
         </section>
       </div>
@@ -167,7 +172,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
           <div><span>Engaged visits</span><strong>{audienceAvailable ? engagedSessions : "—"}</strong></div>
           <div><span>Non-engaged visits</span><strong>{audienceAvailable && nonEngagedRate !== null ? `${nonEngagedRate}%` : "—"}</strong></div>
         </div>
-        <p className="audience-note">A visit is engaged after 10 active seconds or a recorded project/link interaction. Preview visits are excluded.</p>
+        <p className="audience-note">A visit is engaged after 10 active seconds or a recorded project/link interaction. Session details begin when tracking was enabled and include recorded deployments.</p>
       </section>
     </div>
   );
