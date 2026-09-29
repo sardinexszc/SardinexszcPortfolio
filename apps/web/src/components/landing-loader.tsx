@@ -2,13 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+export const LANDING_LOADER_DURATION_MS = 5250;
+
 export function LandingLoader() {
   const [visible, setVisible] = useState(true);
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
     const fadeTimer = window.setTimeout(() => setLeaving(true), 5000);
-    const removeTimer = window.setTimeout(() => setVisible(false), 5250);
+    const removeTimer = window.setTimeout(() => setVisible(false), LANDING_LOADER_DURATION_MS);
     return () => {
       window.clearTimeout(fadeTimer);
       window.clearTimeout(removeTimer);

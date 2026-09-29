@@ -7,6 +7,7 @@ import { CapabilitiesSection } from "./capabilities-section";
 import { SelectedWorkSection } from "./selected-work-section";
 import { SiteHeader } from "./site-header";
 import { ResumeDownloadLink } from "./resume-download-link";
+import { trackEngagement } from "@/lib/track-engagement";
 
 function SectionTitle({ eyebrow, title, id }: { eyebrow: string; title: string; id: string }) {
   return <div className="section-title"><span>{eyebrow}</span><h2 id={id}>{title}</h2></div>;
@@ -93,7 +94,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <p className="contact-eyebrow">Available for remote software roles and collaborations</p>
           <h2 id="contact-title">Let&apos;s discuss<br /><em>research systems and software work.</em></h2>
           <div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><ResumeDownloadLink className="contact-link"><ArrowUpRight size={19} /> Download resume (PDF)</ResumeDownloadLink></div>
-          <div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer"><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer"><Linkedin size={17} /> LinkedIn</a></div>
+          <div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", linkKind: "github_profile" })}><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", linkKind: "linkedin_profile" })}><Linkedin size={17} /> LinkedIn</a></div>
         </section>
       </main>
       <footer><span>© 2026 Ivan Christian L. Salinas</span><span>Designed and built with care</span></footer>

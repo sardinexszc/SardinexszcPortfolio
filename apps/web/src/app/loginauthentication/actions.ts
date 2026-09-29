@@ -53,10 +53,11 @@ export async function signOut() {
 }
 
 export async function setPassword(formData: FormData) {
+  const settingsPath = "/analytics/account-settings";
   const password = formData.get("password");
   const confirmation = formData.get("confirmation");
   if (typeof password !== "string" || password.length < 12 || password !== confirmation) {
-    redirect("/analytics?password=invalid");
+    redirect(`${settingsPath}?password=invalid`);
   }
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -68,10 +69,10 @@ export async function setPassword(formData: FormData) {
     ({ error } = await supabase.auth.updateUser({ password }));
   } catch (failure) {
     console.error("Password update request failed", failure);
-    redirect("/analytics?password=failed");
+    redirect(`${settingsPath}?password=failed`);
   }
-  if (error?.code === "same_password") redirect("/analytics?password=unchanged");
-  if (error?.code === "weak_password") redirect("/analytics?password=weak");
-  if (error) redirect("/analytics?password=failed");
-  redirect("/analytics?password=updated");
+  if (error?.code === "same_password") redirect(`${settingsPath}?password=unchanged`);
+  if (error?.code === "weak_password") redirect(`${settingsPath}?password=weak`);
+  if (error) redirect(`${settingsPath}?password=failed`);
+  redirect(`${settingsPath}?password=updated`);
 }
