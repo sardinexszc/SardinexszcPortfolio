@@ -7,27 +7,27 @@ type CapabilityGroup = {
 const capabilityGroups: CapabilityGroup[] = [
   {
     title: "Full-Stack Web Development",
-    description: "Web applications and institutional information systems built from interface to deployment.",
+    description: "Interfaces and applications for everyday use.",
     technologies: ["PHP", "JavaScript", "TypeScript", "Java", "React", "Next.js", "Laravel"],
   },
   {
     title: "Backend APIs and Databases",
-    description: "Application logic, integrations, relational data models, and data access for operational use.",
+    description: "Data models, APIs, and application logic.",
     technologies: ["SQL", "MySQL", "PostgreSQL", "Supabase", "REST APIs"],
   },
   {
     title: "Automation and Integration",
-    description: "Workflow automation using webhooks, chatbots, LLM integrations, and external APIs.",
-    technologies: ["n8n", "REST APIs"],
+    description: "Webhooks, chatbots, and connected workflows.",
+    technologies: ["n8n"],
   },
   {
     title: "IoT and Monitoring Systems",
-    description: "Connected monitoring and data-collection systems for research and field operations.",
+    description: "Field data collection and mapping tools.",
     technologies: ["ESP32", "Arduino", "PlatformIO", "ArcGIS", "QGIS"],
   },
   {
     title: "Delivery and Collaboration",
-    description: "Source control, team coordination, and deployment workflows for web applications.",
+    description: "Version control and deployment.",
     technologies: ["Git", "GitHub", "Vercel"],
   },
 ];
@@ -39,7 +39,7 @@ export function CapabilitiesSection() {
         <span>04 / Capabilities</span>
         <div className="capabilities-heading-wrap">
           <h2 id="skills-title">Technical capabilities and tools.</h2>
-          <p>Technologies used across web applications, data systems, automation, monitoring, and delivery.</p>
+          <p>Tools I use to build and deliver software.</p>
         </div>
       </div>
 

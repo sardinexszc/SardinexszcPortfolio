@@ -94,13 +94,13 @@ export function splitStack(project: Project): ProjectStacks {
 export function getRoleSummary(project: Project): string {
   const slug = projectSlug(project);
   if (slug === "crops-and-resources-rd-center") {
-    return "Full-stack developer responsible for requirements, architecture, database design, implementation, integrations, deployment, and maintenance.";
+    return "Led requirements, database design, development, and deployment.";
   }
   if (slug === "claarrdec-real-time-monitoring-system") {
-    return "Information systems developer translating monitoring and evaluation workflows into a centralized web platform.";
+    return "Built the monitoring and reporting workflows.";
   }
   if (slug === "claarrdec-cms-e-library") {
-    return "Full-stack developer for the public content, authenticated e-library, usage reporting, and administrative workflows.";
+    return "Built the public site, e-library, and admin tools.";
   }
   return "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }
