@@ -11,7 +11,7 @@ const demoPortfolio: Portfolio = {
       image_url: null,
       tech_stack: ["Next.js", "React", "TypeScript", "JavaScript", "Vercel", "GitHub"],
       live_url: "https://crrdc.vercel.app/",
-      github_url: null,
+      github_url: "https://github.com/sardinexszc/crrdc",
       featured: true,
     },
     {
