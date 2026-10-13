@@ -15,6 +15,45 @@ Set the Vercel project root to `apps/web`. The analytics API uses a dedicated Su
 
 The project uses the native Next.js framework preset, `npm ci` for installation, and `npm run build` for production builds.
 
+## Backend (Supabase)
+
+The public page works without Supabase. Analytics, the admin dashboard (`/analytics`), and sign-in (`/loginauthentication`) need these Vercel environment variables (see `apps/web/.env.example`):
+
+| Variable | Purpose |
+|---|---|
+| `SITE_URL` | Canonical origin for metadata, sitemap, and robots |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Admin sign-in (email/password and Google OAuth) |
+| `SUPABASE_SECRET_KEY` | Server-only writes for tracking routes and dashboard reads. Never prefix with `NEXT_PUBLIC_`. |
+| `SUPABASE_ADMIN_USER_ID` | The only Supabase user allowed into the dashboard |
+
+Apply the SQL files in `apps/web/sql/` in this order in the Supabase SQL editor. Later files depend on tables from earlier ones:
+
+1. `portfolio_analytics.sql`: visitors and resume downloads
+2. `portfolio_engagement.sql`: project and link events
+3. `portfolio_audience.sql`: sessions and audience views (alters `portfolio_events`)
+4. `portfolio_rate_limits.sql`: shared rate limiter used by every tracking route
+
+All files are idempotent and can be re-run. Tables have row-level security enabled with no public policies, so only the server-side secret key can read or write them.
+
+Tracking failures never block visitors. The resume route always serves the PDF, and the client ignores tracking errors.
+
+One-off maintenance scripts live in `apps/web/sql/maintenance/`. Each one previews first and ends in `rollback` until you change it to `commit`.
+
+### Admin security
+
+Built into the app:
+
+- Email sign-in allows 5 attempts per network per 15 minutes. This uses the same `consume_portfolio_limit` function as tracking. If the limiter is unavailable, sign-in still works and Supabase Auth's own limits apply.
+- Password changes require a sign-in within the last 10 minutes.
+- Only `SUPABASE_ADMIN_USER_ID` can open `/analytics`. Any other account is signed out on arrival.
+- Audit tools and crawlers (Lighthouse, headless Chrome, bots) are not counted as visitors.
+
+Recommended in the Supabase dashboard:
+
+- **Authentication → Sign In / Providers → Email → Secure password change:** on. This adds Supabase's own reauthentication on top of the app check.
+- **Authentication → Attack Protection → CAPTCHA:** optional. Turning it on requires adding a Turnstile or hCaptcha widget to `/loginauthentication` and allowing its domain in the CSP in `next.config.ts`.
+- **Authentication → Sign In / Providers:** if you only sign in with Google and your own email, disable new sign-ups.
+
 ## Local development
 
 Run the Next.js site with `npm run dev` from `apps/web`.

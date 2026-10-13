@@ -17,6 +17,7 @@ export default async function LoginPage({
     "invalid-input": "Enter a valid email and password.",
     unconfirmed: "Confirm your email address before signing in.",
     credentials: "Email or password is incorrect.",
+    "rate-limited": "Too many sign-in attempts. Wait 15 minutes and try again.",
     unauthorized: "This account is not authorized to view analytics.",
     callback: "Google sign-in could not be completed. Please try again.",
   };
