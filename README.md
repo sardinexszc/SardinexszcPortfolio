@@ -15,6 +15,28 @@ Set the Vercel project root to `apps/web`. The analytics API uses a dedicated Su
 
 The project uses the native Next.js framework preset, `npm ci` for installation, and `npm run build` for production builds.
 
+## Backend (Supabase)
+
+The public page works without Supabase. Analytics, the admin dashboard (`/analytics`), and sign-in (`/loginauthentication`) need these Vercel environment variables (see `apps/web/.env.example`):
+
+| Variable | Purpose |
+|---|---|
+| `SITE_URL` | Canonical origin for metadata, sitemap, and robots |
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Admin sign-in (email/password and Google OAuth) |
+| `SUPABASE_SECRET_KEY` | Server-only writes for tracking routes and dashboard reads. Never prefix with `NEXT_PUBLIC_`. |
+| `SUPABASE_ADMIN_USER_ID` | The only Supabase user allowed into the dashboard |
+
+Apply the SQL files in `apps/web/sql/` in this order in the Supabase SQL editor. Later files depend on tables from earlier ones:
+
+1. `portfolio_analytics.sql`: visitors and resume downloads
+2. `portfolio_engagement.sql`: project and link events
+3. `portfolio_audience.sql`: sessions and audience views (alters `portfolio_events`)
+4. `portfolio_rate_limits.sql`: shared rate limiter used by every tracking route
+
+All files are idempotent and can be re-run. Tables have row-level security enabled with no public policies, so only the server-side secret key can read or write them.
+
+Tracking failures never block visitors. The resume route always serves the PDF, and the client ignores tracking errors.
+
 ## Local development
 
 Run the Next.js site with `npm run dev` from `apps/web`.
