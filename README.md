@@ -44,3 +44,15 @@ Apply `apps/web/sql/portfolio_audience.sql` after the engagement migration for c
 Apply `apps/web/sql/portfolio_rate_limits.sql` before deploying the rate-limited routes. It creates an atomic, one-minute counter used by the four public tracking endpoints. It stores a keyed hash of the client address rather than the address itself and returns `429` with `Retry-After` when a limit is reached. The service-role-only function and counter table have no public access.
 
 The analytics and rate-limit tables have RLS enabled and no public policies. Only server-side Next.js routes use the secret key; `/analytics` checks the live Supabase Auth user and the configured admin UUID before querying counts. Authentication pages are dynamic and must not be cached.
+
+## Resume
+
+The downloadable resume is generated from `scripts/build_resume.py` (requires `reportlab`) and served by `/api/track-download`:
+
+```powershell
+python scripts/build_resume.py
+```
+
+## Audit
+
+See [PORTFOLIO_AUDIT.md](PORTFOLIO_AUDIT.md) for the October 2026 design, accessibility, SEO, and recruiter review, including open content items.
