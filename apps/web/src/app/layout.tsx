@@ -1,57 +1,64 @@
 import type { Metadata, Viewport } from "next";
 import { Space_Grotesk, DM_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
 const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
 const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
+// Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
+const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
+
+const title = "Ivan Christian Salinas — Full-Stack Software Engineer";
+const description =
+  "Full-stack web developer in the Philippines building database-backed web applications with Laravel, PHP, Next.js, React, TypeScript, MySQL, and PostgreSQL. Open to full-time, contract, and remote roles.";
+
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#f5f5f2" },
+    { media: "(prefers-color-scheme: dark)", color: "#171716" },
+  ],
 };
 
 export const metadata: Metadata = {
-  title: "Ivan Christian Salinas — Full-Stack Software Engineer",
-  description:
-    "Portfolio of Ivan Christian Salinas, a full-stack software engineer building production systems for research and institutional operations using Next.js, Laravel, APIs, databases, automation, and AI integrations.",
+  title,
+  description,
   metadataBase: getSiteUrl(),
   alternates: {
     canonical: "/",
   },
+  authors: [{ name: "Ivan Christian L. Salinas" }],
+  creator: "Ivan Christian L. Salinas",
   openGraph: {
-    type: "website",
-    title: "Ivan Christian Salinas — Full-Stack Software Engineer",
-    description:
-      "Production-focused software engineer building web systems, APIs, databases, automation workflows, and AI-enabled applications for real organizations.",
+    type: "profile",
+    title,
+    description,
     url: "/",
     siteName: "Ivan Christian L. Salinas Portfolio",
+    locale: "en_US",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Ivan Christian Salinas — Full-Stack Software Engineer",
-    description:
-      "Portfolio showcasing real-world full-stack engineering work across research systems, web platforms, APIs, databases, and automation.",
+    title,
+    description,
   },
   keywords: [
     "Full-Stack Software Engineer",
+    "Full-Stack Web Developer",
+    "Laravel Developer",
+    "PHP",
     "Next.js",
     "React",
     "TypeScript",
-    "Laravel",
-    "PHP",
-    "REST API",
+    "MySQL",
     "PostgreSQL",
-    "ESP32",
-    "Arduino",
-    "PlatformIO",
-    "Sensors",
-    "n8n automation",
-    "LLM integration",
-    "IoT systems",
+    "REST API",
+    "Philippines",
+    "Remote",
   ],
 };
 
@@ -59,11 +66,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${sans.variable} ${mono.variable}`}>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <a href="#main-content" className="skip-link">Skip to main content</a>
-        <ThemeProvider>
-          {children}
-          <div className="theme-floating"><ThemeToggle /></div>
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );
