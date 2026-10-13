@@ -11,7 +11,7 @@ const demoPortfolio: Portfolio = {
       image_url: null,
       tech_stack: ["Next.js", "React", "TypeScript", "JavaScript", "Vercel", "GitHub"],
       live_url: "https://crrdc.vercel.app/",
-      github_url: null,
+      github_url: "https://github.com/sardinexszc/crrdc",
       featured: true,
     },
     {
@@ -30,7 +30,8 @@ const demoPortfolio: Portfolio = {
       description: "A public website and e-library with controlled access, administration, and usage reporting.",
       image_url: null,
       tech_stack: ["Laravel", "PHP", "MySQL", "JavaScript", "GitHub"],
-      live_url: "https://claarrdec.clsu.edu.ph/",
+      // https://claarrdec.clsu.edu.ph/ returned 404 on 2026-10-13. Restore it once the site is back up.
+      live_url: null,
       github_url: null,
       featured: true,
     },

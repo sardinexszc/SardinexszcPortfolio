@@ -34,7 +34,7 @@ const capabilityGroups: CapabilityGroup[] = [
 
 export function CapabilitiesSection() {
   return (
-    <section className="content-section capabilities-section capabilities-v2" aria-labelledby="skills-title">
+    <section id="skills" className="content-section capabilities-section capabilities-v2" aria-labelledby="skills-title">
       <div className="section-title capabilities-title-block">
         <span>04 / Capabilities</span>
         <div className="capabilities-heading-wrap">

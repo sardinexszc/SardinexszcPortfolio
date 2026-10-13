@@ -13,11 +13,6 @@ export type ProjectStacks = {
   supporting: string[];
 };
 
-export type ProjectArchitecture = {
-  title: string;
-  layers: string[];
-};
-
 export function projectSlug(project: Project): string {
   const title = project.title.toLowerCase();
 
@@ -65,11 +60,6 @@ export function inferCategory(project: Project): ProjectCategory {
   return "Full-Stack Web Application";
 }
 
-export function getProjectSummary(project: Project): string {
-  const firstSentence = project.description.split(".")[0]?.trim();
-  return firstSentence ? `${firstSentence}.` : project.description;
-}
-
 export function splitStack(project: Project): ProjectStacks {
   const orderedPreference = [
     "Next.js",
@@ -105,74 +95,6 @@ export function getRoleSummary(project: Project): string {
   return "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }
 
-export function getProblemStatement(project: Project): string | null {
-  const marker = /,\s*built to\s+/i;
-  if (marker.test(project.description)) {
-    const value = project.description.split(marker)[0]?.trim();
-    return value ? sentenceCase(value) : null;
-  }
-  const firstSentence = project.description.split(".")[0]?.trim();
-  return firstSentence ? sentenceCase(firstSentence) : null;
-}
-
-export function getSolutionStatement(project: Project): string | null {
-  const builtToMatch = project.description.match(/built to\s+(.+?)(?:\.|$)/i);
-  if (!builtToMatch?.[1]) return null;
-  return sentenceCase(builtToMatch[1]);
-}
-
-export function getOutcomeStatement(project: Project): string | null {
-  const improveMatch = project.description.match(/(improve\s+.+?)(?:\.|$)/i);
-  if (improveMatch?.[1]) {
-    return sentenceCase(improveMatch[1]);
-  }
-  const supportMatch = project.description.match(/(support\s+.+?)(?:\.|$)/i);
-  if (supportMatch?.[1]) {
-    return sentenceCase(supportMatch[1]);
-  }
-  return null;
-}
-
-export function getKeyFeatures(project: Project): string[] {
-  return project.description
-    .replace(/\.$/, "")
-    .split(",")
-    .map((chunk) => chunk.trim())
-    .filter(Boolean)
-    .slice(0, 4)
-    .map(sentenceCase);
-}
-
-export function getArchitecture(project: Project): ProjectArchitecture | null {
-  const stack = project.tech_stack.map((item) => item.toLowerCase());
-  const hasLaravel = stack.some((item) => item.includes("laravel") || item.includes("php"));
-  const hasMySql = stack.some((item) => item.includes("mysql"));
-  const hasNext = stack.some((item) => item.includes("next"));
-  const hasReact = stack.some((item) => item.includes("react"));
-
-  if (hasLaravel && hasMySql) {
-    return {
-      title: "Application architecture",
-      layers: ["Frontend interface", "Application / API layer (Laravel / PHP)", "Database layer (MySQL)"],
-    };
-  }
-
-  if (hasNext || hasReact) {
-    return {
-      title: "Application architecture",
-      layers: ["Frontend application layer", "Service and integration layer"],
-    };
-  }
-
-  return null;
-}
-
 export function projectHasScreenshot(project: Project): boolean {
   return Boolean(project.image_url && project.image_url.trim().length > 0);
-}
-
-function sentenceCase(value: string): string {
-  const trimmed = value.trim();
-  if (!trimmed) return trimmed;
-  return trimmed[0].toUpperCase() + trimmed.slice(1);
 }

@@ -2,7 +2,6 @@
 
 import { useEffect } from "react";
 import { getPortfolioSession, savePortfolioSession } from "@/lib/portfolio-session";
-import { LANDING_LOADER_DURATION_MS } from "@/components/landing-loader";
 
 let visitRequestStarted = false;
 
@@ -24,15 +23,9 @@ export function VisitTracker() {
       });
     }
 
-    let ready = false;
     let lastTick = performance.now();
-    const readyTimer = window.setTimeout(() => {
-      ready = true;
-      lastTick = performance.now();
-    }, LANDING_LOADER_DURATION_MS);
 
     function recordActivity() {
-      if (!ready) return;
       const now = performance.now();
       session.activeMs += Math.max(0, Math.min(now - lastTick, 15_000));
       lastTick = now;
@@ -56,7 +49,6 @@ export function VisitTracker() {
     document.addEventListener("visibilitychange", visibilityChange);
     window.addEventListener("pagehide", pageHide);
     return () => {
-      window.clearTimeout(readyTimer);
       window.clearInterval(interval);
       document.removeEventListener("visibilitychange", visibilityChange);
       window.removeEventListener("pagehide", pageHide);

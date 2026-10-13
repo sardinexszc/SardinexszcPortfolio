@@ -58,7 +58,7 @@ def position(title, employer, dates, points):
 def main():
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     doc = SimpleDocTemplate(str(OUTPUT), pagesize=A4, rightMargin=17 * mm, leftMargin=17 * mm, topMargin=16 * mm, bottomMargin=14 * mm, title="Ivan Christian L. Salinas | Resume", author="Ivan Christian L. Salinas")
-    header = Table([[paragraph("Ivan Christian L. Salinas", NAME), paragraph("Science City of Muñoz, Nueva Ecija<br/>+63 926 745 9456<br/>banbansalinas@gmail.com<br/>ivansalinas.vercel.app", CONTACT)]], colWidths=[95 * mm, 81 * mm])
+    header = Table([[paragraph("Ivan Christian L. Salinas", NAME), paragraph("Science City of Muñoz, Nueva Ecija<br/>+63 926 745 9456<br/><link href='mailto:banbansalinas@gmail.com'>banbansalinas@gmail.com</link><br/><link href='https://ivansalinas.vercel.app'>ivansalinas.vercel.app</link><br/><link href='https://www.linkedin.com/in/banbansalinas/'>linkedin.com/in/banbansalinas</link><br/><link href='https://github.com/sardinexszc'>github.com/sardinexszc</link>", CONTACT)]], colWidths=[95 * mm, 81 * mm])
     header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"), ("LEFTPADDING", (0, 0), (-1, -1), 0), ("RIGHTPADDING", (0, 0), (-1, -1), 0), ("TOPPADDING", (0, 0), (-1, -1), 0), ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
     story = [header, Spacer(1, 4), paragraph("Full-stack software engineer", ROLE)]
     story += section("Profile")
