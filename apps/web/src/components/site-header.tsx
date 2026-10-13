@@ -1,30 +1,21 @@
-'use client';
-
-import { ArrowUpRight } from 'lucide-react';
-import Link from 'next/link';
-import { smoothScrollToId } from '@/lib/smooth-scroll';
+import { ArrowUpRight } from "lucide-react";
+import Link from "next/link";
+import { ThemeToggle } from "./theme-toggle";
 
 export function SiteHeader() {
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, sectionId: string) => {
-    e.preventDefault();
-    smoothScrollToId(sectionId);
-  };
-
   return (
     <header className="site-header">
-      <Link className="wordmark" href="/" aria-label="Ivan Christian Salinas home">
+      <Link className="wordmark" href="/" aria-label="IS — Ivan Christian Salinas, home">
         I<span>S</span>
       </Link>
-      <nav className="header-nav" aria-label="Primary navigation">
-        <a href="#work" onClick={(e) => handleNavClick(e, 'work')} aria-label="Go to selected work section">
-          Work
+      <nav className="header-nav" aria-label="Primary">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#skills" className="nav-optional">Skills</a>
+        <a href="#contact" className="nav-contact">
+          Let&apos;s talk <ArrowUpRight size={15} aria-hidden="true" />
         </a>
-        <a href="#about" onClick={(e) => handleNavClick(e, 'about')} aria-label="Go to about section">
-          About
-        </a>
-        <a href="#contact" className="nav-contact" onClick={(e) => handleNavClick(e, 'contact')} aria-label="Go to contact section">
-          Let&apos;s talk <ArrowUpRight size={15} />
-        </a>
+        <ThemeToggle />
       </nav>
     </header>
   );

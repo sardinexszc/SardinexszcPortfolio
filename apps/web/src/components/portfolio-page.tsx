@@ -1,13 +1,10 @@
-'use client';
-
-import { ArrowDown, ArrowUpRight, Github, Linkedin, Mail } from "lucide-react";
-import { smoothScrollToId } from "@/lib/smooth-scroll";
+import { ArrowDown, ArrowUpRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
 import type { Portfolio } from "@/lib/types";
+import { profile } from "@/lib/profile";
 import { CapabilitiesSection } from "./capabilities-section";
-import { SelectedWorkSection } from "./selected-work-section";
+import { SelectedWorkSection, projectAnchor } from "./selected-work-section";
 import { SiteHeader } from "./site-header";
-import { ResumeDownloadLink } from "./resume-download-link";
-import { trackEngagement } from "@/lib/track-engagement";
+import { TrackedLink } from "./tracked-elements";
 import { projectDisplayTitle, projectSlug } from "@/lib/work-projects";
 
 function SectionTitle({ eyebrow, title, id }: { eyebrow: string; title: string; id: string }) {
@@ -18,6 +15,14 @@ const aboutHighlights = [
   "Build research and institutional web systems, from requirements to deployment.",
   "Lead small teams and work directly with researchers and administrators.",
   "Bring experience in teaching, published research, and government-funded projects.",
+];
+
+const atAGlance = [
+  { label: "Focus", value: "Full-stack web development: Laravel and Next.js apps backed by SQL databases" },
+  { label: "Experience", value: "Information systems developer at Central Luzon State University, 2019–2026" },
+  { label: "Core stack", value: "PHP · Laravel · TypeScript · React · Next.js · MySQL · PostgreSQL" },
+  { label: "Education", value: "BS Information Technology; MS IT (Data Science) in progress" },
+  { label: "Location", value: "Nueva Ecija, Philippines · open to remote" },
 ];
 
 const research = [
@@ -37,25 +42,23 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
       <main id="main-content">
         <section className="hero" aria-labelledby="hero-title">
           <div className="hero-content">
-            <div className="hero-kicker"><span className="status-dot" /> Available for full-time, contract, and remote software roles</div>
-            <p className="hero-identity">Ivan Christian L. Salinas</p>
-            <h1 id="hero-title">Full-stack engineer for research and institutional systems.</h1>
-            <p className="hero-support">I build web applications, monitoring tools, and workflow automation for research teams—from requirements through deployment.</p>
+            <div className="hero-kicker"><span className="status-dot" aria-hidden="true" /> Available for full-time, contract, and remote software roles</div>
+            <p className="hero-identity">{profile.name}</p>
+            <h1 id="hero-title">Full-stack web developer building systems teams use every day.</h1>
+            <p className="hero-support">I build database-backed web applications with Laravel, Next.js, and SQL. At Central Luzon State University I delivered research information, monitoring, and e-library platforms—from requirements and database design through deployment.</p>
             <div className="hero-actions">
-              <a className="hero-cta hero-cta-primary" href="#work" onClick={(event) => { event.preventDefault(); smoothScrollToId("work"); }}>View selected work <ArrowDown size={16} /></a>
-              <ResumeDownloadLink className="hero-cta hero-cta-secondary">Download resume <ArrowUpRight size={16} /></ResumeDownloadLink>
-              <a className="hero-cta hero-cta-secondary" href="#contact" onClick={(event) => { event.preventDefault(); smoothScrollToId("contact"); }}>Contact Ivan <ArrowUpRight size={16} /></a>
+              <a className="hero-cta hero-cta-primary" href="#work">View selected work <ArrowDown size={16} aria-hidden="true" /></a>
+              <a className="hero-cta hero-cta-secondary" href={profile.resumeUrl} download={profile.resumeFilename}>Download resume <span className="visually-hidden">(PDF)</span><Download size={16} aria-hidden="true" /></a>
+              <a className="hero-cta hero-cta-secondary" href="#contact">Contact Ivan <ArrowUpRight size={16} aria-hidden="true" /></a>
             </div>
-            <div className="hero-proof-links" aria-label="Selected project shortcuts"><p>Selected projects:</p><div>{strongestProjects.map((project) => <a key={project.id} href="#work">{projectSlug(project) === "crops-and-resources-rd-center" ? "CRRDC web platform" : projectDisplayTitle(project)}</a>)}</div></div>
+            <div className="hero-proof-links"><p id="hero-projects-label">Selected projects:</p><ul aria-labelledby="hero-projects-label">{strongestProjects.map((project) => <li key={project.id}><a href={`#${projectAnchor(project)}`}>{projectSlug(project) === "crops-and-resources-rd-center" ? "CRRDC web platform" : projectDisplayTitle(project)}</a></li>)}</ul></div>
           </div>
-          <aside className="hire-panel" aria-label="Engineering capabilities">
-            <p className="hire-panel-label">Work focus</p>
-            <ol>
-              <li><span>01</span><div><strong>Systems</strong><p>Web applications and databases built for daily use.</p></div></li>
-              <li><span>02</span><div><strong>Research</strong><p>Project records, reporting, and monitoring.</p></div></li>
-              <li><span>03</span><div><strong>Automation</strong><p>Connected tools that reduce manual work.</p></div></li>
-            </ol>
-            <a href="mailto:banbansalinas@gmail.com?subject=Opportunity%20for%20Ivan%20Salinas">Discuss a project <ArrowUpRight size={16} /></a>
+          <aside className="hire-panel" aria-labelledby="glance-title">
+            <h2 id="glance-title" className="hire-panel-label">At a glance</h2>
+            <dl className="glance-list">
+              {atAGlance.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
+            </dl>
+            <a href={`mailto:${profile.email}?subject=Opportunity%20for%20Ivan%20Salinas`}>Email Ivan <ArrowUpRight size={16} aria-hidden="true" /></a>
           </aside>
         </section>
 
@@ -71,28 +74,35 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
               <p className="about-lead">I turn research and operational needs into software teams can use every day.</p>
               <ul className="about-highlights">{aboutHighlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
             </div>
-            <div><p className="subsection-label">Professional experience</p><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p>{entry.description.includes("\n") ? <ul className="experience-highlights">{entry.description.split("\n").map((highlight) => <li key={highlight}>{highlight}</li>)}</ul> : <small>{entry.description}</small>}</div></li>)}</ol></div>
+            <div><h3 className="subsection-label">Professional experience</h3><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p>{entry.description.includes("\n") ? <ul className="experience-highlights">{entry.description.split("\n").map((highlight) => <li key={highlight}>{highlight}</li>)}</ul> : <small>{entry.description}</small>}</div></li>)}</ol></div>
           </div>
         </section>
 
-        <section className="content-section research-education-section" aria-labelledby="research-education-title">
+        <section id="research" className="content-section research-education-section" aria-labelledby="research-education-title">
           <SectionTitle id="research-education-title" eyebrow="03 / Research and education" title="Research and education." />
           <div className="research-education-grid">
-            <div><p className="subsection-label">Research</p><p className="research-intro">My published work explores research data systems and how people use technology.</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h3>{publication.title}</h3><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <ArrowUpRight size={15} /></a></li>)}</ol></div>
-            <div><p className="subsection-label">Education</p><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><time dateTime={entry.start_date}>{entry.start_date} — {entry.end_date ?? "Present"}</time><div><h3>{entry.role}</h3><p>{entry.organization}</p></div></li>)}</ol></div>
+            <div><h3 className="subsection-label">Research</h3><p className="research-intro">My published work explores research data systems and how people use technology.</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h4>{publication.title}</h4><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></a></li>)}</ol></div>
+            <div><h3 className="subsection-label">Education</h3><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p></div></li>)}</ol></div>
           </div>
         </section>
 
         <CapabilitiesSection />
 
         <section id="contact" className="contact-section" aria-labelledby="contact-title">
-          <p className="contact-eyebrow">Available for remote software roles and collaborations</p>
-          <h2 id="contact-title">Let&apos;s discuss<br /><em>research systems and software work.</em></h2>
-          <div className="contact-links"><a className="contact-link" href="mailto:banbansalinas@gmail.com"><Mail size={19} /> banbansalinas@gmail.com <ArrowUpRight size={19} /></a><ResumeDownloadLink className="contact-link"><ArrowUpRight size={19} /> Download resume (PDF)</ResumeDownloadLink></div>
-          <div className="social-row"><a href="https://github.com/sardinexszc" target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", linkKind: "github_profile" })}><Github size={17} /> GitHub</a><a href="https://www.linkedin.com/in/banbansalinas/" target="_blank" rel="noopener noreferrer" onClick={() => trackEngagement({ type: "outbound_click", linkKind: "linkedin_profile" })}><Linkedin size={17} /> LinkedIn</a></div>
+          <p className="contact-eyebrow">Available for full-time, contract, and remote software roles</p>
+          <h2 id="contact-title">Let&apos;s discuss<br /><em>your next web role or project.</em></h2>
+          <div className="contact-links">
+            <a className="contact-link" href={`mailto:${profile.email}`}><Mail size={19} aria-hidden="true" /> {profile.email} <ArrowUpRight size={19} aria-hidden="true" /></a>
+            <TrackedLink className="contact-link" href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "linkedin_profile" }}><Linkedin size={19} aria-hidden="true" /> Connect on LinkedIn <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={19} aria-hidden="true" /></TrackedLink>
+            <a className="contact-link" href={profile.resumeUrl} download={profile.resumeFilename}><Download size={19} aria-hidden="true" /> Download resume (PDF)</a>
+          </div>
+          <div className="social-row">
+            <TrackedLink href={profile.githubUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "github_profile" }}><Github size={17} aria-hidden="true" /> GitHub <span className="visually-hidden">(opens in a new tab)</span></TrackedLink>
+            <p><MapPin size={17} aria-hidden="true" /> {profile.location}</p>
+          </div>
         </section>
       </main>
-      <footer><span>© 2026 Ivan Christian L. Salinas</span><span>Designed and built with care</span></footer>
+      <footer><span>© 2026 {profile.name}</span><a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">Built with Next.js · View source <span className="visually-hidden">(opens in a new tab)</span></a></footer>
     </div>
   );
 }
