@@ -7,10 +7,15 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const cookieName = "portfolio_visitor_id";
 const uuidPattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+// Audit tools and crawlers execute JavaScript too; they are not portfolio visitors.
+const automatedAgentPattern = /HeadlessChrome|Lighthouse|PageSpeed|bot\b|crawler|spider|Puppeteer|Playwright/i;
 
 export async function POST(request: NextRequest) {
   if (request.headers.get("origin") !== request.nextUrl.origin) {
     return NextResponse.json({ success: false, code: "invalid_origin", message: "Visit could not be recorded." }, { status: 403 });
+  }
+  if (automatedAgentPattern.test(request.headers.get("user-agent") ?? "")) {
+    return NextResponse.json({ success: true, recorded: false }, { headers: { "Cache-Control": "no-store" } });
   }
   const existing = request.cookies.get(cookieName)?.value;
   const visitorId = existing && uuidPattern.test(existing) ? existing : randomUUID();
