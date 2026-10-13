@@ -166,7 +166,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       </div>
       <section className="analytics-card session-panel">
         <div><p className="analytics-eyebrow">ENGAGEMENT</p><h2>Time spent exploring</h2>
-          <p className="audience-note">Active time excludes the landing loader and time in a hidden tab. Values are estimates.</p></div>
+          <p className="audience-note">Active time excludes time in a hidden tab. Values are estimates. Sessions before 2026-10-13 also excluded a 5-second landing loader.</p></div>
         <div className="session-metrics">
           <div><span>Average active time</span><strong>{audienceAvailable && totalSessions ? activeTime : "—"}</strong></div>
           <div><span>Engaged visits</span><strong>{audienceAvailable ? engagedSessions : "—"}</strong></div>
