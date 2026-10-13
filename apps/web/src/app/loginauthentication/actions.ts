@@ -73,6 +73,10 @@ export async function setPassword(formData: FormData) {
   }
   if (error?.code === "same_password") redirect(`${settingsPath}?password=unchanged`);
   if (error?.code === "weak_password") redirect(`${settingsPath}?password=weak`);
+  // Supabase's "Secure password change" requires a recent sign-in.
+  if (error?.code === "reauthentication_needed" || error?.code === "reauthentication_not_valid") {
+    redirect(`${settingsPath}?password=reauth`);
+  }
   if (error) redirect(`${settingsPath}?password=failed`);
   redirect(`${settingsPath}?password=updated`);
 }

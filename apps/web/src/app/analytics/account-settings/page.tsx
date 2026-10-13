@@ -15,7 +15,7 @@ export default async function AccountSettingsPage({ searchParams }: { searchPara
         <h2>Set or change your email password</h2>
         <p>Use this password with your email address to sign in next time.</p>
         {password && <p role={password === "updated" || password === "unchanged" ? "status" : "alert"} className={password === "updated" || password === "unchanged" ? "analytics-success" : "analytics-error"}>
-          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "unchanged" ? "This password is already saved. You can sign in with your email and password." : password === "invalid" ? "Use at least 12 characters and matching passwords." : password === "weak" ? "Choose a stronger password and try again." : "Could not save the password. Please try again."}
+          {password === "updated" ? "Password saved. You can now sign in with your email." : password === "unchanged" ? "This password is already saved. You can sign in with your email and password." : password === "invalid" ? "Use at least 12 characters and matching passwords." : password === "weak" ? "Choose a stronger password and try again." : password === "reauth" ? "For security, sign out and sign in again, then change your password." :"Could not save the password. Please try again."}
         </p>}
         <form action={setPassword} className="analytics-form">
           <label htmlFor="new-password">New password</label>
