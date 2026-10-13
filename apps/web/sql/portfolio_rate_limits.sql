@@ -7,7 +7,7 @@ create table if not exists public.portfolio_rate_limits (
 );
 alter table public.portfolio_rate_limits enable row level security;
 revoke all on public.portfolio_rate_limits from public, anon, authenticated;
-grant select, insert, update on public.portfolio_rate_limits to service_role;
+grant select, insert, update, delete on public.portfolio_rate_limits to service_role;
 
 create or replace function public.consume_portfolio_limit(
   p_bucket text, p_limit integer, p_window_seconds integer
@@ -18,6 +18,11 @@ begin
   if p_bucket !~ '^[0-9a-f]{64}$' or p_limit not between 1 and 1000 or
       p_window_seconds not between 1 and 3600 then
     raise exception 'Invalid tracking limit parameters';
+  end if;
+
+  -- Windows are at most one hour, so day-old buckets are dead. Prune them on ~1% of calls.
+  if random() < 0.01 then
+    delete from public.portfolio_rate_limits where window_started_at < now() - interval '1 day';
   end if;
 
   insert into public.portfolio_rate_limits as current_bucket (bucket, window_started_at, hits)
