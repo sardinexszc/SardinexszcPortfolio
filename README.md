@@ -37,6 +37,23 @@ All files are idempotent and can be re-run. Tables have row-level security enabl
 
 Tracking failures never block visitors. The resume route always serves the PDF, and the client ignores tracking errors.
 
+One-off maintenance scripts live in `apps/web/sql/maintenance/`. Each one previews first and ends in `rollback` until you change it to `commit`.
+
+### Admin security
+
+Built into the app:
+
+- Email sign-in allows 5 attempts per network per 15 minutes. This uses the same `consume_portfolio_limit` function as tracking. If the limiter is unavailable, sign-in still works and Supabase Auth's own limits apply.
+- Password changes require a sign-in within the last 10 minutes.
+- Only `SUPABASE_ADMIN_USER_ID` can open `/analytics`. Any other account is signed out on arrival.
+- Audit tools and crawlers (Lighthouse, headless Chrome, bots) are not counted as visitors.
+
+Recommended in the Supabase dashboard:
+
+- **Authentication → Sign In / Providers → Email → Secure password change:** on. This adds Supabase's own reauthentication on top of the app check.
+- **Authentication → Attack Protection → CAPTCHA:** optional. Turning it on requires adding a Turnstile or hCaptcha widget to `/loginauthentication` and allowing its domain in the CSP in `next.config.ts`.
+- **Authentication → Sign In / Providers:** if you only sign in with Google and your own email, disable new sign-ups.
+
 ## Local development
 
 Run the Next.js site with `npm run dev` from `apps/web`.
