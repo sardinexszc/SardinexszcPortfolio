@@ -1,7 +1,26 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { clientAddress, consumeRateLimit } from "@/lib/tracking-limit";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+
+const signInAttemptLimit = 5;
+const signInWindowSeconds = 15 * 60;
+const passwordChangeMaxSessionAgeMs = 10 * 60 * 1000;
+
+// Per-network cap on password attempts. If the limiter itself is unavailable, sign-in stays
+// possible and Supabase Auth's own rate limits remain the backstop.
+async function signInAllowed(): Promise<boolean> {
+  try {
+    const requestHeaders = await headers();
+    const host = (requestHeaders.get("host") ?? "unknown").toLowerCase();
+    return await consumeRateLimit(host, clientAddress(requestHeaders), "sign-in", signInAttemptLimit, signInWindowSeconds);
+  } catch (error) {
+    console.error("Sign-in rate limit unavailable", error);
+    return true;
+  }
+}
 
 export async function signIn(formData: FormData) {
   const emailValues = formData.getAll("email");
@@ -20,6 +39,9 @@ export async function signIn(formData: FormData) {
   }
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     redirect("/loginauthentication?error=unavailable");
+  }
+  if (!await signInAllowed()) {
+    redirect("/loginauthentication?error=rate-limited");
   }
   const supabase = await createClient();
   let result;
@@ -63,6 +85,11 @@ export async function setPassword(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user || user.id !== process.env.SUPABASE_ADMIN_USER_ID) {
     redirect("/loginauthentication?error=unauthorized");
+  }
+  // A stolen or forgotten-open session should not be enough to take over the account.
+  const signedInAt = user.last_sign_in_at ? Date.parse(user.last_sign_in_at) : Number.NaN;
+  if (!Number.isFinite(signedInAt) || Date.now() - signedInAt > passwordChangeMaxSessionAgeMs) {
+    redirect(`${settingsPath}?password=reauth`);
   }
   let error;
   try {
