@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight, Download, Github, Linkedin, Mail, MapPin } from "lucide-react";
+import { ArrowDown, ArrowUpRight, BookOpenText, Briefcase, Download, FileText, FolderGit2, Github, GraduationCap, Layers, Linkedin, Mail, MapPin, Target, UserRound, type LucideIcon } from "lucide-react";
 import type { Portfolio } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { CapabilitiesSection } from "./capabilities-section";
@@ -7,8 +7,8 @@ import { SiteHeader } from "./site-header";
 import { TrackedLink } from "./tracked-elements";
 import { projectDisplayTitle, projectSlug } from "@/lib/work-projects";
 
-function SectionTitle({ eyebrow, title, id }: { eyebrow: string; title: string; id: string }) {
-  return <div className="section-title"><span>{eyebrow}</span><h2 id={id}>{title}</h2></div>;
+function SectionTitle({ eyebrow, title, id, icon: Icon }: { eyebrow: string; title: string; id: string; icon: LucideIcon }) {
+  return <div className="section-title"><span><Icon size={18} aria-hidden="true" /> {eyebrow}</span><h2 id={id}>{title}</h2></div>;
 }
 
 const aboutHighlights = [
@@ -17,12 +17,12 @@ const aboutHighlights = [
   "Bring experience in teaching, published research, and government-funded projects.",
 ];
 
-const atAGlance = [
-  { label: "Focus", value: "Full-stack web development: Laravel and Next.js apps backed by SQL databases" },
-  { label: "Experience", value: "Information systems developer at Central Luzon State University, 2019–2026" },
-  { label: "Core stack", value: "PHP · Laravel · TypeScript · React · Next.js · MySQL · PostgreSQL" },
-  { label: "Education", value: "BS Information Technology; MS IT (Data Science) in progress" },
-  { label: "Location", value: "Nueva Ecija, Philippines · open to remote" },
+const atAGlance: { label: string; value: string; icon: LucideIcon }[] = [
+  { icon: Target, label: "Focus", value: "Full-stack web development: Laravel and Next.js apps backed by SQL databases" },
+  { icon: Briefcase, label: "Experience", value: "Information systems developer at Central Luzon State University, 2019–2026" },
+  { icon: Layers, label: "Core stack", value: "PHP · Laravel · TypeScript · React · Next.js · MySQL · PostgreSQL" },
+  { icon: GraduationCap, label: "Education", value: "BS Information Technology; MS IT (Data Science) in progress" },
+  { icon: MapPin, label: "Location", value: "Nueva Ecija, Philippines · open to remote" },
 ];
 
 const research = [
@@ -56,40 +56,40 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <aside className="hire-panel" aria-labelledby="glance-title">
             <h2 id="glance-title" className="hire-panel-label">At a glance</h2>
             <dl className="glance-list">
-              {atAGlance.map((fact) => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}
+              {atAGlance.map(({ icon: Icon, ...fact }) => <div key={fact.label}><dt><Icon size={16} aria-hidden="true" /> {fact.label}</dt><dd>{fact.value}</dd></div>)}
             </dl>
-            <a href={`mailto:${profile.email}?subject=Opportunity%20for%20Ivan%20Salinas`}>Email Ivan <ArrowUpRight size={16} aria-hidden="true" /></a>
+            <a href={`mailto:${profile.email}?subject=Opportunity%20for%20Ivan%20Salinas`}><span><Mail size={16} aria-hidden="true" /> Email Ivan</span> <ArrowUpRight size={16} aria-hidden="true" /></a>
           </aside>
         </section>
 
         <section id="work" className="content-section" aria-labelledby="work-title">
-          <SectionTitle id="work-title" eyebrow="01 / Selected work" title="Selected projects." />
+          <SectionTitle id="work-title" icon={FolderGit2} eyebrow="Selected work" title="Selected projects." />
           <SelectedWorkSection projects={portfolio.projects} />
         </section>
 
         <section id="about" className="content-section about-section" aria-labelledby="about-title">
-          <SectionTitle id="about-title" eyebrow="02 / About and experience" title="Experience across software, research, and teaching." />
+          <SectionTitle id="about-title" icon={UserRound} eyebrow="About and experience" title="Experience across software, research, and teaching." />
           <div className="about-grid">
             <div className="about-copy">
               <p className="about-lead">I turn research and operational needs into software teams can use every day.</p>
               <ul className="about-highlights">{aboutHighlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
             </div>
-            <div><h3 className="subsection-label">Professional experience</h3><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p>{entry.description.includes("\n") ? <ul className="experience-highlights">{entry.description.split("\n").map((highlight) => <li key={highlight}>{highlight}</li>)}</ul> : <small>{entry.description}</small>}</div></li>)}</ol></div>
+            <div><h3 className="subsection-label"><Briefcase size={16} aria-hidden="true" /> Professional experience</h3><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p>{entry.description.includes("\n") ? <ul className="experience-highlights">{entry.description.split("\n").map((highlight) => <li key={highlight}>{highlight}</li>)}</ul> : <small>{entry.description}</small>}</div></li>)}</ol></div>
           </div>
         </section>
 
         <section id="research" className="content-section research-education-section" aria-labelledby="research-education-title">
-          <SectionTitle id="research-education-title" eyebrow="03 / Research and education" title="Research and education." />
+          <SectionTitle id="research-education-title" icon={BookOpenText} eyebrow="Research and education" title="Research and education." />
           <div className="research-education-grid">
-            <div><h3 className="subsection-label">Research</h3><p className="research-intro">My published work explores research data systems and how people use technology.</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h4>{publication.title}</h4><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></a></li>)}</ol></div>
-            <div><h3 className="subsection-label">Education</h3><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p></div></li>)}</ol></div>
+            <div><h3 className="subsection-label"><FileText size={16} aria-hidden="true" /> Research</h3><p className="research-intro">My published work explores research data systems and how people use technology.</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h4>{publication.title}</h4><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></a></li>)}</ol></div>
+            <div><h3 className="subsection-label"><GraduationCap size={16} aria-hidden="true" /> Education</h3><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p></div></li>)}</ol></div>
           </div>
         </section>
 
         <CapabilitiesSection />
 
         <section id="contact" className="contact-section" aria-labelledby="contact-title">
-          <p className="contact-eyebrow">Available for full-time, contract, and remote software roles</p>
+          <p className="contact-eyebrow"><span className="status-dot" aria-hidden="true" /> Available for full-time, contract, and remote software roles</p>
           <h2 id="contact-title">Let&apos;s discuss<br /><em>your next web role or project.</em></h2>
           <div className="contact-links">
             <a className="contact-link" href={`mailto:${profile.email}`}><Mail size={19} aria-hidden="true" /> {profile.email} <ArrowUpRight size={19} aria-hidden="true" /></a>

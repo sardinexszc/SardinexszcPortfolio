@@ -1,10 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Space_Grotesk, DM_Mono } from "next/font/google";
+import { DM_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const sans = Space_Grotesk({ subsets: ["latin"], variable: "--font-sans" });
+const sans = Instrument_Sans({ subsets: ["latin"], variable: "--font-sans" });
+const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif" });
 const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 // Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
@@ -19,8 +20,8 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f5f5f2" },
-    { media: "(prefers-color-scheme: dark)", color: "#171716" },
+    { media: "(prefers-color-scheme: light)", color: "#e9e7e0" },
+    { media: "(prefers-color-scheme: dark)", color: "#161615" },
   ],
 };
 
@@ -65,7 +66,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${sans.variable} ${mono.variable}`}>
+      <body className={`${sans.variable} ${serif.variable} ${mono.variable}`}>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         <a href="#main-content" className="skip-link">Skip to main content</a>
         <ThemeProvider>{children}</ThemeProvider>
