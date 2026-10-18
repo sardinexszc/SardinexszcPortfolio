@@ -8,7 +8,7 @@ const demoPortfolio: Portfolio = {
       id: 1,
       title: "Crops and Resources Research and Development Center",
       description: "One place for CRRDC research, extension, personnel, and administrative records.",
-      image_url: null,
+      image_url: "/images/projects/crrdc.webp",
       tech_stack: ["Next.js", "React", "TypeScript", "JavaScript", "Vercel", "GitHub"],
       live_url: "https://crrdc.vercel.app/",
       github_url: "https://github.com/sardinexszc/crrdc",
@@ -18,7 +18,7 @@ const demoPortfolio: Portfolio = {
       id: 2,
       title: "Strengthening the M&E Capacity of CLAARRDEC in R&D through Database Management and Real Time Monitoring System (RTMS)",
       description: "A shared system for CLAARRDEC project reporting and oversight across member institutions.",
-      image_url: null,
+      image_url: "/images/projects/rtms.webp",
       tech_stack: ["Laravel", "PHP", "MySQL", "JavaScript", "GitHub"],
       live_url: "https://rtms.clsu.edu.ph/",
       github_url: null,
@@ -30,7 +30,7 @@ const demoPortfolio: Portfolio = {
       description: "A public website and e-library with controlled access, administration, and usage reporting.",
       image_url: null,
       tech_stack: ["Laravel", "PHP", "MySQL", "JavaScript", "GitHub"],
-      // https://claarrdec.clsu.edu.ph/ returned 404 on 2026-10-13. Restore it once the site is back up.
+      // No longer maintained by the current administrator; https://claarrdec.clsu.edu.ph/ returned 404 on 2026-10-13.
       live_url: null,
       github_url: null,
       featured: true,

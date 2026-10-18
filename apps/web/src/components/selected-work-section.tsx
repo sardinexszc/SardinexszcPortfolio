@@ -1,4 +1,5 @@
 import {
+  Archive,
   ArrowUpRight,
   BookOpen,
   Bot,
@@ -8,13 +9,13 @@ import {
   Globe,
   Layers,
   LineChart,
-  Lock,
   Microscope,
   Target,
   Trophy,
   UserRound,
   type LucideIcon,
 } from "lucide-react";
+import Image from "next/image";
 import type { Project } from "@/lib/types";
 import { ProjectDialog } from "./project-dialog";
 import { TechChip, TechIcon } from "./tech-icon";
@@ -68,11 +69,11 @@ function hostOf(url: string | null): string | null {
   }
 }
 
-// Until real screenshots exist, the cover is a browser-frame placeholder with the project's
-// category icon, so cards are not walls of text. A project with image_url shows the screenshot.
+// The cover is a browser frame around the project's screenshot. Projects without one show their
+// category icon instead, so cards are never walls of text.
 function ProjectCover({ project, title, category }: { project: Project; title: string; category: ProjectCategory }) {
   const CategoryIcon = categoryIcons[category];
-  const host = hostOf(project.live_url) ?? "internal system";
+  const host = hostOf(project.live_url) ?? "archived project";
 
   return (
     <figure className="work-cover" data-category={projectSlug(project)}>
@@ -81,8 +82,7 @@ function ProjectCover({ project, title, category }: { project: Project; title: s
         <p>{host}</p>
       </div>
       {projectHasScreenshot(project) ? (
-        // eslint-disable-next-line @next/next/no-img-element -- screenshot URLs come from the database; switch to next/image once real assets exist.
-        <img src={project.image_url as string} alt={`${title} screenshot`} loading="lazy" decoding="async" />
+        <Image src={project.image_url as string} alt={`${title} screenshot`} width={1600} height={819} sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 52rem" />
       ) : (
         <div className="work-cover-placeholder" aria-hidden="true">
           <CategoryIcon size={44} strokeWidth={1.4} />
@@ -94,7 +94,7 @@ function ProjectCover({ project, title, category }: { project: Project; title: s
 
 function ProjectLinks({ project, title }: { project: Project; title: string }) {
   if (!project.live_url && !project.github_url) {
-    return <p className="work-link-note"><Lock size={14} aria-hidden="true" /> Internal system, no public link</p>;
+    return <p className="work-link-note"><Archive size={14} aria-hidden="true" /> Archived, no longer maintained</p>;
   }
 
   return (

@@ -150,7 +150,8 @@ footer a:hover { color: var(--ink); }
 .work-cover-chrome { align-items: center; border-bottom: 1px solid var(--line); display: flex; gap: 6px; padding: 10px 14px; }
 .work-cover-chrome span { background: var(--line); border-radius: 50%; height: 9px; width: 9px; }
 .work-cover-chrome p { background: var(--surface); border-radius: 6px; color: var(--muted); flex: 1; font-family: var(--font-mono), monospace; font-size: .75rem; margin: 0 0 0 8px; overflow: hidden; padding: 3px 10px; text-overflow: ellipsis; white-space: nowrap; }
-.work-cover img { aspect-ratio: 16 / 9; display: block; object-fit: cover; object-position: top; width: 100%; }
+.work-cover img { aspect-ratio: 16 / 9; display: block; height: auto; object-fit: cover; object-position: top; width: 100%; }
+.project-dialog .work-cover img { aspect-ratio: auto; }
 .work-cover-placeholder { align-items: center; aspect-ratio: 16 / 8; color: var(--brand); display: flex; justify-content: center; position: relative; }
 /* A faint wireframe of a page layout behind the icon, so the cover reads as "a web app", not a blank box. */
 .work-cover-placeholder::before { background:
