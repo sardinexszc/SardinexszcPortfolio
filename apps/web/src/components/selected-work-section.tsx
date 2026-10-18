@@ -1,6 +1,25 @@
-import { ArrowUpRight } from "lucide-react";
+import {
+  Archive,
+  ArrowUpRight,
+  BookOpen,
+  Bot,
+  Code2,
+  Cpu,
+  Github,
+  Globe,
+  Layers,
+  LineChart,
+  Microscope,
+  Target,
+  Trophy,
+  UserRound,
+  type LucideIcon,
+} from "lucide-react";
+import Image from "next/image";
 import type { Project } from "@/lib/types";
-import { TrackedDetails, TrackedLink } from "./tracked-elements";
+import { ProjectDialog } from "./project-dialog";
+import { TechChip, TechIcon } from "./tech-icon";
+import { TrackedLink } from "./tracked-elements";
 import {
   getRoleSummary,
   inferCategory,
@@ -8,6 +27,7 @@ import {
   projectHasScreenshot,
   projectSlug,
   splitStack,
+  type ProjectCategory,
 } from "@/lib/work-projects";
 
 // [NEEDS INFO] Each "outcome" should carry a real, verifiable number when one exists
@@ -27,17 +47,71 @@ const projectDetails: Record<string, { problem: string; outcome: string }> = {
   },
 };
 
+const categoryIcons: Record<ProjectCategory, LucideIcon> = {
+  "Research Information System": Microscope,
+  "Monitoring & Evaluation": LineChart,
+  "CMS / E-Library": BookOpen,
+  "Full-Stack Web Application": Code2,
+  "AI / Automation": Bot,
+  "IoT / Smart Agriculture": Cpu,
+};
+
 export function projectAnchor(project: Project): string {
   return `project-${projectSlug(project)}`;
 }
 
-function WorkCard({ project, index }: { project: Project; index: number }) {
+function hostOf(url: string | null): string | null {
+  if (!url) return null;
+  try {
+    return new URL(url).host;
+  } catch {
+    return null;
+  }
+}
+
+// The cover is a browser frame around the project's screenshot. Projects without one show their
+// category icon instead, so cards are never walls of text.
+function ProjectCover({ project, title, category }: { project: Project; title: string; category: ProjectCategory }) {
+  const CategoryIcon = categoryIcons[category];
+  const host = hostOf(project.live_url) ?? "archived project";
+
+  return (
+    <figure className="work-cover" data-category={projectSlug(project)}>
+      <div className="work-cover-chrome" aria-hidden="true">
+        <span /><span /><span />
+        <p>{host}</p>
+      </div>
+      {projectHasScreenshot(project) ? (
+        <Image src={project.image_url as string} alt={`${title} screenshot`} width={1600} height={819} sizes="(max-width: 760px) 92vw, (max-width: 1080px) 46vw, 52rem" />
+      ) : (
+        <div className="work-cover-placeholder" aria-hidden="true">
+          <CategoryIcon size={44} strokeWidth={1.4} />
+        </div>
+      )}
+    </figure>
+  );
+}
+
+function ProjectLinks({ project, title }: { project: Project; title: string }) {
+  if (!project.live_url && !project.github_url) {
+    return <p className="work-link-note"><Archive size={14} aria-hidden="true" /> Archived, no longer maintained</p>;
+  }
+
+  return (
+    <div className="work-links">
+      {project.live_url ? <TrackedLink href={project.live_url} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", projectId: project.id, linkKind: "live_project" }}><Globe size={15} aria-hidden="true" /> Live site <span className="visually-hidden">for {title} (opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></TrackedLink> : null}
+      {project.github_url ? <TrackedLink href={project.github_url} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", projectId: project.id, linkKind: "github_repository" }}><Github size={15} aria-hidden="true" /> Source <span className="visually-hidden">for {title} (opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></TrackedLink> : null}
+    </div>
+  );
+}
+
+function WorkCard({ project }: { project: Project }) {
   const category = inferCategory(project);
+  const CategoryIcon = categoryIcons[category];
   const role = getRoleSummary(project);
   const stack = splitStack(project);
   const slug = projectSlug(project);
   const title = projectDisplayTitle(project);
-  const hasScreenshot = projectHasScreenshot(project);
   const details = projectDetails[slug] ?? {
     problem: project.description,
     outcome: project.description,
@@ -45,64 +119,39 @@ function WorkCard({ project, index }: { project: Project; index: number }) {
 
   return (
     <li className="work-card" id={projectAnchor(project)}>
-      <div className="work-card-header">
-        <p className="work-card-number">Project {String(index + 1).padStart(2, "0")}</p>
-        <p className="work-card-category">{category}</p>
-      </div>
-
-      <div className="work-card-core">
-        <h3>{title}</h3>
-        <p>{project.description}</p>
-      </div>
-
-      <div className="work-card-scanline">
-        <div><span className="work-eyebrow">Contribution</span><strong>{role}</strong></div>
-        <div><span className="work-eyebrow">Stack</span><strong>{stack.primary.slice(0, 3).join(" · ")}</strong></div>
-      </div>
-
-      {project.live_url || project.github_url ? (
-        <div className="work-links">
-          {project.live_url ? <TrackedLink href={project.live_url} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", projectId: project.id, linkKind: "live_project" }}>Visit live site <span className="visually-hidden">for {title} (opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></TrackedLink> : null}
-          {project.github_url ? <TrackedLink href={project.github_url} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", projectId: project.id, linkKind: "github_repository" }}>Source code <span className="visually-hidden">for {title} (opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></TrackedLink> : null}
-        </div>
-      ) : (
-        <p className="work-link-note">Public link currently unavailable</p>
-      )}
-
-      <TrackedDetails className="work-card-disclosure" projectId={project.id}>
-        <summary>Challenge, role, and result</summary>
-        <div className="work-card-detail-grid">
-          <section><p className="work-eyebrow">Challenge</p><p>{details.problem}</p></section>
-          <section><p className="work-eyebrow">My role</p><p>{role}</p></section>
-          <section><p className="work-eyebrow">Result</p><p>{details.outcome}</p></section>
-          <section>
-            <p className="work-eyebrow">Primary stack</p>
-            <div className="work-stack">
-              {stack.primary.map((tech) => (
-                <span key={tech}>{tech}</span>
-              ))}
+      <ProjectDialog
+        projectId={project.id}
+        title={title}
+        cover={<ProjectCover project={project} title={title} category={category} />}
+        summary={
+          <>
+            <div className="work-card-body">
+              <p className="work-card-category"><CategoryIcon size={15} aria-hidden="true" /> {category}</p>
+              <h3>{title}</h3>
+              <p>{project.description}</p>
             </div>
-          </section>
-
-          {stack.supporting.length > 0 ? (
-            <section>
-              <p className="work-eyebrow">Supporting technologies</p>
-              <div className="work-stack">
-                {stack.supporting.map((tech) => (
-                  <span key={tech}>{tech}</span>
-                ))}
-              </div>
-            </section>
-          ) : null}
+            <ul className="work-card-stack" aria-label={`${title} stack`}>
+              {stack.primary.map((tech) => <li key={tech}><TechIcon name={tech} size={16} />{tech}</li>)}
+            </ul>
+          </>
+        }
+        footer={<ProjectLinks project={project} title={title} />}
+      >
+        <p className="work-card-category"><CategoryIcon size={15} aria-hidden="true" /> {category}</p>
+        <p className="project-dialog-lead">{project.description}</p>
+        <div className="project-dialog-grid">
+          <section><h4><Target size={16} aria-hidden="true" /> Challenge</h4><p>{details.problem}</p></section>
+          <section><h4><UserRound size={16} aria-hidden="true" /> My role</h4><p>{role}</p></section>
+          <section><h4><Trophy size={16} aria-hidden="true" /> Result</h4><p>{details.outcome}</p></section>
         </div>
-      </TrackedDetails>
-
-      {hasScreenshot ? (
-        <figure className="work-screenshot">
-          {/* eslint-disable-next-line @next/next/no-img-element -- screenshot URLs are not configured yet; switch to next/image once real assets exist. */}
-          <img src={project.image_url as string} alt={`${title} screenshot`} loading="lazy" decoding="async" />
-        </figure>
-      ) : null}
+        <section className="project-dialog-stack">
+          <h4><Layers size={16} aria-hidden="true" /> Stack</h4>
+          <div className="work-stack">
+            {[...stack.primary, ...stack.supporting].map((tech) => <TechChip key={tech} name={tech} />)}
+          </div>
+        </section>
+        <ProjectLinks project={project} title={title} />
+      </ProjectDialog>
     </li>
   );
 }
@@ -113,8 +162,8 @@ export function SelectedWorkSection({ projects }: { projects: Project[] }) {
 
   return (
     <ul className="work-grid">
-      {visibleProjects.map((project, index) => (
-        <WorkCard key={project.id} project={project} index={index} />
+      {visibleProjects.map((project) => (
+        <WorkCard key={project.id} project={project} />
       ))}
     </ul>
   );

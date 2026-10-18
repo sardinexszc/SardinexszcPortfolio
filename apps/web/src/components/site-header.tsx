@@ -1,4 +1,4 @@
-import { ArrowUpRight } from "lucide-react";
+import { FolderGit2, MessageCircle, UserRound, Wrench } from "lucide-react";
 import Link from "next/link";
 import { ThemeToggle } from "./theme-toggle";
 
@@ -9,11 +9,11 @@ export function SiteHeader() {
         I<span>S</span>
       </Link>
       <nav className="header-nav" aria-label="Primary">
-        <a href="#work">Work</a>
-        <a href="#about">About</a>
-        <a href="#skills" className="nav-optional">Skills</a>
+        <a href="#work"><FolderGit2 size={16} aria-hidden="true" /> Work</a>
+        <a href="#about"><UserRound size={16} aria-hidden="true" /> About</a>
+        <a href="#skills" className="nav-optional"><Wrench size={16} aria-hidden="true" /> Skills</a>
         <a href="#contact" className="nav-contact">
-          Let&apos;s talk <ArrowUpRight size={15} aria-hidden="true" />
+          <MessageCircle size={16} aria-hidden="true" /> Let&apos;s talk
         </a>
         <ThemeToggle />
       </nav>

@@ -54,7 +54,6 @@ export function GoogleSignInLink() {
       if (redirecting) return;
       setRedirecting(true);
       // /auth/google is a route handler that redirects to Google, so it needs a full navigation, not router.push().
-      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.setTimeout(() => window.location.assign("/auth/google"), 150);
     }} aria-disabled={redirecting} data-pending={redirecting}>{redirecting ? "Connecting to Google…" : "Continue with Google"}</a>
     {redirecting && <AuthPendingOverlay message="Connecting to Google…" />}
