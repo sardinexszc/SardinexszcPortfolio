@@ -9,7 +9,7 @@ const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["nor
 const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-mono" });
 
 // Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
-const themeScript = `try{var t=localStorage.getItem("theme");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
+const themeScript = `try{var t=localStorage.getItem("theme-preference");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
 
 const title = "Ivan Christian Salinas — Full-Stack Software Engineer";
 const description =
@@ -20,7 +20,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#e9e7e0" },
+    { media: "(prefers-color-scheme: light)", color: "#dcd9d0" },
     { media: "(prefers-color-scheme: dark)", color: "#161615" },
   ],
 };
