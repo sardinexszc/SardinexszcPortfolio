@@ -1,8 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { signIn } from "./actions";
 import { AuthNotice, AuthSubmitButton, GoogleSignInLink } from "@/components/auth-feedback";
 
 export const dynamic = "force-dynamic";
+// Private admin route: keep it out of search results even if a crawler ignores robots.txt.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export default async function LoginPage({
   searchParams,
