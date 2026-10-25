@@ -54,9 +54,10 @@ export function inferCategory(project: Project): ProjectCategory {
 
   if (/(monitoring|m&e|evaluation|rtms)/.test(haystack)) return "Monitoring & Evaluation";
   if (/(cms|content management|e-library|library)/.test(haystack)) return "CMS / E-Library";
-  if (/(research|rd|r&d|consortium)/.test(haystack)) return "Research Information System";
-  if (/(iot|smart agriculture|esp32|sensor)/.test(haystack)) return "IoT / Smart Agriculture";
-  if (/(ai|automation|llm|n8n)/.test(haystack)) return "AI / Automation";
+  // Word boundaries matter: bare "rd" matched "dashboard" and bare "ai" matched "email".
+  if (/(research|r&d|consortium)/.test(haystack)) return "Research Information System";
+  if (/(\biot\b|smart agriculture|esp32|sensor)/.test(haystack)) return "IoT / Smart Agriculture";
+  if (/(\bai\b|automation|\bllm\b|n8n)/.test(haystack)) return "AI / Automation";
   return "Full-Stack Web Application";
 }
 
@@ -91,6 +92,9 @@ export function getRoleSummary(project: Project): string {
   }
   if (slug === "claarrdec-cms-e-library") {
     return "Built the public site, e-library, and admin tools.";
+  }
+  if (slug === "portfolio-and-analytics-platform") {
+    return "Designed and built it end to end: interface, Supabase schema and security, auth, tracking APIs, and deployment.";
   }
   return "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }

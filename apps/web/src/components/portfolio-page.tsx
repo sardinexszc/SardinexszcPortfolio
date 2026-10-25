@@ -2,7 +2,7 @@ import { ArrowDown, ArrowUpRight, BookOpenText, Briefcase, Download, FileText, F
 import type { Portfolio } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { CapabilitiesSection } from "./capabilities-section";
-import { SelectedWorkSection, projectAnchor } from "./selected-work-section";
+import { OtherProjects, SelectedWorkSection, projectAnchor } from "./selected-work-section";
 import { SiteHeader } from "./site-header";
 import { TrackedLink } from "./tracked-elements";
 import { projectDisplayTitle, projectSlug } from "@/lib/work-projects";
@@ -65,6 +65,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <section id="work" className="content-section" aria-labelledby="work-title">
           <SectionTitle id="work-title" icon={FolderGit2} eyebrow="Selected work" title="Selected projects." />
           <SelectedWorkSection projects={portfolio.projects} />
+          <OtherProjects projects={portfolio.projects} />
         </section>
 
         <section id="about" className="content-section about-section" aria-labelledby="about-title">

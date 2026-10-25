@@ -5,6 +5,7 @@ import {
   Bot,
   Code2,
   Cpu,
+  FolderOpen,
   Github,
   Globe,
   Layers,
@@ -44,6 +45,10 @@ const projectDetails: Record<string, { problem: string; outcome: string }> = {
   "claarrdec-cms-e-library": {
     problem: "Public content and library resources needed different access levels.",
     outcome: "Deployed a website with publishing, e-library access, and usage reports.",
+  },
+  "portfolio-and-analytics-platform": {
+    problem: "A portfolio has to load instantly for recruiters, while I still need to know which projects and links get attention, without third-party trackers.",
+    outcome: "Lighthouse 100 for accessibility on mobile and desktop. A private dashboard reports visits, resume downloads, and project interest; tables are locked down with row-level security and tracking is rate-limited.",
   },
 };
 
@@ -166,5 +171,32 @@ export function SelectedWorkSection({ projects }: { projects: Project[] }) {
         <WorkCard key={project.id} project={project} />
       ))}
     </ul>
+  );
+}
+
+// Smaller public projects: no cover or dialog, just enough to open the code and the live build.
+export function OtherProjects({ projects }: { projects: Project[] }) {
+  const others = projects.filter((project) => !project.featured);
+  if (others.length === 0) return null;
+
+  return (
+    <div className="other-projects">
+      <h3 className="subsection-label" id="other-projects-title"><FolderOpen size={16} aria-hidden="true" /> Other projects</h3>
+      <ul className="other-grid" aria-labelledby="other-projects-title">
+        {others.map((project) => {
+          const title = projectDisplayTitle(project);
+          return (
+            <li className="other-card" key={project.id} id={projectAnchor(project)}>
+              <h4>{title}</h4>
+              <p>{project.description}</p>
+              <ul className="work-card-stack" aria-label={`${title} stack`}>
+                {splitStack(project).primary.map((tech) => <li key={tech}><TechIcon name={tech} size={16} />{tech}</li>)}
+              </ul>
+              <ProjectLinks project={project} title={title} />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }
