@@ -5,7 +5,8 @@
   --db-body: #5c5c5c; --db-muted: #707070; --db-on-dark: #cfd8cf;
   --db-border: #dfe4df; --db-border-dark: #333; --db-surface: #f0f0f0;
   --db-radius: 14px;
-  background: var(--db-white);
+  /* Light grey page like the home page; cards stay white on top of it. */
+  background: var(--db-surface);
   color: var(--db-black);
   font-family: var(--font-sans), system-ui, sans-serif;
   color-scheme: light;
@@ -133,7 +134,7 @@
 .cms-check { align-items: center; align-self: end; display: flex; font-size: .88rem; gap: 10px; min-height: 44px; }
 .cms-check input { accent-color: var(--db-black); height: 18px; width: 18px; }
 .cms-image { align-items: center; display: grid; gap: 14px; grid-template-columns: 160px minmax(0, 1fr); }
-.cms-image img, .cms-image-empty { aspect-ratio: 16 / 10; background: var(--db-surface); border-radius: 10px; height: auto; object-fit: cover; width: 160px; }
+.cms-image img, .cms-image-empty { aspect-ratio: 16 / 10; background: #e2e5e2; border-radius: 10px; height: auto; object-fit: cover; width: 160px; }
 .cms-image-empty { align-items: center; color: var(--db-muted); display: flex; font-size: .75rem; justify-content: center; }
 .cms-image > div { display: grid; gap: 8px; }
 .cms-image input[type="file"] { border-style: dashed; color: var(--db-body); font-size: .8rem; }
