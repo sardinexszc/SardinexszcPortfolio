@@ -100,8 +100,8 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   return (
     <div className="dashboard-content">
       <header className="dashboard-page-header">
-        <p className="analytics-eyebrow">OVERVIEW / 01</p>
-        <h1>Engagement dashboard</h1>
+        <p className="analytics-eyebrow">/ Overview (01)</p>
+        <h1>Engagement<span className="db-dot">.</span></h1>
         <p>Portfolio activity across recorded deployments, including historical visitor and resume totals.</p>
       </header>
       {notice === "signed-in" && <AuthNotice message="Signed in successfully." successNotice="signed-in" />}
@@ -111,8 +111,8 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       {engagementError && <p role="alert" className="analytics-error">Engagement counts could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
       {audienceError && <p role="alert" className="analytics-error">Audience insights could not be loaded. <Link href="/analytics">Try again</Link>.</p>}
       <div className="analytics-grid">
-        <section className="analytics-card"><h2>Unique visitors</h2><strong>{visitorCount ?? "—"}</strong><p>Browser cookies counted once.</p></section>
-        <section className="analytics-card"><h2>Resume downloads</h2><strong>{downloadCount ?? "—"}</strong><p>Recorded PDF responses.</p></section>
+        <section className="analytics-card"><h2>Unique visitors</h2><strong>{visitorCount ?? "—"}<span className="db-dot">.</span></strong><p>Browser cookies counted once.</p></section>
+        <section className="analytics-card"><h2>Resume downloads</h2><strong>{downloadCount ?? "—"}<span className="db-dot">.</span></strong><p>Recorded PDF responses.</p></section>
       </div>
       <div className="engagement-panels">
         <section className="analytics-card engagement-panel">

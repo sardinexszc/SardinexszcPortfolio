@@ -1,122 +1,44 @@
+import "server-only";
+import { unstable_cache } from "next/cache";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { fallbackContent } from "./fallback-content";
 import type { Portfolio } from "./types";
 
-const verifiedTechnologies = ["PHP", "JavaScript", "TypeScript", "SQL", "Java", "React", "Next.js", "Laravel", "MySQL", "PostgreSQL", "Supabase", "n8n", "REST APIs", "Git", "GitHub", "Vercel", "ESP32", "Arduino", "PlatformIO", "ArcGIS", "QGIS"];
+// CMS saves call updateTag(CONTENT_TAG) so the home page shows the edit on the next request.
+export const CONTENT_TAG = "portfolio-content";
 
-const demoPortfolio: Portfolio = {
-  projects: [
-    {
-      id: 1,
-      title: "Crops and Resources Research and Development Center",
-      description: "One place for CRRDC research, extension, personnel, and administrative records.",
-      image_url: "/images/projects/crrdc.webp",
-      tech_stack: ["Next.js", "React", "TypeScript", "JavaScript", "Vercel", "GitHub"],
-      live_url: "https://crrdc.vercel.app/",
-      github_url: "https://github.com/sardinexszc/crrdc",
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "Strengthening the M&E Capacity of CLAARRDEC in R&D through Database Management and Real Time Monitoring System (RTMS)",
-      description: "A shared system for CLAARRDEC project reporting and oversight across member institutions.",
-      image_url: "/images/projects/rtms.webp",
-      tech_stack: ["Laravel", "PHP", "MySQL", "JavaScript", "GitHub"],
-      live_url: "https://rtms.clsu.edu.ph/",
-      github_url: null,
-      featured: true,
-    },
-    {
-      id: 3,
-      title: "CLAARRDEC",
-      description: "A public website and e-library with controlled access, administration, and usage reporting.",
-      image_url: null,
-      tech_stack: ["Laravel", "PHP", "MySQL", "JavaScript", "GitHub"],
-      // No longer maintained by the current administrator; https://claarrdec.clsu.edu.ph/ returned 404 on 2026-10-13.
-      live_url: null,
-      github_url: null,
-      featured: true,
-    },
-    {
-      id: 4,
-      title: "Portfolio and Analytics Platform",
-      description: "This site: a server-rendered portfolio with a private analytics dashboard, admin sign-in, and rate-limited tracking APIs.",
-      image_url: "/images/projects/portfolio.webp",
-      tech_stack: ["Next.js", "React", "TypeScript", "Supabase", "PostgreSQL", "Vercel", "GitHub"],
-      live_url: "https://ivansalinas.vercel.app/",
-      github_url: "https://github.com/sardinexszc/SardinexszcPortfolio",
-      featured: true,
-    },
-    // Smaller public projects, listed under "Other projects". Descriptions follow each repository's README.
-    {
-      id: 5,
-      title: "TCEHub",
-      description: "Mobile-first community hub front end for the Toyota Camry Elite community: shop directory with filters and pagination, journals, events, galleries, and read-only admin tables. Runs on typed mock data; the backend is not connected yet.",
-      image_url: null,
-      tech_stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vercel"],
-      live_url: "https://tcehub-alpha.vercel.app/",
-      github_url: "https://github.com/sardinexszc/tcehub",
-      featured: false,
-    },
-    {
-      id: 6,
-      title: "User Management Dashboard",
-      description: "Front-end practical assessment: user directory with search, combined filters, sorting, pagination, validated add and edit, and JSON/CSV import and export, stored in the browser.",
-      image_url: null,
-      tech_stack: ["JavaScript", "Bootstrap"],
-      live_url: "https://user-management-assessment-lyart.vercel.app/",
-      github_url: "https://github.com/sardinexszc/user-management-assessment",
-      featured: false,
-    },
-  ],
-  skills: verifiedTechnologies.map((name, index) => ({ id: index + 1, name, proficiency: 0, icon: null })),
-  timeline: [
-    {
-      id: 1,
-      type: "experience",
-      organization: "Independent and collaborative product work",
-      role: "Full-Stack Web Developer",
-      description: "Building web applications and automation workflows with Next.js, Laravel, and Supabase.",
-      start_date: "2026",
-      end_date: null,
-    },
-    {
-      id: 2,
-      type: "experience",
-      organization: "Central Luzon State University",
-      role: "Researcher, Instructor, and Information Systems Developer",
-      description: "Delivered research information, monitoring, and content systems for institutional projects.\nLed small teams and worked with researchers and stakeholders to define requirements and coordinate delivery.\nTaught undergraduate programming and supervised capstone projects.",
-      start_date: "2019",
-      end_date: "2026",
-    },
-    {
-      id: 3,
-      type: "experience",
-      organization: "Central Luzon State University",
-      role: "Project Technical Staff",
-      description: "Maintained project records and technical reports for research initiatives.\nSupported requirements gathering and coordination across project teams.",
-      start_date: "2017",
-      end_date: "2019",
-    },
-    {
-      id: 4,
-      type: "education",
-      organization: "Nueva Ecija University of Science and Technology",
-      role: "Master of Science in Information Technology, Major in Data Science",
-      description: "Graduate study in Information Technology with a major in Data Science.",
-      start_date: "2026",
-      end_date: null,
-    },
-    {
-      id: 5,
-      type: "education",
-      organization: "Central Luzon State University",
-      role: "Bachelor of Science in Information Technology, Major in Systems Development",
-      description: "Undergraduate degree in Information Technology with a major in Systems Development.",
-      start_date: "2013",
-      end_date: "2017",
-    },
-  ],
-};
+const loadContent =unstable_cache(async (): Promise<Portfolio> => {
+  const db = createAdminClient();
+  const ordered = (table: string) => db.from(table).select("*").order("sort_order").order("id");
+  const results = await Promise.all([
+    db.from("site_settings").select("content").eq("id", 1).maybeSingle(),
+    ordered("projects"),
+    ordered("timeline_entries"),
+    ordered("publications"),
+    ordered("ip_items"),
+    ordered("capability_groups"),
+  ]);
+  const failed = results.find((result) => result.error);
+  if (failed) throw failed.error;
+  const [settings, projects, timeline, publications, ipItems, capabilities] = results;
+  // No settings row means the seed has not run yet; once it has, an empty table is a deliberate edit.
+  if (!settings.data) return fallbackContent;
+  return {
+    settings: { ...fallbackContent.settings, ...settings.data.content },
+    projects: projects.data ?? [],
+    timeline: timeline.data ?? [],
+    publications: publications.data ?? [],
+    ipItems: ipItems.data ?? [],
+    capabilities: capabilities.data ?? [],
+  };
+}, [CONTENT_TAG], { tags: [CONTENT_TAG], revalidate: 3600 });
 
 export async function getPortfolio(): Promise<Portfolio> {
-  return demoPortfolio;
+  if (!process.env.SUPABASE_SECRET_KEY || !process.env.NEXT_PUBLIC_SUPABASE_URL) return fallbackContent;
+  try {
+    return await loadContent();
+  } catch (error) {
+    console.error("Portfolio content could not be loaded; showing built-in copy", error);
+    return fallbackContent;
+  }
 }

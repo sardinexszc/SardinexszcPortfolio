@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { signIn } from "./actions";
 import { AuthNotice, AuthSubmitButton, GoogleSignInLink } from "@/components/auth-feedback";
+import "@/components/dashboard.css";
 
 export const dynamic = "force-dynamic";
 // Private admin route: keep it out of search results even if a crawler ignores robots.txt.
@@ -28,9 +29,9 @@ export default async function LoginPage({
     <main id="main-content" className="analytics-shell">
       <Link href="/" className="analytics-back">← Back to portfolio</Link>
       <div className="analytics-card">
-        <p className="analytics-eyebrow">PORTFOLIO / ADMIN</p>
-        <h1>Sign in</h1>
-        <p>Access private portfolio engagement analytics.</p>
+        <p className="analytics-eyebrow">/ Portfolio admin</p>
+        <h1>Sign in<span className="db-dot">.</span></h1>
+        <p>Access portfolio analytics and content.</p>
         {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
         {notice === "signed-out" && <AuthNotice message="Signed out successfully." successNotice="signed-out" />}
         <form action={signIn} className="analytics-form">

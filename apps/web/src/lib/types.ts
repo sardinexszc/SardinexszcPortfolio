@@ -7,14 +7,9 @@ export type Project = {
   live_url: string | null;
   github_url: string | null;
   featured: boolean;
-  sort_order?: number;
-};
-
-export type Skill = {
-  id: number;
-  name: string;
-  proficiency: number;
-  icon: string | null;
+  role: string | null;
+  problem: string | null;
+  outcome: string | null;
   sort_order?: number;
 };
 
@@ -29,8 +24,54 @@ export type TimelineEntry = {
   sort_order?: number;
 };
 
+export type PublicationStatus = "Published" | "Accepted" | "Under review";
+
+export type Publication = {
+  id: number;
+  title: string;
+  venue: string;
+  status: PublicationStatus;
+  doi: string | null;
+  sort_order?: number;
+};
+
+export type IpItem = { id: number; title: string; detail: string; sort_order?: number };
+
+export type CapabilityGroup = { id: number; title: string; tools: string[]; sort_order?: number };
+
+export type ServiceIcon = "code" | "database" | "cpu";
+
+// Page copy that is not a list of records. Stored as one JSON row in site_settings.
+export type SiteSettings = {
+  heroIntro: string;
+  heroStack: string[];
+  statusLine: string;
+  statusSub: string;
+  heroImage: string;
+  portraitImage: string;
+  aboutStatement: string;
+  aboutStatementMuted: string;
+  aboutCardTitle: string;
+  strengths: string[];
+  patentNote: string;
+  services: { icon: ServiceIcon; title: string; text: string }[];
+  portraitTitle: string;
+  portraitSub: string;
+  projectsIntro: string;
+  capabilitiesStatement: string;
+  capabilitiesStatementMuted: string;
+  researchStatement: string;
+  researchStatementMuted: string;
+  training: string;
+  contactLead: string;
+  contactStrong: string;
+};
+
 export type Portfolio = {
+  settings: SiteSettings;
   projects: Project[];
-  skills: Skill[];
   timeline: TimelineEntry[];
+  publications: Publication[];
+  ipItems: IpItem[];
+  capabilities: CapabilityGroup[];
 };

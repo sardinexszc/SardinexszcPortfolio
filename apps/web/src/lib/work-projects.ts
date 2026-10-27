@@ -6,7 +6,8 @@ export type ProjectCategory =
   | "CMS / E-Library"
   | "Full-Stack Web Application"
   | "AI / Automation"
-  | "IoT / Smart Agriculture";
+  | "IoT / Smart Agriculture"
+  | "Data Engineering";
 
 export type ProjectStacks = {
   primary: string[];
@@ -52,11 +53,13 @@ export function inferCategory(project: Project): ProjectCategory {
   const stack = project.tech_stack.join(" ").toLowerCase();
   const haystack = `${title} ${description} ${stack}`;
 
+  // Data engineering and IoT go first: their descriptions also mention monitoring and dashboards.
+  if (/(warehouse|\bdbt\b|\betl\b)/.test(haystack)) return "Data Engineering";
+  if (/(\biot\b|smart agriculture|esp32|sensor)/.test(haystack)) return "IoT / Smart Agriculture";
   if (/(monitoring|m&e|evaluation|rtms)/.test(haystack)) return "Monitoring & Evaluation";
   if (/(cms|content management|e-library|library)/.test(haystack)) return "CMS / E-Library";
   // Word boundaries matter: bare "rd" matched "dashboard" and bare "ai" matched "email".
   if (/(research|r&d|consortium)/.test(haystack)) return "Research Information System";
-  if (/(\biot\b|smart agriculture|esp32|sensor)/.test(haystack)) return "IoT / Smart Agriculture";
   if (/(\bai\b|automation|\bllm\b|n8n)/.test(haystack)) return "AI / Automation";
   return "Full-Stack Web Application";
 }
@@ -83,22 +86,11 @@ export function splitStack(project: Project): ProjectStacks {
 }
 
 export function getRoleSummary(project: Project): string {
-  const slug = projectSlug(project);
-  if (slug === "crops-and-resources-rd-center") {
-    return "Led requirements, database design, development, and deployment.";
-  }
-  if (slug === "claarrdec-real-time-monitoring-system") {
-    return "Built the monitoring and reporting workflows.";
-  }
-  if (slug === "claarrdec-cms-e-library") {
-    return "Built the public site, e-library, and admin tools.";
-  }
-  if (slug === "portfolio-and-analytics-platform") {
-    return "Designed and built it end to end: interface, Supabase schema and security, auth, tracking APIs, and deployment.";
-  }
-  return "Full-stack developer involved across planning, implementation, testing, and delivery.";
+  return project.role || "Full-stack developer involved across planning, implementation, testing, and delivery.";
 }
 
-export function projectHasScreenshot(project: Project): boolean {
-  return Boolean(project.image_url && project.image_url.trim().length > 0);
+// Images are local files or uploads in the CMS bucket; anything else (or nothing) shows the placeholder.
+export const MEDIA_PREFIX = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/`;
+export function isAllowedImage(src: string | null | undefined): src is string {
+  return Boolean(src && ((src.startsWith("/") && !src.startsWith("//")) || src.startsWith(MEDIA_PREFIX)));
 }

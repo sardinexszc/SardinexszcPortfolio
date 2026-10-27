@@ -7,8 +7,8 @@ export default async function AccountSettingsPage({ searchParams }: { searchPara
   return (
     <div className="dashboard-content">
       <header className="dashboard-page-header">
-        <p className="analytics-eyebrow">WORKSPACE / 03</p>
-        <h1>Account Settings</h1>
+        <p className="analytics-eyebrow">/ Account (04)</p>
+        <h1>Account settings<span className="db-dot">.</span></h1>
         <p>Manage how you access your private dashboard.</p>
       </header>
       <section className="analytics-card analytics-password-card">

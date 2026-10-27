@@ -28,8 +28,15 @@ const nextConfig: NextConfig = {
     '/api/track-download': ['./assets/resume/2026_ICLSalinas_Resume.pdf'],
   },
   allowedDevOrigins: ["192.168.100.188", "192.168.100.190", "localhost"],
-  // Only local images. A remote pattern would let anyone use the optimizer as a resizing proxy for that host.
-  images: {},
+  // Local images plus the CMS bucket only. The optimizer serves both from this origin, so CSP img-src stays 'self'.
+  // The pattern is limited to the one public bucket, so the optimizer cannot proxy anything else on that host.
+  images: {
+    remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
+      ? [new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/**`)]
+      : [],
+  },
+  // CMS image uploads go through Server Actions; the bucket itself caps files at 4 MB.
+  experimental: { serverActions: { bodySizeLimit: "5mb" } },
   async headers() {
     if (isDevelopment) {
       return [];

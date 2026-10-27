@@ -1,4 +1,4 @@
-import type { Metadata, Viewport } from "next";
+﻿import type { Metadata, Viewport } from "next";
 import { DM_Mono, Instrument_Sans, Instrument_Serif } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { getSiteUrl } from "@/lib/site-url";
@@ -13,7 +13,7 @@ const themeScript = `try{var t=localStorage.getItem("theme-preference");if(t!=="
 
 const title = "Ivan Christian Salinas — Full-Stack Software Engineer";
 const description =
-  "Full-stack web developer in the Philippines building database-backed web applications with Laravel, PHP, Next.js, React, TypeScript, MySQL, and PostgreSQL. Open to full-time, contract, and remote roles.";
+  "Full-stack web developer in the Philippines building live information systems with Laravel, Next.js, TypeScript, and PostgreSQL, including a monitoring system used by every member university of a research consortium. Data engineering, IoT, and published research. Open to full-time, contract, and remote roles.";
 
 export const viewport: Viewport = {
   width: "device-width",

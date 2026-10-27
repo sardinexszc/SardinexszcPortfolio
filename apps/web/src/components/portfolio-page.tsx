@@ -1,109 +1,183 @@
-import { ArrowDown, ArrowUpRight, BookOpenText, Briefcase, Download, FileText, FolderGit2, Github, GraduationCap, Layers, Linkedin, Mail, MapPin, Target, UserRound, type LucideIcon } from "lucide-react";
+import Image from "next/image";
+import { ArrowUpRight, Code2, Cpu, Database, Plus } from "lucide-react";
 import type { Portfolio } from "@/lib/types";
 import { profile } from "@/lib/profile";
-import { CapabilitiesSection } from "./capabilities-section";
-import { OtherProjects, SelectedWorkSection, projectAnchor } from "./selected-work-section";
-import { SiteHeader } from "./site-header";
+import { isAllowedImage } from "@/lib/work-projects";
+import { LocalTime, Reveal, RiseText, WorkGrid } from "./home-parts";
+import { TechChip, TechIcon } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
-import { projectDisplayTitle, projectSlug } from "@/lib/work-projects";
+import "./portfolio-page.css";
 
-function SectionTitle({ eyebrow, title, id, icon: Icon }: { eyebrow: string; title: string; id: string; icon: LucideIcon }) {
-  return <div className="section-title"><span><Icon size={18} aria-hidden="true" /> {eyebrow}</span><h2 id={id}>{title}</h2></div>;
+const serviceIcons = { code: Code2, database: Database, cpu: Cpu };
+function SectionLabel({ label, index }: { label: string; index: string }) {
+  return <div className="pf-label"><span>/ {label}</span><span>({index})</span></div>;
 }
 
-const aboutHighlights = [
-  "Build research and institutional web systems, from requirements to deployment.",
-  "Lead small teams and work directly with researchers and administrators.",
-  "Bring experience in teaching, published research, and government-funded projects.",
-];
-
-const atAGlance: { label: string; value: string; icon: LucideIcon }[] = [
-  { icon: Target, label: "Focus", value: "Full-stack web development: Laravel and Next.js apps backed by SQL databases" },
-  { icon: Briefcase, label: "Experience", value: "Information systems developer at Central Luzon State University, 2019–2026" },
-  { icon: Layers, label: "Core stack", value: "PHP · Laravel · TypeScript · React · Next.js · MySQL · PostgreSQL" },
-  { icon: GraduationCap, label: "Education", value: "BS Information Technology; MS IT (Data Science) in progress" },
-  { icon: MapPin, label: "Location", value: "Nueva Ecija, Philippines · open to remote" },
-];
-
-const research = [
-  { title: "Development of a Web-based Research Consortium Database Management System: Advancing Data-driven and Knowledge-based Project Management", published: "May 24, 2024", doi: "10.1145/3670105.3670120" },
-  { title: "Senior Digital World: Social Media Usage and Online Identity Expression Among Senior Citizens in Selected Barangays of Talavera, Nueva Ecija", published: "March 11, 2025", doi: "10.70059/nv6q0j65" },
-];
-
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
-  const featuredProjects = portfolio.projects.filter((project) => project.featured);
-  const strongestProjects = (featuredProjects.length > 0 ? featuredProjects : portfolio.projects).slice(0, 2);
   const experience = portfolio.timeline.filter((entry) => entry.type === "experience");
   const education = portfolio.timeline.filter((entry) => entry.type === "education");
+  const { settings: s, publications, ipItems: intellectualProperty, capabilities } = portfolio;
+  const coverProject = portfolio.projects.find((project) => isAllowedImage(project.image_url));
+  const statusCounts = (["Published", "Accepted", "Under review"] as const)
+    .map((status) => [status, publications.filter((publication) => publication.status === status).length] as const)
+    .filter(([, count]) => count > 0)
+    .map(([status, count]) => `${count} ${status.toLowerCase()}`).join(", ");
+  const featuredPublication = publications.find((publication) => publication.status === "Published") ?? publications[0];
 
   return (
-    <div className="page-shell">
-      <SiteHeader />
+    <div className="pf">
+      <header className="pf-bar">
+        <div className="pf-bar-id"><a href="#top">Ivan Salinas</a><LocalTime /></div>
+        <nav aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#work">Work</a>
+          <a href="#research">Research</a>
+          <a href={profile.resumeUrl} download={profile.resumeFilename}>Resume</a>
+          <a className="pf-pill" href={`mailto:${profile.email}`}>Hire me</a>
+        </nav>
+      </header>
+
       <main id="main-content">
-        <section className="hero" aria-labelledby="hero-title">
-          <div className="hero-content">
-            <div className="hero-kicker"><span className="status-dot" aria-hidden="true" /> Available for full-time, contract, and remote software roles</div>
-            <p className="hero-identity">{profile.name}</p>
-            <h1 id="hero-title">Full-stack web developer building systems teams use every day.</h1>
-            <p className="hero-support">I build database-backed web applications with Laravel, Next.js, and SQL. At Central Luzon State University I delivered research information, monitoring, and e-library platforms—from requirements and database design through deployment.</p>
-            <div className="hero-actions">
-              <a className="hero-cta hero-cta-primary" href="#work">View selected work <ArrowDown size={16} aria-hidden="true" /></a>
-              <a className="hero-cta hero-cta-secondary" href={profile.resumeUrl} download={profile.resumeFilename}>Download resume <span className="visually-hidden">(PDF)</span><Download size={16} aria-hidden="true" /></a>
-              <a className="hero-cta hero-cta-secondary" href="#contact">Contact Ivan <ArrowUpRight size={16} aria-hidden="true" /></a>
-            </div>
-            <div className="hero-proof-links"><p id="hero-projects-label">Selected projects:</p><ul aria-labelledby="hero-projects-label">{strongestProjects.map((project) => <li key={project.id}><a href={`#${projectAnchor(project)}`}>{projectSlug(project) === "crops-and-resources-rd-center" ? "CRRDC web platform" : projectDisplayTitle(project)}</a></li>)}</ul></div>
+        <section id="top" className="pf-hero" aria-labelledby="pf-title">
+          <div className="pf-hero-head">
+            <h1 id="pf-title"><RiseText text="Ivan Salinas" onLoad /><span className="pf-dot">.</span></h1>
+            <Reveal delay={0.5}><p>{s.heroIntro}</p></Reveal>
           </div>
-          <aside className="hire-panel" aria-labelledby="glance-title">
-            <h2 id="glance-title" className="hire-panel-label">At a glance</h2>
-            <dl className="glance-list">
-              {atAGlance.map(({ icon: Icon, ...fact }) => <div key={fact.label}><dt><Icon size={16} aria-hidden="true" /> {fact.label}</dt><dd>{fact.value}</dd></div>)}
-            </dl>
-            <a href={`mailto:${profile.email}?subject=Opportunity%20for%20Ivan%20Salinas`}><span><Mail size={16} aria-hidden="true" /> Email Ivan</span> <ArrowUpRight size={16} aria-hidden="true" /></a>
-          </aside>
+          <Reveal delay={0.65} className="pf-hero-row">
+            <ul className="pf-stack" aria-label="Core stack">
+              {s.heroStack.map((tech) => <li key={tech} title={tech}><TechIcon name={tech} size={22} /><span className="visually-hidden">{tech}</span></li>)}
+            </ul>
+            <p className="pf-status"><span className="pf-live" aria-hidden="true" /> {s.statusLine}<br /><span>{s.statusSub}</span></p>
+          </Reveal>
+          <Reveal delay={0.8} className="pf-hero-media">
+            {isAllowedImage(s.heroImage) ? <Image src={s.heroImage} alt="Portrait of Ivan Salinas" fill preload sizes="100vw" /> : null}
+          </Reveal>
         </section>
 
-        <section id="work" className="content-section" aria-labelledby="work-title">
-          <SectionTitle id="work-title" icon={FolderGit2} eyebrow="Selected work" title="Selected projects." />
-          <SelectedWorkSection projects={portfolio.projects} />
-          <OtherProjects projects={portfolio.projects} />
-        </section>
-
-        <section id="about" className="content-section about-section" aria-labelledby="about-title">
-          <SectionTitle id="about-title" icon={UserRound} eyebrow="About and experience" title="Experience across software, research, and teaching." />
-          <div className="about-grid">
-            <div className="about-copy">
-              <p className="about-lead">I turn research and operational needs into software teams can use every day.</p>
-              <ul className="about-highlights">{aboutHighlights.map((highlight) => <li key={highlight}>{highlight}</li>)}</ul>
-            </div>
-            <div><h3 className="subsection-label"><Briefcase size={16} aria-hidden="true" /> Professional experience</h3><ol className="timeline">{experience.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p>{entry.description.includes("\n") ? <ul className="experience-highlights">{entry.description.split("\n").map((highlight) => <li key={highlight}>{highlight}</li>)}</ul> : <small>{entry.description}</small>}</div></li>)}</ol></div>
+        <section id="about" className="pf-section" aria-labelledby="pf-about-title">
+          <SectionLabel label="About" index="01" />
+          <h2 id="pf-about-title" className="pf-statement"><RiseText text={s.aboutStatement} /> <span><RiseText text={s.aboutStatementMuted} delay={0.3} /></span></h2>
+          <div className="pf-bento">
+            <Reveal className="pf-col">
+              <div className="pf-card pf-card-image">
+                {coverProject?.image_url ? <Image src={coverProject.image_url} alt="" fill sizes="(max-width: 760px) 100vw, 25vw" /> : null}
+                <p className="pf-card-title">{s.aboutCardTitle}</p>
+                <div className="pf-card-foot"><span>© 2026</span><a className="pf-chip" href="#contact">Get in touch <Plus size={13} aria-hidden="true" /></a></div>
+              </div>
+              <ul className="pf-card pf-list">{s.strengths.map((item) => <li key={item}>{item}</li>)}</ul>
+            </Reveal>
+            <Reveal delay={0.1} className="pf-card pf-card-soft">
+              <div>
+                <p className="pf-big">{publications.length} <span>publications · {statusCounts}</span></p>
+                {s.patentNote ? <p className="pf-big-sub">{s.patentNote}</p> : null}
+              </div>
+              {featuredPublication ? <div className="pf-quote">
+                <p>&ldquo;{featuredPublication.title}&rdquo;</p>
+                <span>{featuredPublication.venue}</span>
+              </div> : null}
+            </Reveal>
+            <Reveal delay={0.2} className="pf-col">
+              {s.services.map(({ icon, title, text }) => {
+                const Icon = serviceIcons[icon] ?? Code2;
+                return <div className="pf-card pf-service" key={title}><Icon size={18} aria-hidden="true" /><h3>{title}</h3><p>{text}</p></div>;
+              })}
+            </Reveal>
+            <Reveal delay={0.3} className="pf-card pf-card-dark">
+              {isAllowedImage(s.portraitImage) ? <Image src={s.portraitImage} alt="" fill sizes="(max-width: 760px) 100vw, 25vw" /> : null}
+              <span className="pf-card-mark">IS</span>
+              <p className="pf-card-title">{s.portraitTitle}<span>{s.portraitSub}</span></p>
+            </Reveal>
           </div>
         </section>
 
-        <section id="research" className="content-section research-education-section" aria-labelledby="research-education-title">
-          <SectionTitle id="research-education-title" icon={BookOpenText} eyebrow="Research and education" title="Research and education." />
-          <div className="research-education-grid">
-            <div><h3 className="subsection-label"><FileText size={16} aria-hidden="true" /> Research</h3><p className="research-intro">My published work explores research data systems and how people use technology.</p><ol className="publication-list">{research.map((publication) => <li key={publication.doi}><h4>{publication.title}</h4><p>Published {publication.published}</p><a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">View publication via DOI {publication.doi} <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={15} aria-hidden="true" /></a></li>)}</ol></div>
-            <div><h3 className="subsection-label"><GraduationCap size={16} aria-hidden="true" /> Education</h3><ol className="timeline">{education.map((entry) => <li className="timeline-item" key={entry.id}><p className="timeline-dates"><time dateTime={entry.start_date}>{entry.start_date}</time> — {entry.end_date ? <time dateTime={entry.end_date}>{entry.end_date}</time> : "Present"}</p><div><h4>{entry.role}</h4><p>{entry.organization}</p></div></li>)}</ol></div>
+        <section id="work" className="pf-section" aria-labelledby="pf-work-title">
+          <div className="pf-display-head">
+            <h2 id="pf-work-title" className="pf-display"><RiseText text="Projects" /><span className="pf-dot">.</span></h2>
+            <p>{s.projectsIntro}</p>
           </div>
+          <WorkGrid projects={portfolio.projects} />
         </section>
 
-        <CapabilitiesSection />
+        <section id="capabilities" className="pf-section" aria-labelledby="pf-caps-title">
+          <SectionLabel label="Capabilities" index="02" />
+          <h2 id="pf-caps-title" className="pf-statement"><RiseText text={s.capabilitiesStatement} /> <span><RiseText text={s.capabilitiesStatementMuted} delay={0.2} /></span></h2>
+          <Reveal>
+            <ul className="pf-caps">
+              {capabilities.map((group) => (
+                <li key={group.id}>
+                  <h3>{group.title}</h3>
+                  <div className="pf-chips">{group.tools.map((tool) => <TechChip key={tool} name={tool} />)}</div>
+                </li>
+              ))}
+            </ul>
+          </Reveal>
+        </section>
 
-        <section id="contact" className="contact-section" aria-labelledby="contact-title">
-          <p className="contact-eyebrow"><span className="status-dot" aria-hidden="true" /> Available for full-time, contract, and remote software roles</p>
-          <h2 id="contact-title">Let&apos;s discuss<br /><em>your next web role or project.</em></h2>
-          <div className="contact-links">
-            <a className="contact-link" href={`mailto:${profile.email}`}><Mail size={19} aria-hidden="true" /> {profile.email} <ArrowUpRight size={19} aria-hidden="true" /></a>
-            <TrackedLink className="contact-link" href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "linkedin_profile" }}><Linkedin size={19} aria-hidden="true" /> Connect on LinkedIn <span className="visually-hidden">(opens in a new tab)</span><ArrowUpRight size={19} aria-hidden="true" /></TrackedLink>
-            <a className="contact-link" href={profile.resumeUrl} download={profile.resumeFilename}><Download size={19} aria-hidden="true" /> Download resume (PDF)</a>
-          </div>
-          <div className="social-row">
-            <TrackedLink href={profile.githubUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "github_profile" }}><Github size={17} aria-hidden="true" /> GitHub <span className="visually-hidden">(opens in a new tab)</span></TrackedLink>
-            <p><MapPin size={17} aria-hidden="true" /> {profile.location}</p>
-          </div>
+        <section className="pf-section" aria-labelledby="pf-exp-title">
+          <Reveal className="pf-dark-panel">
+            <SectionLabel label="Experience" index="03" />
+            <h2 id="pf-exp-title" className="visually-hidden">Experience and education</h2>
+            <ol className="pf-timeline">
+              {experience.map((entry) => (
+                <li key={entry.id}>
+                  <h3>{entry.role}</h3>
+                  <p>{entry.organization} · {entry.start_date} – {entry.end_date ?? "Present"}</p>
+                  {entry.description ? <ul>{entry.description.split("\n").map((line) => <li key={line}>{line}</li>)}</ul> : null}
+                </li>
+              ))}
+            </ol>
+            <h3 className="pf-sub">Education</h3>
+            <ol className="pf-timeline pf-timeline-compact">
+              {education.map((entry) => (
+                <li key={entry.id}>
+                  <h3>{entry.role}</h3>
+                  <p>{entry.organization} · {entry.start_date} – {entry.end_date ?? "Present"}</p>
+                  {entry.description ? <p className="pf-note">{entry.description}</p> : null}
+                </li>
+              ))}
+            </ol>
+            <h3 className="pf-sub">Training</h3>
+            <p className="pf-note">{s.training}</p>
+          </Reveal>
+        </section>
+
+        <section id="research" className="pf-section" aria-labelledby="pf-research-title">
+          <SectionLabel label="Research & IP" index="04" />
+          <h2 id="pf-research-title" className="pf-statement"><RiseText text={s.researchStatement} /> <span><RiseText text={s.researchStatementMuted} delay={0.25} /></span></h2>
+          <ol className="pf-pubs">
+            {publications.map((publication) => (
+              <li key={publication.id}>
+                <div><h3>{publication.title}</h3><p className="pf-pub-venue">{publication.venue}</p></div>
+                <span className="pf-status-tag" data-status={publication.status}>{publication.status}</span>
+                {publication.doi ? <a href={`https://doi.org/${publication.doi}`} target="_blank" rel="noopener noreferrer">DOI <ArrowUpRight size={14} aria-hidden="true" /><span className="visually-hidden">{publication.doi} (opens in a new tab)</span></a> : <span aria-hidden="true" />}
+              </li>
+            ))}
+          </ol>
+          <h3 className="pf-sub pf-sub-light">Intellectual property</h3>
+          <ul className="pf-pubs pf-ip">
+            {intellectualProperty.map((item) => (
+              <li key={item.id}><div><h3>{item.title}</h3><p className="pf-pub-venue">{item.detail}</p></div></li>
+            ))}
+          </ul>
         </section>
       </main>
-      <footer><span>© 2026 {profile.name}</span><a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">Built with Next.js · View source <span className="visually-hidden">(opens in a new tab)</span></a></footer>
+
+      <footer id="contact" className="pf-footer">
+        <div className="pf-footer-top">
+          <div>
+            <p>{s.contactLead} <strong>{s.contactStrong}</strong></p>
+            <a className="pf-footer-mail" href={`mailto:${profile.email}`}>{profile.email}</a>
+            <p className="pf-footer-loc">{profile.location}</p>
+          </div>
+          <ul>
+            <li><TrackedLink href={profile.linkedinUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "linkedin_profile" }}>LinkedIn<span className="visually-hidden"> (opens in a new tab)</span></TrackedLink></li>
+            <li><TrackedLink href={profile.githubUrl} target="_blank" rel="noopener noreferrer" event={{ type: "outbound_click", linkKind: "github_profile" }}>GitHub<span className="visually-hidden"> (opens in a new tab)</span></TrackedLink></li>
+            <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Resume (PDF)</a></li>
+          </ul>
+        </div>
+        <p className="pf-wordmark" aria-hidden="true"><RiseText text="Ivan Salinas" /></p>
+        <div className="pf-footer-base"><span>© 2026 {profile.name}</span><a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">Built with Next.js · View source<span className="visually-hidden"> (opens in a new tab)</span></a></div>
+      </footer>
     </div>
   );
 }

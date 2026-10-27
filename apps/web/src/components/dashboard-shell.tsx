@@ -6,6 +6,7 @@ import { PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { signOut } from "@/app/loginauthentication/actions";
 import { AuthSubmitButton } from "@/components/auth-feedback";
 import { DashboardNavigation } from "@/components/dashboard-navigation";
+import "./dashboard.css";
 
 export function DashboardShell({ children, email }: { children: ReactNode; email: string }) {
   const [collapsed, setCollapsed] = useState(false);
