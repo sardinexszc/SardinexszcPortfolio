@@ -6,27 +6,13 @@ import { motion, useReducedMotion } from "framer-motion";
 import { ArrowUpRight, X } from "lucide-react";
 import type { Project } from "@/lib/types";
 import { trackEngagement } from "@/lib/track-engagement";
-import { getRoleSummary, inferCategory, isAllowedImage, projectDisplayTitle, projectSlug, splitStack, type ProjectCategory } from "@/lib/work-projects";
+import { getRoleSummary, inferCategory, isAllowedImage, projectDisplayTitle, projectSlug, splitStack } from "@/lib/work-projects";
 import { TechChip } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
 
 const PLACEHOLDER = "/images/placeholder/project.svg";
 const EASE = [0.22, 1, 0.36, 1] as const;
-const formatTime = new Intl.DateTimeFormat("en-US", { timeZone: "Asia/Manila", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
-
 const projectImage = (project: Project) => (isAllowedImage(project.image_url) ? project.image_url : PLACEHOLDER);
-
-// Local time in Nueva Ecija. Rendered after mount so server and client markup match.
-export function LocalTime() {
-  const [now, setNow] = useState("");
-  useEffect(() => {
-    const tick = () => setNow(formatTime.format(new Date()));
-    const first = setTimeout(tick, 0);
-    const id = setInterval(tick, 30_000);
-    return () => { clearTimeout(first); clearInterval(id); };
-  }, []);
-  return <span className="pf-time">{now}</span>;
-}
 
 // Fades and lifts its content in once it scrolls into view.
 export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
@@ -69,12 +55,40 @@ function ProjectLinks({ project, title }: { project: Project; title: string }) {
   );
 }
 
-export function WorkGrid({ projects }: { projects: Project[] }) {
-  const [active, setActive] = useState<ProjectCategory | "all">("all");
+const ROMAN = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii", "ix", "x", "xi", "xii"];
+export const roman = (index: number) => ROMAN[index] ?? String(index + 1);
+
+// Chapter list in the side panel. The chapter crossing the middle of the viewport is marked current.
+export function ChapterNav({ chapters }: { chapters: { id: string; label: string }[] }) {
+  const [current, setCurrent] = useState(chapters[0]?.id);
+  useEffect(() => {
+    const observer = new IntersectionObserver((entries) => {
+      for (const entry of entries) if (entry.isIntersecting) setCurrent(entry.target.id);
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    for (const { id } of chapters) {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    }
+    return () => observer.disconnect();
+  }, [chapters]);
+  return (
+    <nav className="pf-chapters" aria-label="Chapters">
+      <ol>
+        {chapters.map(({ id, label }, i) => (
+          <li key={id}>
+            <a href={`#${id}`} aria-current={current === id ? "location" : undefined}><span aria-hidden="true">{roman(i)}</span>{label}</a>
+          </li>
+        ))}
+      </ol>
+    </nav>
+  );
+}
+
+// Projects as alternating image/text spreads. Each spread slides in from its image side.
+export function ProjectSpreads({ projects }: { projects: Project[] }) {
+  const reduce = useReducedMotion();
   const [open, setOpen] = useState<Project | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
-  const categories = Array.from(new Set(projects.map(inferCategory)));
-  const shown = active === "all" ? projects : projects.filter((project) => inferCategory(project) === active);
 
   const show = (project: Project) => {
     setOpen(project);
@@ -85,34 +99,31 @@ export function WorkGrid({ projects }: { projects: Project[] }) {
 
   return (
     <>
-      <div className="pf-filter" role="group" aria-label="Filter projects by type">
-        {(["all", ...categories] as const).map((category) => (
-          <button key={category} type="button" aria-pressed={active === category} onClick={() => setActive(category)}>
-            / {category === "all" ? "All projects" : category}
-          </button>
-        ))}
-      </div>
-      <ul className="pf-work-grid">
-        {shown.map((project, i) => {
+      <ol className="pf-spreads">
+        {projects.map((project, i) => {
           const title = projectDisplayTitle(project);
           const image = projectImage(project);
+          const flip = i % 2 === 1;
           return (
-            <motion.li key={project.id} id={`project-${projectSlug(project)}`} className="pf-work-card" layout initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.15 }} transition={{ duration: 0.7, ease: EASE, delay: (i % 2) * 0.1 }}>
-              <button type="button" className="pf-work-media" onClick={() => show(project)} aria-label={`Open case study for ${title}`} aria-haspopup="dialog">
-                <Image src={image} alt="" width={1600} height={1000} sizes="(max-width: 760px) 100vw, 50vw" unoptimized={image.endsWith(".svg")} />
-                <span className="pf-work-view" aria-hidden="true">View case study</span>
+            <motion.li key={project.id} id={`project-${projectSlug(project)}`} className={`pf-spread${flip ? " pf-spread-flip" : ""}`}
+              initial={reduce ? false : { opacity: 0, x: flip ? 40 : -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: EASE }}>
+              <button type="button" className="pf-spread-media" onClick={() => show(project)} aria-label={`Open case study for ${title}`} aria-haspopup="dialog">
+                <Image src={image} alt="" width={1600} height={1000} sizes="(max-width: 1000px) 100vw, 32vw" unoptimized={image.endsWith(".svg")} />
               </button>
-              <div className="pf-work-meta">
-                <div>
-                  <h3><button type="button" onClick={() => show(project)} aria-haspopup="dialog">{title}</button></h3>
-                  <p>{inferCategory(project)} · {getRoleSummary(project)}</p>
+              <div className="pf-spread-text">
+                <span className="pf-numeral" aria-hidden="true">{roman(i)}.</span>
+                <h3>{title}</h3>
+                <p className="pf-spread-meta">{inferCategory(project)} · {getRoleSummary(project)}</p>
+                <p>{project.description}</p>
+                <div className="pf-spread-actions">
+                  <button type="button" className="pf-textlink" onClick={() => show(project)} aria-haspopup="dialog">Read the case study <span aria-hidden="true">→</span></button>
+                  <ProjectLinks project={project} title={title} />
                 </div>
-                <ProjectLinks project={project} title={title} />
               </div>
             </motion.li>
           );
         })}
-      </ul>
+      </ol>
 
       {/* Native <dialog>: focus trapping and Esc come with showModal(). A backdrop click lands on the dialog itself. */}
       <dialog ref={dialogRef} className="pf-modal" aria-labelledby="pf-modal-title" onClick={(event) => { if (event.target === event.currentTarget) close(); }} onClose={() => setOpen(null)}>
@@ -130,7 +141,7 @@ function ProjectCase({ project, onClose }: { project: Project; onClose: () => vo
     <div className="pf-modal-inner">
       <button type="button" className="pf-modal-close" onClick={onClose} aria-label="Close case study"><X size={18} aria-hidden="true" /></button>
       <div className="pf-modal-media"><Image src={image} alt={`${title} screenshot`} width={1600} height={1000} sizes="(max-width: 760px) 100vw, 56rem" unoptimized={image.endsWith(".svg")} /></div>
-      <p className="pf-modal-kicker">/ {inferCategory(project)}</p>
+      <p className="pf-modal-kicker">{inferCategory(project)}</p>
       <h3 id="pf-modal-title">{title}</h3>
       <p className="pf-modal-lead">{project.description}</p>
       <dl className="pf-modal-grid">
