@@ -1,18 +1,38 @@
 import Image from "next/image";
-import { ArrowDown, Menu } from "lucide-react";
+import { ArrowDown, ArrowUpRight } from "lucide-react";
 import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
-import { ProjectLinks, Reveal, Wordmark } from "./home-parts";
+import { ClipReveal, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
 
-const PLACEHOLDER = "/images/placeholder/project.svg";
-const projectImage = (project: Project) => (isAllowedImage(project.image_url) ? project.image_url! : PLACEHOLDER);
+// Tile picture: the screenshot, or a title card when there is none. The whole picture links to the
+// live site (or the source when there is no live site) and shows a hint on hover.
+function TileMedia({ project, title }: { project: Project; title: string }) {
+  const media = isAllowedImage(project.image_url)
+    ? <Image src={project.image_url!} alt="" fill sizes="(max-width: 800px) 100vw, 33vw" />
+    : <div className="pf-tile-card"><span>{inferCategory(project)}</span><strong>{title}</strong></div>;
+  const href = project.live_url || project.github_url;
+  if (!href) return <div className="pf-tile-media" aria-hidden="true">{media}</div>;
+  const hint = project.live_url ? "View live" : "View source";
+  return (
+    <TrackedLink className="pf-tile-media" href={href} target="_blank" rel="noopener noreferrer" aria-label={`${title}: ${hint.toLowerCase()} (opens in a new tab)`}
+      event={{ type: "outbound_click", projectId: project.id, linkKind: project.live_url ? "live_project" : "github_repository" }}>
+      {media}
+      <span className="pf-tile-veil" aria-hidden="true"><span>{hint} <ArrowUpRight size={15} /></span></span>
+    </TrackedLink>
+  );
+}
 
 // The page says little on purpose; the résumé carries the detail, so every section ends on it.
 function ResumeButton() {
-  return <a className="pf-pill" href={profile.resumeUrl} download={profile.resumeFilename}>Download résumé <ArrowDown size={15} aria-hidden="true" /></a>;
+  return (
+    <div className="pf-cta">
+      <p>Want to know more about me?</p>
+      <a className="pf-pill" href={profile.resumeUrl} download={profile.resumeFilename}>Download my résumé <ArrowDown size={15} aria-hidden="true" /></a>
+    </div>
+  );
 }
 
 function SocialLinks() {
@@ -35,18 +55,15 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
       <header className="pf-bar">
         <a className="pf-brand" href="#top" aria-label="Ivan Salinas, back to top"><span className="pf-mark" aria-hidden="true">I<span>S</span></span>Ivan Salinas</a>
-        <details className="pf-menu">
-          <summary aria-label="Menu"><Menu size={18} aria-hidden="true" /></summary>
-          <nav aria-label="Main">
-            <ul>
-              <li><a href="#work">Work</a></li>
-              <li><a href="#about">About</a></li>
-              <li><a href="#contact">Contact</a></li>
-              <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
-              <SocialLinks />
-            </ul>
-          </nav>
-        </details>
+        <SiteMenu>
+          <ul>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
+            <SocialLinks />
+          </ul>
+        </SiteMenu>
       </header>
 
       <main id="main-content">
@@ -54,23 +71,25 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {profile.role}</h1>
           <Wordmark text="Salinas" className="pf-word pf-word-hero" onLoad />
           {isAllowedImage(s.heroImage) ? (
-            <div className="pf-hero-tall"><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload sizes="(max-width: 800px) 100vw, 33vw" /></div>
+            <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload sizes="(max-width: 800px) 100vw, 33vw" /></Parallax></ClipReveal>
           ) : null}
           {featured ? (
-            <a className="pf-hero-small" href="#work" aria-label={`Selected work, starting with ${projectDisplayTitle(featured)}`}>
-              <Image src={projectImage(featured)} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" />
-            </a>
+            <ClipReveal className="pf-hero-small" delay={0.4}>
+              <a href="#work" aria-label={`Selected work, starting with ${projectDisplayTitle(featured)}`}>
+                <Image src={featured.image_url!} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" />
+              </a>
+            </ClipReveal>
           ) : null}
-          <div className="pf-hero-copy">
-            <ResumeButton />
+          <Reveal className="pf-hero-copy" delay={0.55}>
             <p>{s.aboutCardTitle}</p>
-          </div>
+            <ResumeButton />
+          </Reveal>
         </section>
 
         <section id="about" className="pf-about" aria-labelledby="about-title">
           <h2 id="about-title" className="visually-hidden">About</h2>
           <div className="pf-about-photo">
-            {isAllowedImage(s.portraitImage) ? <Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill sizes="(max-width: 800px) 100vw, 66vw" /> : null}
+            {isAllowedImage(s.portraitImage) ? <Parallax><Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill sizes="(max-width: 800px) 100vw, 66vw" /></Parallax> : null}
             <Wordmark text="Ivan" className="pf-word pf-word-about" />
           </div>
           <Reveal className="pf-about-side">
@@ -89,11 +108,10 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <ul className="pf-tiles">
             {projects.map((project) => {
               const title = projectDisplayTitle(project);
-              const image = projectImage(project);
               return (
                 <li key={project.id} id={`project-${projectSlug(project)}`}>
-                  <Reveal>
-                    <div className="pf-tile-media"><Image src={image} alt={`${title} screenshot`} fill sizes="(max-width: 800px) 100vw, 33vw" unoptimized={image.endsWith(".svg")} /></div>
+                  <Reveal className="pf-tile">
+                    <TileMedia project={project} title={title} />
                     <p className="pf-tile-kind">{inferCategory(project)}</p>
                     <h3>{title}</h3>
                     <ProjectLinks project={project} title={title} />
