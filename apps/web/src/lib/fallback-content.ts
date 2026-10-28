@@ -6,19 +6,19 @@ import type { Portfolio } from "./types";
 // Array order is display order.
 export const fallbackContent: Portfolio = {
   settings: {
-    heroIntro: "Full-stack web developer building live information systems for research institutions, from database design to deployed UI.",
+    heroIntro: "Full-stack developer shipping web apps end to end: data models, APIs, interfaces and deployment. Laravel, Next.js, TypeScript and PostgreSQL, plus data engineering and IoT. Remote-ready, with strong written English.",
     heroStack: ["Laravel", "PHP", "Next.js", "React", "TypeScript", "PostgreSQL", "Supabase", "Tailwind CSS"],
-    statusLine: "Open to full-time, contract, and remote roles",
+    statusLine: "Open to remote IT roles, full-time or contract",
     statusSub: "7 years building systems at Central Luzon State University",
     heroImage: "/images/hero/ivan-hero-sea.webp",
     portraitImage: "/images/hero/ivan-portrait-pro.webp",
-    aboutStatement: "I build the systems research teams run on",
+    aboutStatement: "I build systems people rely on, and keep them running",
     aboutStatementMuted: "and keep them running.",
-    aboutCardTitle: "Live systems for every member university of a research consortium.",
+    aboutCardTitle: "I design, build and ship production web systems, from database to deployed UI.",
     strengths: ["Database design to deployed UI", "AI-assisted development (Claude Code)", "Mentored 150–250 students a semester", "MS IT, Data Science (in progress)", "Remote-ready, strong written English"],
     patentNote: "+ 1 published patent application",
     services: [
-      { icon: "code", title: "Full-stack web development", text: "Laravel, Next.js, and Supabase apps shipped to university servers and Vercel." },
+      { icon: "code", title: "Full-stack web development", text: "Laravel, Next.js and Supabase apps, from schema to production deploy." },
       { icon: "database", title: "Databases & data engineering", text: "PostgreSQL row-level security, materialized views, Kimball models, and dbt tests." },
       { icon: "cpu", title: "IoT & automation", text: "ESP32 and Arduino sensor systems, plus n8n email automations and bots." },
     ],
@@ -30,11 +30,11 @@ export const fallbackContent: Portfolio = {
     researchStatement: "Research on data systems, IoT,",
     researchStatementMuted: "and how people use technology.",
     training: "GIS workshops, DOST-PCAARRD (2024, 2025) · Flexible Learning Systems, CLSU (2020) · Intercultural Fluency Essentials, British Council (2018)",
-    contactLead: "Hiring for a full-stack role, or need a system built?",
+    contactLead: "Hiring a remote full-stack developer?",
     contactStrong: "I'd like to hear about it.",
-    roleLine: "Full-stack developer for research and data systems",
+    roleLine: "Full-stack developer · Web, data & IoT",
     studioImage: "",
-    institutions: ["Central Luzon State University", "CLAARRDEC Consortium", "CLSU CRRDC", "DOST-PCAARRD", "CHED–British Council JDNP"],
+    institutions: ["DA-BPI", "SEARCA", "CLSU PREDIC", "CLSU CRRDC", "CLSU MISO", "CLAARRDEC Consortium"],
   },
   projects: [
     {
@@ -185,9 +185,10 @@ export const fallbackContent: Portfolio = {
     { id: 4, title: "Automated and Real-Time Monitoring Feeder System for CLSU Tunnel-Type Broiler Production Project", venue: "IEEE NEPCON 2026", status: "Under review", doi: null },
   ],
   ipItems: [
+    { id: 4, title: "Smart indoor-farming control software (5 programs)", detail: "Registered software copyrights N2026-331 to 335, National Library of the Philippines, 2026 · co-author" },
     { id: 1, title: "Automated Vitamins and Antibiotics Injection System for Broiler Production", detail: "Published patent application PH 12023050744, 2025 · named inventor" },
     { id: 2, title: "“Solar Grow” and “Ang Solar Grow” brochures", detail: "Registered copyright" },
-    { id: 3, title: "Smart indoor-farming team filings", detail: "Pending: 6 software copyrights, 2 documentation copyrights, 4 utility models, 1 patent application" },
+    { id: 3, title: "Smart indoor-farming team filings", detail: "Pending: 1 software copyright, 2 documentation copyrights, 4 utility models, 1 patent application" },
   ],
   capabilities: [
     { id: 1, title: "Full-stack web development", tools: ["PHP", "Laravel", "JavaScript", "TypeScript", "Next.js", "React", "Tailwind CSS", "Supabase", "REST APIs"] },

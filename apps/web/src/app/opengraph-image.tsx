@@ -1,6 +1,6 @@
 ﻿import { ImageResponse } from "next/og";
 
-export const alt = "Ivan Christian L. Salinas — Full-stack developer for research and data systems. Laravel, Next.js, PostgreSQL.";
+export const alt = "Ivan Christian L. Salinas — Full-stack developer: web, data and IoT. Laravel, Next.js, PostgreSQL.";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -18,7 +18,7 @@ export function renderShareImage() {
         </div>
         <div style={{ display: "flex", fontSize: 340, fontWeight: 700, letterSpacing: -22, lineHeight: 0.85 }}>Salinas</div>
         <div style={{ display: "flex", justifyContent: "space-between", gap: 32, fontSize: 26 }}>
-          <span>Full-stack developer for research &amp; data systems</span>
+          <span>Full-stack developer · Web, data &amp; IoT</span>
           <span style={{ color: "#ff0000" }}>Laravel · Next.js · PostgreSQL</span>
         </div>
       </div>

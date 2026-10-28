@@ -63,7 +63,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
     since ? { figure: `${new Date().getFullYear() - since}`, label: "Years building systems" } : null,
     { figure: `${projects.length}`, label: "Systems shipped" },
     { figure: `${publications.length}`, label: ipItems.length ? `Publications, plus ${ipItems.length} IP filings` : "Publications" },
-    { figure: "150+", label: "Students mentored a semester" },
+    { figure: `${projects.filter((project) => project.live_url).length}`, label: "Live in production" },
   ].filter((fact) => fact !== null);
   const recognition = [
     ...publications.map((item) => ({ key: `p${item.id}`, year: firstYear(item.venue), venue: item.venue.replace(/,?\s*(?:19|20)\d{2}$/, ""), title: item.title, status: item.status as string, doi: item.doi })),
@@ -101,8 +101,8 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             {isAllowedImage(s.studioImage) ? <Image src={s.studioImage} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" /> : (
               <div className="pf-practice-card">
                 <span className="pf-mark" aria-hidden="true">I<span>S</span></span>
-                <p><span>Independent software practice</span>Systems, data &amp; IoT for research institutions.</p>
-                <p className="pf-practice-meta">{since ? `Est. ${since} · ` : ""}{profile.region}, PH</p>
+                <p><span>Independent software practice</span>Web, data &amp; IoT systems, built end to end.</p>
+                <p className="pf-practice-meta">{since ? `Est. ${since} · ` : ""}Philippines · Remote</p>
               </div>
             )}
           </ClipReveal>

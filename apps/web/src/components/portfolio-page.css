@@ -69,17 +69,18 @@
 .pf-menu a:hover { background: var(--pf-bg); }
 
 /* Hero: the word crosses all columns; the tall photo starts under it so only its sky is crossed. */
-.pf-hero { position: relative; grid-template-rows: auto minmax(0, 1fr); height: 100svh; min-height: 40rem; padding-top: calc(var(--pf-bar) + 8px); padding-bottom: var(--pf-gutter); }
+.pf-hero { position: relative; grid-template-rows: auto minmax(0, 1fr); row-gap: 20px; height: 100svh; min-height: 40rem; padding-top: calc(var(--pf-bar) + 8px); padding-bottom: var(--pf-gutter); }
 .pf-word-hero { grid-column: 1 / -1; grid-row: 1; font-size: 31.5vw; margin-left: -0.04em; }
 .pf-hero-tall { position: relative; grid-column: 3; grid-row: 1 / 3; margin: 14.5vw 12px 0; padding: 0 !important; }
 .pf-hero-tall img { object-position: 56% center; }
-.pf-hero-small { position: relative; grid-column: 2; grid-row: 2; align-self: end; aspect-ratio: 4 / 3; margin-inline: 12px; padding: 0 !important; }
+/* max-height: on short screens the frame must not grow past its row into the word above. */
+.pf-hero-small { position: relative; grid-column: 2; grid-row: 2; align-self: end; aspect-ratio: 4 / 3; max-height: 100%; margin-inline: 12px; padding: 0 !important; }
 /* Practice card: what fills the middle frame until a picture is set in the CMS. */
 .pf-practice-card { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(16px, 1.8vw, 28px); background: var(--pf-black); color: var(--pf-white); }
 .pf-practice-card .pf-mark { width: 40px; height: 40px; border-radius: 9px; background: var(--pf-white); color: var(--pf-black); font-size: var(--fs-small); }
-.pf-practice-card p { max-width: 14em; font-size: clamp(1.25rem, 0.9rem + 1.1vw, 2rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+.pf-practice-card p { max-width: 14em; font-size: clamp(1.15rem, 0.8rem + 1vw, 1.8rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
 .pf-practice-card p span { display: block; margin-bottom: 10px; color: #9a9f9a; font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; letter-spacing: 0; }
-.pf-practice-card .pf-practice-meta { color: #9a9f9a; font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; letter-spacing: 0; }
+.pf-practice-card .pf-practice-meta { white-space: nowrap; color: #9a9f9a; font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; letter-spacing: 0; }
 .pf-role { font-family: var(--pf-mono); font-size: var(--fs-label) !important; text-transform: uppercase; letter-spacing: 0.06em; }
 .pf-hero-copy { grid-column: 1; grid-row: 2; align-self: end; display: grid; justify-items: start; gap: 20px; }
 .pf-hero-copy .pf-cta { margin-top: 8px; }

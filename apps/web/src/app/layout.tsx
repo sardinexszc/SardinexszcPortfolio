@@ -11,10 +11,10 @@ const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--
 // Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
 const themeScript = `try{var t=localStorage.getItem("theme-preference");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
 
-const title = "Ivan Christian Salinas — Full-Stack Developer for Research & Data Systems";
+const title = "Ivan Christian Salinas — Full-Stack Developer (Laravel, Next.js, PostgreSQL)";
 // Kept under 160 characters so search results show it whole.
 const description =
-  "Full-stack developer in the Philippines: Laravel, Next.js and PostgreSQL systems for research institutions. Data, IoT, published research. Open to remote roles.";
+  "Full-stack developer in the Philippines building production web apps with Laravel, Next.js and PostgreSQL. Data engineering, IoT. Open to remote IT roles.";
 // Preview deployments share the content but must not compete with the real site in search.
 const indexable = !process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production";
 
