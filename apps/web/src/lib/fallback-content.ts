@@ -185,8 +185,8 @@ export const fallbackContent: Portfolio = {
     { id: 4, title: "Automated and Real-Time Monitoring Feeder System for CLSU Tunnel-Type Broiler Production Project", venue: "IEEE NEPCON 2026", status: "Under review", doi: null },
   ],
   ipItems: [
-    { id: 4, title: "Smart indoor-farming control software (5 programs)", detail: "Registered software copyrights N2026-331 to 335, National Library of the Philippines, 2026 · co-author" },
-    { id: 1, title: "Automated Vitamins and Antibiotics Injection System for Broiler Production", detail: "Published patent application PH 12023050744, 2025 · named inventor" },
+    { id: 4, title: "Smart indoor-farming control software (5 programs)", detail: "Registered software copyrights N2026-331 to 335, National Library of the Philippines, 2026 · co-author", proof_url: "https://drive.google.com/drive/folders/1ZYzW1pgrZaVPbUxOwt6ncFotd_KdVPgp?usp=sharing" },
+    { id: 1, title: "Automated Vitamins and Antibiotics Injection System for Broiler Production", detail: "Published patent application PH 12023050744, 2025 · named inventor", proof_url: "https://patentscope.wipo.int/search/en/detail.jsf?docId=PH464609171" },
     { id: 2, title: "“Solar Grow” and “Ang Solar Grow” brochures", detail: "Registered copyright" },
     { id: 3, title: "Smart indoor-farming team filings", detail: "Pending: 1 software copyright, 2 documentation copyrights, 4 utility models, 1 patent application" },
   ],

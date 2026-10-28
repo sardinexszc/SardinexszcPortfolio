@@ -66,8 +66,8 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
     { figure: `${projects.filter((project) => project.live_url).length}`, label: "Live in production" },
   ].filter((fact) => fact !== null);
   const recognition = [
-    ...publications.map((item) => ({ key: `p${item.id}`, year: firstYear(item.venue), venue: item.venue.replace(/,?\s*(?:19|20)\d{2}$/, ""), title: item.title, status: item.status as string, doi: item.doi })),
-    ...ipItems.map((item) => ({ key: `i${item.id}`, year: firstYear(item.detail), venue: "Intellectual property", title: item.title, status: ipStatus(item.detail), doi: null })),
+    ...publications.map((item) => ({ key: `p${item.id}`, year: firstYear(item.venue), venue: item.venue.replace(/,?\s*(?:19|20)\d{2}$/, ""), title: item.title, status: item.status as string, href: item.doi ? `https://doi.org/${item.doi}` : null, proof: "DOI" })),
+    ...ipItems.map((item) => ({ key: `i${item.id}`, year: firstYear(item.detail), venue: "Intellectual property", title: item.title, status: ipStatus(item.detail), href: item.proof_url || null, proof: "official record" })),
   ];
 
   return (
@@ -191,7 +191,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
               {recognition.map((item) => (
                 <li key={item.key}>
                   <span className="pf-index-meta">{item.year ? `${item.year} · ` : ""}{item.venue}</span>
-                  <h3>{item.doi ? <a href={`https://doi.org/${item.doi}`} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight size={15} aria-hidden="true" /><span className="visually-hidden"> (DOI, opens in a new tab)</span></a> : item.title}</h3>
+                  <h3>{item.href ? <a href={item.href} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight size={15} aria-hidden="true" /><span className="visually-hidden"> ({item.proof}, opens in a new tab)</span></a> : item.title}</h3>
                   <span className="pf-index-status" data-status={item.status}>{item.status}</span>
                 </li>
               ))}

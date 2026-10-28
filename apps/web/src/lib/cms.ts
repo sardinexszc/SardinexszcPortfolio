@@ -80,6 +80,7 @@ export const sections: Section[] = [
     fields: [
       { name: "title", label: "Title", kind: "text", required: true },
       { name: "detail", label: "Detail", kind: "text" },
+      { name: "proof_url", label: "Proof link", kind: "url", hint: "Certificate, registry entry or folder that backs this claim." },
       sortField,
     ],
   },

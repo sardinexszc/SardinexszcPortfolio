@@ -35,7 +35,7 @@ export type Publication = {
   sort_order?: number;
 };
 
-export type IpItem = { id: number; title: string; detail: string; sort_order?: number };
+export type IpItem = { id: number; title: string; detail: string; proof_url?: string | null; sort_order?: number };
 
 export type CapabilityGroup = { id: number; title: string; tools: string[]; sort_order?: number };
 
