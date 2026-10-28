@@ -31,6 +31,8 @@ const nextConfig: NextConfig = {
   // Local images plus the CMS bucket only. The optimizer serves both from this origin, so CSP img-src stays 'self'.
   // The pattern is limited to the one public bucket, so the optimizer cannot proxy anything else on that host.
   images: {
+    // 90 for the photos and screenshots: 75 softens text in the project screenshots.
+    qualities: [75, 90],
     remotePatterns: process.env.NEXT_PUBLIC_SUPABASE_URL
       ? [new URL(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/portfolio-media/**`)]
       : [],

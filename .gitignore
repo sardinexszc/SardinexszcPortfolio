@@ -24,3 +24,4 @@ vendor/
 Thumbs.db
 .idea/
 .vscode/*.log
+brag-output/

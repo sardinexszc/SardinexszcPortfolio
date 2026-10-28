@@ -17,7 +17,7 @@ const ipStatus = (detail: string) => (/pending/i.test(detail) ? "Pending" : /pub
 // live site (or the source when there is no live site) and shows a hint on hover.
 function TileMedia({ project, title }: { project: Project; title: string }) {
   const media = isAllowedImage(project.image_url)
-    ? <Image src={project.image_url!} alt="" fill sizes="(max-width: 800px) 100vw, 33vw" />
+    ? <Image src={project.image_url!} alt="" fill quality={90} sizes="(max-width: 800px) 150vw, 50vw" />
     : <div className="pf-tile-card"><span>{inferCategory(project)}</span><strong>{title}</strong></div>;
   const href = project.live_url || project.github_url;
   if (!href) return <div className="pf-tile-media" aria-hidden="true">{media}</div>;
@@ -95,10 +95,10 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {s.roleLine}</h1>
           <Wordmark text="Salinas" className="pf-word pf-word-hero" onLoad />
           {isAllowedImage(s.heroImage) ? (
-            <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload sizes="(max-width: 800px) 100vw, 33vw" /></Parallax></ClipReveal>
+            <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload quality={90} sizes="(max-width: 800px) 150vw, 120vw" /></Parallax></ClipReveal>
           ) : null}
           <ClipReveal className="pf-hero-small" delay={0.4}>
-            {isAllowedImage(s.studioImage) ? <Image src={s.studioImage} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" /> : (
+            {isAllowedImage(s.studioImage) ? <Image src={s.studioImage} alt="" fill quality={90} sizes="(max-width: 800px) 120vw, 40vw" /> : (
               <div className="pf-practice-card">
                 <span className="pf-mark" aria-hidden="true">I<span>S</span></span>
                 <p><span>Independent software practice</span>Web, data &amp; IoT systems, built end to end.</p>
@@ -116,7 +116,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <section id="practice" className="pf-about" aria-labelledby="practice-title">
           <h2 id="practice-title" className="visually-hidden">Practice</h2>
           <div className="pf-about-photo">
-            {isAllowedImage(s.portraitImage) ? <Parallax><Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill sizes="(max-width: 800px) 100vw, 66vw" /></Parallax> : null}
+            {isAllowedImage(s.portraitImage) ? <Parallax><Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill quality={90} sizes="(max-width: 800px) 120vw, 75vw" /></Parallax> : null}
             <Wordmark text="Ivan" className="pf-word pf-word-about" />
           </div>
           <Reveal className="pf-about-side">
