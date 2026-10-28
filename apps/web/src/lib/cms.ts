@@ -100,53 +100,30 @@ export const sections: Section[] = [
 
 export const findSection = (slug: string) => sections.find((section) => section.slug === slug);
 
-// Site copy stored in site_settings.content. Services are edited separately as three fixed cards.
+// Site copy stored in site_settings.content. Only the fields the home page shows are edited here;
+// saving merges over the stored copy, so older fields (services, research quotes) are kept, not wiped.
 export const settingsGroups: { title: string; fields: Field[] }[] = [
   {
-    title: "Side panel",
+    title: "Hero",
     fields: [
-      { name: "heroImage", label: "Side panel photo", kind: "image" },
-      { name: "aboutCardTitle", label: "Tagline under name", kind: "text" },
+      { name: "heroImage", label: "Tall photo (right column)", kind: "image", hint: "Keep the top third plain (sky, wall): the big name crosses it." },
+      { name: "aboutCardTitle", label: "Intro beside the résumé button", kind: "text", required: true },
+    ],
+  },
+  {
+    title: "About",
+    fields: [
+      { name: "portraitImage", label: "Wide photo", kind: "image" },
       { name: "statusLine", label: "Availability", kind: "text" },
-      { name: "statusSub", label: "Availability, second line", kind: "text" },
+      { name: "heroIntro", label: "Short paragraph", kind: "textarea", required: true },
+      { name: "aboutStatement", label: "Big italic statement", kind: "text", required: true, hint: "A full stop is added at the end." },
     ],
   },
   {
-    title: "Chapter one: Profile",
-    fields: [
-      { name: "aboutStatement", label: "Pull quote", kind: "text", required: true },
-      { name: "aboutStatementMuted", label: "Pull quote, continued", kind: "text", hint: "Joined to the line above as one sentence." },
-      { name: "heroIntro", label: "Intro paragraph", kind: "textarea", required: true },
-      { name: "strengths", label: "Numbered strengths", kind: "lines", hint: "One per line." },
-      { name: "patentNote", label: "Margin note under publication count", kind: "text" },
-    ],
-  },
-  {
-    title: "Chapters two to five",
-    fields: [
-      { name: "projectsIntro", label: "Systems intro", kind: "textarea" },
-      { name: "capabilitiesStatement", label: "Toolkit pull quote", kind: "text" },
-      { name: "capabilitiesStatementMuted", label: "Toolkit pull quote, continued", kind: "text" },
-      { name: "heroStack", label: "Everyday stack icons", kind: "list", hint: "Comma-separated tool names." },
-      { name: "researchStatement", label: "Research pull quote", kind: "text" },
-      { name: "researchStatementMuted", label: "Research pull quote, continued", kind: "text" },
-      { name: "training", label: "Training footnote", kind: "textarea" },
-    ],
-  },
-  {
-    title: "Chapter six: Contact",
-    fields: [
-      { name: "contactLead", label: "Lead", kind: "text" },
-      { name: "contactStrong", label: "Italic part", kind: "text" },
-      { name: "portraitImage", label: "Contact photo", kind: "image" },
-      { name: "portraitTitle", label: "Photo caption", kind: "text" },
-      { name: "portraitSub", label: "Photo caption, second line", kind: "text" },
-    ],
+    title: "Contact",
+    fields: [{ name: "contactLead", label: "Line above the email", kind: "text" }],
   },
 ];
-
-export const SERVICE_ICONS = ["code", "database", "cpu"] as const;
-export const SERVICE_SLOTS = 3;
 
 // Value shown in an input for a stored value.
 export function formValue(field: Field, value: unknown): string {

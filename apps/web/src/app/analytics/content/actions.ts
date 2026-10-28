@@ -3,7 +3,7 @@
 import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { CONTENT_TAG } from "@/lib/api";
-import { findSection, SERVICE_ICONS, SERVICE_SLOTS, settingsGroups, type Field } from "@/lib/cms";
+import { findSection, settingsGroups, type Field } from "@/lib/cms";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/supabase/require-admin";
 import { isAllowedImage, MEDIA_PREFIX } from "@/lib/work-projects";
@@ -114,11 +114,6 @@ export async function saveSettings(form: FormData) {
     if (readError) throw readError;
     const content: Record<string, unknown> = { ...(data?.content ?? {}) };
     for (const field of settingsGroups.flatMap((group) => group.fields)) content[field.name] = await parseField(field, form, "site");
-    content.services = Array.from({ length: SERVICE_SLOTS }, (_, index) => ({
-      icon: SERVICE_ICONS.find((icon) => icon === form.get(`service_${index}_icon`)) ?? "code",
-      title: String(form.get(`service_${index}_title`) ?? "").trim().slice(0, 200),
-      text: String(form.get(`service_${index}_text`) ?? "").trim().slice(0, 1000),
-    })).filter((service) => service.title);
     const { error } = await db.from("site_settings").upsert({ id: 1, content, updated_at: new Date().toISOString() });
     if (error) throw error;
     return "site copy saved";

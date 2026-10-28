@@ -1,16 +1,12 @@
-/* Home page: editorial split. A sticky dark side panel holds the portrait, name and chapter list;
-   chapters scroll on the right. Red is for small highlights only. The page keeps its own palette,
-   so the site-wide light/dark theme does not change it. */
+/* Home page: a light page on a three-column grid marked by hairlines. Oversized words cross the columns
+   and invert where they pass over a photo (mix-blend-mode: difference on white text). Copy is kept short;
+   each section ends on the résumé download. The page keeps its own palette, so the site theme does not change it. */
 .pf {
   --pf-black: #000; --pf-white: #fff; --pf-accent: #ff0000;
-  --pf-body: #5c5c5c; --pf-muted: #707070; --pf-on-dark: #cfd8cf;
-  --pf-border: #dfe4df; --pf-border-dark: #333; --pf-surface: #f0f0f0;
-  /* Page sits on light grey, not white, so it is easier on the eyes in a dim room. --pf-raised is a step
-     darker for panels that must stand apart from it. */
+  --pf-body: #5c5c5c; --pf-muted: #707070; --pf-border: #d9ddd9;
   --pf-bg: #f0f0f0; --pf-raised: #e2e5e2;
-  --pf-radius: 14px;
-  /* Three type roles: serif for display, sans for reading, mono for labels and metadata. */
-  --pf-serif: var(--font-serif), Georgia, serif;
+  --pf-radius: 4px;
+  --pf-gutter: clamp(16px, 2.5vw, 40px);
   --pf-mono: var(--font-mono), ui-monospace, monospace;
   /* Type scale. The root font already grows 16px to 19.2px with the viewport (globals.css), so the small
      steps are plain rem; only the large ones add their own vw growth. Phone floor: body 16px, labels 13px. */
@@ -18,196 +14,127 @@
   --fs-small: 0.9375rem;
   --fs-body: 1rem;
   --fs-lede: 1.125rem;
-  --fs-title: clamp(1.375rem, 1rem + 1vw, 1.75rem);
-  --fs-heading: clamp(1.875rem, 1.2rem + 2vw, 2.75rem);
-  --fs-display: clamp(2.25rem, 1.4rem + 2.6vw, 3.5rem);
-  display: grid;
-  grid-template-columns: minmax(320px, 40%) minmax(0, 1fr);
+  --fs-title: clamp(1.25rem, 1rem + 0.8vw, 1.6rem);
+  position: relative;
   min-height: 100vh;
+  padding: 0 var(--pf-gutter);
   background: var(--pf-bg);
   color: var(--pf-black);
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: clip;
 }
 .pf a { color: inherit; text-decoration: none; }
-.pf h1, .pf h2, .pf h3, .pf h4, .pf p { max-width: none; margin: 0; }
+.pf h1, .pf h2, .pf h3, .pf p { max-width: none; margin: 0; }
 .pf :focus-visible { outline: 2px solid var(--pf-accent); outline-offset: 3px; }
-.pf em { font-family: var(--pf-serif); font-style: italic; }
-/* Label role: small mono metadata. The uppercase ones are short; sentences (meta, availability) keep their case. */
-.pf-chapter-head h2, .pf-subhead, .pf-caps dt, .pf-status, .pf-smallprint, .pf-modal-grid dt, .pf-spread-meta, .pf-availability { font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; line-height: 1.4; }
-.pf-chapter-head h2, .pf-subhead, .pf-caps dt, .pf-status, .pf-smallprint, .pf-modal-grid dt { letter-spacing: 0.08em; text-transform: uppercase; }
+.pf img { object-fit: cover; }
 
-/* Side panel */
-.pf-side { position: sticky; top: 8px; display: flex; flex-direction: column; height: calc(100vh - 16px); margin: 8px 0 8px 8px; overflow: hidden; border-radius: var(--pf-radius); background: var(--pf-black); color: var(--pf-on-dark); }
-.pf-side-photo { position: relative; flex: 1 1 auto; min-height: 180px; background: #1a1a1a; }
-/* The subject sits right of centre in the photo; this keeps him in frame in the tall crop. */
-.pf-side-photo img { object-fit: cover; object-position: 62% center; filter: grayscale(1) contrast(1.05); }
-.pf-side-photo::after { content: ""; position: absolute; inset: 0; background: linear-gradient(to bottom, transparent 55%, var(--pf-black)); }
-/* minmax(0, 1fr): the scrolling chapter strip on phones must not widen the column to its own length. */
-.pf-side-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 20px 24px 22px; overflow-y: auto; }
-.pf-side h1 { color: var(--pf-white); font-family: var(--pf-serif); font-size: var(--fs-heading); font-weight: 400; letter-spacing: -0.01em; line-height: 1; }
-.pf-tagline { font-size: var(--fs-small); line-height: 1.5; }
-.pf-availability { display: grid; grid-template-columns: auto 1fr; column-gap: 8px; color: var(--pf-white); }
-.pf-availability > span:not(.pf-live) { grid-column: 2; color: #8d948d; }
-.pf-live { width: 7px; height: 7px; margin-top: 6px; border-radius: 50%; background: var(--pf-accent); }
-.pf-chapters ol { display: grid; gap: 2px; margin: 0; padding: 12px 0; border-block: 1px solid var(--pf-border-dark); list-style: none; }
-.pf-chapters a { display: flex; align-items: baseline; gap: 12px; padding: 4px 0; font-size: var(--fs-small); transition: color 0.2s; }
-.pf-chapters a span { width: 2.2em; border-top: 1px solid transparent; color: #8d948d; font-family: var(--pf-serif); font-style: italic; transition: border-color 0.2s, color 0.2s; }
-.pf-chapters a:hover { color: var(--pf-white); }
-.pf-chapters a[aria-current] { color: var(--pf-white); }
-.pf-chapters a[aria-current] span { border-top-color: var(--pf-accent); color: var(--pf-accent); }
-.pf-side-links { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-small); }
-.pf-side-links a { border-bottom: 1px solid var(--pf-border-dark); }
-.pf-side-links a:hover { border-color: var(--pf-on-dark); color: var(--pf-white); }
+/* Column guides */
+.pf-guides { position: fixed; inset: 0 var(--pf-gutter); pointer-events: none; }
+.pf-guides span { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--pf-border); }
+.pf-guides span:first-child { left: 33.333%; }
+.pf-guides span:last-child { left: 66.666%; }
 
-/* Chapters */
-.pf-main { min-width: 0; padding: 0 clamp(24px, 5vw, 88px); }
-.pf-chapter { padding: 14vh 0 4vh; scroll-margin-top: 24px; }
-.pf-chapter:first-child { padding-top: 10vh; }
-.pf-chapter-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 12px; margin-bottom: 40px; border-bottom: 1px solid var(--pf-black); }
-.pf-chapter-num { color: var(--pf-muted); font-family: var(--pf-serif); font-size: var(--fs-lede); font-style: italic; }
-.pf-pull { max-width: 18em !important; font-family: var(--pf-serif); font-size: var(--fs-display); font-style: italic; line-height: 1.05; letter-spacing: -0.01em; }
-.pf-lede { max-width: 65ch !important; color: var(--pf-body); font-size: var(--fs-lede); line-height: 1.6; }
-.pf-lede-wide { margin-bottom: 48px !important; }
-.pf-subhead { margin: 56px 0 8px !important; color: var(--pf-muted); }
-.pf-note { margin-top: 8px !important; max-width: 65ch; color: var(--pf-muted); font-size: var(--fs-small); line-height: 1.5; }
+/* Shared three-column grid; items sit 12px inside the hairlines. */
+.pf-hero, .pf-about, .pf-tiles, .pf-contact-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pf-hero > *, .pf-about > *, .pf-tiles > li, .pf-contact-row > * { padding-inline: 12px; }
 
-/* Profile */
-.pf-profile { display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 15rem); gap: clamp(28px, 4vw, 56px); margin-top: 48px; }
-.pf-strengths { display: grid; gap: 0; margin: 32px 0 0; padding: 0; list-style: none; counter-reset: strength; }
-.pf-strengths li { display: flex; align-items: baseline; gap: 16px; padding: 12px 0; border-top: 1px solid var(--pf-border); counter-increment: strength; font-size: var(--fs-body); line-height: 1.5; }
-.pf-strengths li::before { content: counter(strength); width: 1.4em; color: var(--pf-accent); font-family: var(--pf-serif); font-size: var(--fs-title); font-style: italic; line-height: 1; }
-.pf-margin { align-self: start; display: grid; gap: 8px; padding-left: 20px; border-left: 1px solid var(--pf-black); color: var(--pf-body); font-size: var(--fs-small); line-height: 1.5; }
-.pf-margin-figure { color: var(--pf-black); font-family: var(--pf-serif); font-size: var(--fs-display); line-height: 0.9; }
-.pf-margin-cite { margin-top: 8px !important; color: var(--pf-black); }
+/* Oversized words */
+.pf-word { position: relative; z-index: 3; overflow: hidden; color: var(--pf-white); mix-blend-mode: difference; font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; pointer-events: none; }
+.pf-word > span { display: inline-block; padding-bottom: 0.04em; }
 
-/* Systems: alternating spreads */
-.pf-spreads { display: grid; gap: clamp(56px, 9vh, 96px); margin: 0; padding: 0; list-style: none; }
-.pf-spread { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); align-items: center; gap: clamp(20px, 3vw, 44px); scroll-margin-top: 24px; }
-.pf-spread-flip { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); }
-.pf-spread-flip .pf-spread-media { order: 2; }
-.pf-spread-media { position: relative; display: block; width: 100%; padding: 0; overflow: hidden; border: 0; border-radius: var(--pf-radius); background: var(--pf-raised); cursor: pointer; box-shadow: 0 0 0 1px var(--pf-border); }
-.pf-spread-media img { display: block; width: 100%; height: auto; aspect-ratio: 4 / 3; object-fit: cover; object-position: top; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
-.pf-spread-media:hover img { transform: scale(1.03); }
-.pf-spread-text { display: grid; gap: 10px; }
-.pf-numeral { color: var(--pf-accent); font-family: var(--pf-serif); font-size: var(--fs-title); font-style: italic; line-height: 1; }
-.pf-spread-text h3 { font-size: var(--fs-title); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
-.pf-spread-meta { color: var(--pf-muted); }
-.pf-spread-text > p:not(.pf-spread-meta) { color: var(--pf-body); font-size: var(--fs-body); line-height: 1.6; }
-.pf-spread-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; margin-top: 6px; }
-.pf-textlink { padding: 0 0 2px; border: 0; border-bottom: 1px solid var(--pf-black); background: none; color: var(--pf-black); font: inherit; font-size: var(--fs-small); font-weight: 500; cursor: pointer; }
-.pf-textlink:hover { border-color: var(--pf-accent); color: var(--pf-accent); }
-.pf-work-links { display: flex; gap: 12px; flex-shrink: 0; font-size: var(--fs-small); }
-.pf-work-links a { display: inline-flex; align-items: center; gap: 2px; }
-.pf-work-links a:hover { color: var(--pf-muted); }
+/* Top bar */
+.pf-bar { position: absolute; top: 0; left: var(--pf-gutter); right: var(--pf-gutter); z-index: 10; display: flex; align-items: center; justify-content: space-between; padding: 20px 12px 0; }
+.pf-brand { display: inline-flex; align-items: center; gap: 8px; font-size: var(--fs-small); font-weight: 600; letter-spacing: -0.02em; }
+.pf-mark { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 6px; background: var(--pf-black); color: var(--pf-white); font-size: var(--fs-label); letter-spacing: -0.04em; }
+.pf-mark span { color: var(--pf-accent); }
+.pf-menu { position: relative; }
+.pf-menu summary { display: grid; place-items: center; width: 48px; height: 32px; border-radius: 999px; background: #dcdfdc; cursor: pointer; list-style: none; }
+.pf-menu summary::-webkit-details-marker { display: none; }
+.pf-menu summary:hover { background: #cfd3cf; }
+.pf-menu nav { position: absolute; top: calc(100% + 8px); right: 0; min-width: 12rem; padding: 8px; border-radius: 12px; background: var(--pf-white); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); }
+.pf-menu ul { margin: 0; padding: 0; list-style: none; }
+.pf-menu a { display: block; padding: 8px 12px; border-radius: 8px; font-size: var(--fs-small); }
+.pf-menu a:hover { background: var(--pf-bg); }
 
-/* Toolkit */
-.pf-services { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); margin-top: 48px; }
-.pf-services > div { padding-top: 16px; border-top: 1px solid var(--pf-black); }
-.pf-services h3 { margin-top: 12px; font-family: var(--pf-serif); font-size: var(--fs-title); font-weight: 400; line-height: 1.15; }
-.pf-services p { margin-top: 8px; color: var(--pf-body); font-size: var(--fs-small); line-height: 1.55; }
-.pf-caps { margin: 56px 0 0; }
-.pf-caps > div { display: grid; grid-template-columns: minmax(10rem, 16rem) minmax(0, 1fr); gap: 20px; align-items: baseline; padding: 16px 0; border-top: 1px solid var(--pf-border); }
-.pf-caps dd { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; }
-.pf .tech-chip { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px; background: var(--pf-white); box-shadow: 0 0 0 1px var(--pf-border); color: var(--pf-black); font-size: var(--fs-small); }
-.pf-everyday { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding-top: 16px; border-top: 1px solid var(--pf-border); }
-.pf-everyday > span { color: var(--pf-muted); font-family: var(--pf-serif); font-style: italic; }
-.pf-everyday ul { display: flex; flex-wrap: wrap; gap: 18px; margin: 0; padding: 0; list-style: none; color: #8a8a8a; }
-.pf-everyday li { display: flex; transition: color 0.2s; }
-.pf-everyday li:hover { color: var(--pf-black); }
+/* Hero: the word crosses all columns; the tall photo starts under its top half. */
+.pf-hero { position: relative; grid-template-rows: auto minmax(0, 1fr); height: 100svh; min-height: 40rem; padding-top: 72px; padding-bottom: var(--pf-gutter); }
+.pf-word-hero { grid-column: 1 / -1; grid-row: 1; font-size: 31.5vw; margin-left: -0.04em; }
+/* Photos use margin, not padding, for the 12px inset: next/image fill covers the padding box. */
+/* The photo starts low enough that the word only crosses its sky, never the face. */
+.pf-hero-tall { position: relative; grid-column: 3; grid-row: 1 / 3; margin: 14.5vw 12px 0; padding: 0 !important; }
+.pf-hero-tall img { object-position: 56% center; }
+.pf-hero-tall img, .pf-hero-small img, .pf-about-photo img, .pf-tile-media img { border-radius: var(--pf-radius); }
+.pf-hero-small { position: relative; grid-column: 2; grid-row: 2; align-self: end; aspect-ratio: 4 / 3; margin-inline: 12px; padding: 0 !important; }
+.pf-hero-copy { grid-column: 1; grid-row: 2; align-self: end; display: grid; justify-items: start; gap: 20px; }
+.pf-hero-copy p { max-width: 24em; font-size: var(--fs-lede); line-height: 1.4; letter-spacing: -0.01em; }
 
-/* Career */
-.pf-career { margin: 0; padding: 0; list-style: none; }
-.pf-career > li { display: grid; grid-template-columns: minmax(8rem, 11rem) minmax(0, 1fr); gap: 24px; padding: 24px 0; border-top: 1px solid var(--pf-border); }
-.pf-career-dates { color: var(--pf-muted); font-family: var(--pf-serif); font-size: var(--fs-lede); font-style: italic; line-height: 1.3; }
-.pf-career h3 { font-size: var(--fs-title); font-weight: 500; letter-spacing: -0.02em; line-height: 1.15; }
-.pf-career-org { margin-top: 4px !important; color: var(--pf-body); font-size: var(--fs-body); }
-.pf-career ul { display: grid; gap: 6px; max-width: 65ch; margin: 14px 0 0; padding-left: 18px; color: var(--pf-body); font-size: var(--fs-small); line-height: 1.55; }
-.pf-career ul li::marker { color: var(--pf-accent); }
-.pf-footnote { margin-top: 28px !important; padding-top: 12px; border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-size: var(--fs-small); line-height: 1.55; }
-.pf-footnote span { color: var(--pf-black); font-family: var(--pf-serif); font-style: italic; }
+/* Pill call to action */
+.pf-pill { display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: var(--pf-accent); color: var(--pf-white) !important; font-size: var(--fs-small); font-weight: 500; transition: background 0.2s, transform 0.2s; }
+.pf-pill:hover { background: var(--pf-black); transform: translateY(-1px); }
 
-/* Research */
-.pf-citations { margin: 48px 0 0; padding: 0; list-style: none; }
-.pf-citations > li { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) 4rem; align-items: baseline; gap: 16px; padding: 18px 0; border-top: 1px solid var(--pf-border); }
-.pf-cite-num { color: var(--pf-muted); font-family: var(--pf-serif); font-size: var(--fs-lede); }
-.pf-citations h3 { font-size: var(--fs-body); font-weight: 500; line-height: 1.4; }
-.pf-citations p { margin-top: 4px !important; color: var(--pf-body); font-size: var(--fs-small); }
-.pf-status[data-status="Accepted"] { color: var(--pf-accent); }
-.pf-citations a { display: inline-flex; align-items: center; gap: 4px; justify-self: end; font-size: var(--fs-small); }
-.pf-citations a:hover { color: var(--pf-muted); }
-.pf-ip { margin: 0; padding: 0; list-style: none; }
-.pf-ip li { padding: 14px 0; border-top: 1px solid var(--pf-border); }
-.pf-ip h4 { font-size: var(--fs-body); font-weight: 500; line-height: 1.4; }
-.pf-ip p { margin-top: 4px !important; color: var(--pf-body); font-size: var(--fs-small); }
+/* About */
+.pf-about { padding-block: 18vh 0; row-gap: clamp(40px, 6vw, 80px); }
+.pf-about-photo { position: relative; grid-column: 1 / 3; aspect-ratio: 16 / 10; margin-inline: 12px; padding: 0 !important; }
+.pf-about-photo img { object-position: center 22%; }
+.pf-word-about { position: absolute; top: -0.42em; left: -0.04em; font-size: 17vw; }
+.pf-about-side { grid-column: 3; align-self: end; display: grid; justify-items: start; gap: 16px; }
+.pf-about-side p { color: var(--pf-body); font-size: var(--fs-body); line-height: 1.55; }
+.pf-status { display: inline-flex; align-items: center; gap: 8px; color: var(--pf-black) !important; font-family: var(--pf-mono); font-size: var(--fs-label) !important; }
+.pf-status span { width: 7px; height: 7px; border-radius: 50%; background: var(--pf-accent); }
+.pf-statement { grid-column: 1 / 3; }
+.pf-statement p { max-width: 18em; font-size: clamp(2rem, 1.2rem + 3.2vw, 4.2rem); font-style: italic; font-weight: 500; letter-spacing: -0.04em; line-height: 1.02; }
+
+/* Selected work */
+.pf-work { padding-top: 18vh; }
+.pf-label-row { display: flex; justify-content: space-between; padding: 14px 12px; margin-bottom: 32px; border-top: 1px solid var(--pf-black); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
+.pf-label-row h2 { font-size: inherit; font-weight: 400; }
+.pf-tiles { row-gap: clamp(40px, 5vw, 72px); margin: 0; padding: 0; list-style: none; }
+.pf-tiles li { scroll-margin-top: 24px; }
+.pf-tile-media { position: relative; aspect-ratio: 4 / 3; background: var(--pf-raised); border-radius: var(--pf-radius); overflow: hidden; }
+.pf-tile-media img { object-position: top; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+.pf-tiles li:hover .pf-tile-media img { transform: scale(1.03); }
+.pf-tile-kind { margin-top: 14px !important; color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+.pf-tiles h3 { margin-top: 4px; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.pf-work-links { display: flex; gap: 16px; margin-top: 10px; font-size: var(--fs-small); }
+.pf-work-links a { display: inline-flex; align-items: center; gap: 2px; border-bottom: 1px solid transparent; }
+.pf-work-links a:hover { border-color: currentColor; }
 
 /* Contact */
-.pf-colophon { padding-bottom: 32px; }
-.pf-contact { display: grid; grid-template-columns: minmax(0, 1fr) minmax(10rem, 14rem); gap: clamp(24px, 4vw, 56px); align-items: end; }
-.pf-contact-line { max-width: 16em !important; font-family: var(--pf-serif); font-size: var(--fs-heading); font-weight: 400; letter-spacing: -0.01em; line-height: 1.08; }
-.pf-contact-mail { display: inline-block; margin-top: 28px; padding-bottom: 2px; border-bottom: 1px solid var(--pf-black); font-size: var(--fs-lede); font-weight: 500; }
-.pf-contact-mail:hover { border-color: var(--pf-accent); color: var(--pf-accent); }
-.pf-figure { margin: 0; }
-.pf-figure > div { position: relative; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 6px; background: var(--pf-raised); }
-.pf-figure img { object-fit: cover; filter: grayscale(1); }
-.pf-figure figcaption { margin-top: 10px; color: var(--pf-black); font-family: var(--pf-serif); font-size: var(--fs-lede); font-style: italic; line-height: 1.3; }
-.pf-figure figcaption span { display: block; color: var(--pf-muted); font-family: var(--font-sans), system-ui, sans-serif; font-size: var(--fs-small); font-style: normal; }
-.pf-smallprint { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-top: 12vh; padding-top: 14px; border-top: 1px solid var(--pf-border); color: var(--pf-muted); }
-.pf-smallprint a:hover { color: var(--pf-black); }
+.pf-contact { padding-top: 22vh; }
+.pf-word-contact { font-size: 27vw; margin-left: -0.04em; }
+.pf-contact-row { margin-top: 32px; align-items: end; }
+.pf-contact-row > div:first-child { grid-column: 1 / 3; display: grid; gap: 12px; }
+.pf-contact-row p { color: var(--pf-body); font-size: var(--fs-lede); }
+.pf-mail { width: fit-content; font-size: clamp(1.5rem, 1rem + 2vw, 2.6rem); font-weight: 600; letter-spacing: -0.04em; border-bottom: 2px solid var(--pf-black); }
+.pf-mail:hover { color: var(--pf-accent); border-color: var(--pf-accent); }
+.pf-contact-side { display: grid; justify-items: start; gap: 16px; }
+.pf-socials { display: flex; gap: 20px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-small); }
+.pf-socials a { border-bottom: 1px solid var(--pf-black); }
+.pf-socials a:hover { color: var(--pf-accent); border-color: var(--pf-accent); }
+.pf-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: 12vh; padding: 16px 12px var(--pf-gutter); border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+.pf-foot a:hover { color: var(--pf-black); }
 
-/* Rising words: each word is clipped top and bottom by its own line box. The sides stay open: negative
-   letter-spacing makes the box narrower than the last glyph, and overflow: hidden cut that letter off. */
-.pf-rise { display: inline-block; clip-path: inset(0 -0.25em); vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
-.pf-rise > span { display: inline-block; }
-
-/* Case-study pop-up */
-.pf-modal { width: min(56rem, calc(100vw - 32px)); max-height: min(90vh, 920px); margin: auto; padding: 0; border: 0; border-radius: var(--pf-radius); background: var(--pf-white); color: var(--pf-black); font-family: var(--font-sans), system-ui, sans-serif; overscroll-behavior: contain; }
-.pf-modal::backdrop { background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(4px); }
-.pf-modal[open] { animation: pf-modal-in 0.4s cubic-bezier(0.22, 1, 0.36, 1); }
-.pf-modal[open]::backdrop { animation: pf-fade 0.3s ease-out; }
-@keyframes pf-modal-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
-@keyframes pf-fade { from { opacity: 0; } }
-.pf-modal-inner { position: relative; display: grid; gap: 16px; padding: 8px 8px 28px; }
-.pf-modal-inner > :not(.pf-modal-media):not(.pf-modal-close) { margin: 0 20px; }
-.pf-modal-close { position: absolute; top: 18px; right: 18px; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; border: 0; border-radius: 50%; background: var(--pf-white); color: var(--pf-black); cursor: pointer; box-shadow: 0 0 0 1px var(--pf-border); }
-.pf-modal-media { overflow: hidden; border-radius: 10px; background: var(--pf-surface); }
-.pf-modal-media img { display: block; width: 100%; height: auto; max-height: 46vh; object-fit: cover; object-position: top; }
-.pf-modal-kicker { margin-top: 12px !important; color: var(--pf-muted); font-family: var(--pf-serif); font-size: var(--fs-lede); font-style: italic; }
-.pf-modal h3 { font-size: var(--fs-heading); font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; }
-.pf-modal-lead { color: var(--pf-body); font-size: var(--fs-body); line-height: 1.6; }
-.pf-modal-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-.pf-modal-grid div { padding: 16px; border-radius: 10px; background: var(--pf-surface); }
-.pf-modal-grid dt { color: var(--pf-muted); }
-.pf-modal-grid dd { margin: 6px 0 0; font-size: var(--fs-small); line-height: 1.5; }
-.pf-modal-stack { display: flex; flex-wrap: wrap; gap: 6px; }
-.pf-modal .pf-work-links { font-size: var(--fs-body); }
-
-/* Below 1000px the side panel becomes a top block and the chapter list a horizontal strip.
-   shortcut: the strip does not stick on phones (sticky cannot outlive its panel); add a separate sticky bar if needed. */
-@media (max-width: 1000px) {
-  .pf { display: block; }
-  .pf-side { position: static; height: auto; margin: 8px; }
-  .pf-side-photo { flex: none; aspect-ratio: 4 / 5; max-height: 70vh; }
-  .pf-side-body { overflow: visible; }
-  .pf-chapters ol { display: flex; gap: 18px; overflow-x: auto; padding: 10px 0; scrollbar-width: none; }
-  .pf-chapters a { gap: 6px; white-space: nowrap; }
-  .pf-chapters a span { width: auto; }
-  .pf-main { padding: 0 16px; }
-  .pf-chapter { padding-top: 10vh; }
-  .pf-profile, .pf-contact { grid-template-columns: 1fr; }
-  .pf-spread, .pf-spread-flip { grid-template-columns: 1fr; }
-  .pf-spread-flip .pf-spread-media { order: 0; }
-  .pf-figure { max-width: 14rem; }
-}
-@media (max-width: 700px) {
-  .pf-services, .pf-modal-grid { grid-template-columns: 1fr; }
-  .pf-caps > div, .pf-career > li { grid-template-columns: 1fr; gap: 8px; }
-  .pf-citations > li { grid-template-columns: 2rem minmax(0, 1fr); }
-  .pf-citations a { grid-column: 2; justify-self: start; }
-  .pf-modal-inner > :not(.pf-modal-media):not(.pf-modal-close) { margin: 0 12px; }
+/* Phones: one column, no guides. Words stay sized to the screen width. */
+@media (max-width: 800px) {
+  .pf-guides { display: none; }
+  .pf-hero, .pf-about, .pf-tiles, .pf-contact-row { grid-template-columns: minmax(0, 1fr); }
+  .pf-hero > *, .pf-about > *, .pf-tiles > li, .pf-contact-row > * { padding-inline: 0; }
+  .pf-hero { display: flex; flex-direction: column; gap: 24px; height: auto; min-height: 0; padding-top: 80px; }
+  .pf-word-hero { font-size: 30vw; }
+  .pf-hero-tall { order: 1; margin: -11vw 0 0; min-height: 0; aspect-ratio: 4 / 5; }
+  .pf-hero-copy { order: 2; }
+  .pf-hero-small { order: 3; margin-inline: 0; }
+  .pf-about { padding-top: 14vh; }
+  .pf-about-photo { grid-column: 1; margin-inline: 0; aspect-ratio: 4 / 3; }
+  .pf-word-about { font-size: 28vw; }
+  .pf-about-side, .pf-statement { grid-column: 1; }
+  .pf-label-row { padding-inline: 0; }
+  .pf-contact-row > div:first-child { grid-column: 1; }
+  .pf-contact-side { margin-top: 24px; }
+  .pf-word-contact { font-size: 25vw; }
+  .pf-foot { padding-inline: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-spread-media img, .pf-chapters a, .pf-chapters a span { transition: none; }
-  .pf-modal[open], .pf-modal[open]::backdrop { animation: none; }
+  .pf-tile-media img, .pf-pill { transition: none; }
 }
