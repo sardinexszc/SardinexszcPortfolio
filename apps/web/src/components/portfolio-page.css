@@ -74,10 +74,15 @@
 .pf-hero-tall { position: relative; grid-column: 3; grid-row: 1 / 3; margin: 14.5vw 12px 0; padding: 0 !important; }
 .pf-hero-tall img { object-position: 56% center; }
 .pf-hero-small { position: relative; grid-column: 2; grid-row: 2; align-self: end; aspect-ratio: 4 / 3; margin-inline: 12px; padding: 0 !important; }
-.pf-hero-small a { position: absolute; inset: 0; }
-.pf-hero-small img { transition: transform 0.6s var(--pf-ease); }
-.pf-hero-small:hover img { transform: scale(1.04); }
-.pf-hero-copy { grid-column: 1; grid-row: 2; align-self: end; display: grid; justify-items: start; gap: 28px; }
+/* Practice card: what fills the middle frame until a picture is set in the CMS. */
+.pf-practice-card { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(16px, 1.8vw, 28px); background: var(--pf-black); color: var(--pf-white); }
+.pf-practice-card .pf-mark { width: 40px; height: 40px; border-radius: 9px; background: var(--pf-white); color: var(--pf-black); font-size: var(--fs-small); }
+.pf-practice-card p { max-width: 14em; font-size: clamp(1.25rem, 0.9rem + 1.1vw, 2rem); font-weight: 600; letter-spacing: -0.035em; line-height: 1.05; }
+.pf-practice-card p span { display: block; margin-bottom: 10px; color: #9a9f9a; font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; letter-spacing: 0; }
+.pf-practice-card .pf-practice-meta { color: #9a9f9a; font-family: var(--pf-mono); font-size: var(--fs-label); font-weight: 400; letter-spacing: 0; }
+.pf-role { font-family: var(--pf-mono); font-size: var(--fs-label) !important; text-transform: uppercase; letter-spacing: 0.06em; }
+.pf-hero-copy { grid-column: 1; grid-row: 2; align-self: end; display: grid; justify-items: start; gap: 20px; }
+.pf-hero-copy .pf-cta { margin-top: 8px; }
 .pf-hero-copy > p { max-width: 24em; font-size: var(--fs-lede); line-height: 1.4; letter-spacing: -0.01em; }
 
 /* Résumé call to action: a short prompt over the pill. */
@@ -100,8 +105,47 @@
 .pf-statement { grid-column: 1 / 3; }
 .pf-statement p { max-width: 18em; font-size: clamp(2rem, 1.2rem + 3.2vw, 4.2rem); font-style: italic; font-weight: 500; letter-spacing: -0.04em; line-height: 1.02; }
 
+/* Facts: four figures across the full width. */
+.pf-facts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0 !important; }
+.pf-fact { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; padding: 16px 12px 0; border-top: 1px solid var(--pf-black); }
+.pf-fact + .pf-fact { border-left: 1px solid var(--pf-border); }
+.pf-fact dd { margin: 0; font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
+.pf-fact dt { color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+
+/* Sections after the practice share one rhythm and start with a label row. */
+.pf-section { padding-top: var(--pf-section); }
+.pf-index { color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+
+/* Disciplines: one per column, on the guides. */
+.pf-disciplines { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; padding: 0; list-style: none; }
+.pf-disciplines > li { padding-inline: 12px; }
+.pf-disciplines > li > div { display: grid; justify-items: start; gap: 12px; }
+.pf-disciplines h3 { margin-top: 20px; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.pf-disciplines p { max-width: 26em; color: var(--pf-body); font-size: var(--fs-body); line-height: 1.55; }
+.pf-stack { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: clamp(40px, 5vw, 64px); padding: 16px 12px 0; border-top: 1px solid var(--pf-border); }
+.pf-stack > span { color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+.pf-stack ul { display: flex; flex-wrap: wrap; gap: 20px; margin: 0; padding: 0; list-style: none; color: #8a8a8a; }
+.pf-stack li { display: flex; transition: color 0.25s; }
+.pf-stack li:hover { color: var(--pf-black); }
+
+/* Worked with: names as one large run of type. */
+.pf-with { padding-inline: 12px; color: #9a9f9a; font-size: clamp(1.6rem, 1rem + 2.4vw, 3.4rem); font-weight: 600; letter-spacing: -0.04em; line-height: 1.12; }
+.pf-with > span > span { color: var(--pf-border); }
+.pf-with > span:nth-child(odd) { color: var(--pf-black); }
+
+/* Recognition: an index, one row per item, on the column grid. */
+.pf-index-list { margin: 0; padding: 0; list-style: none; }
+.pf-index-list li { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: baseline; padding: 16px 0; border-top: 1px solid var(--pf-border); }
+.pf-index-list li > * { padding-inline: 12px; }
+.pf-index-meta { color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
+.pf-index-list h3 { font-size: var(--fs-body); font-weight: 500; line-height: 1.4; }
+.pf-index-list h3 a { border-bottom: 1px solid transparent; transition: border-color 0.25s; }
+.pf-index-list h3 a:hover { border-color: currentColor; }
+.pf-index-list h3 svg { vertical-align: -2px; }
+.pf-index-status { justify-self: end; font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
+.pf-index-status[data-status="Accepted"], .pf-index-status[data-status="Pending"] { color: var(--pf-accent); }
+
 /* Selected work */
-.pf-work { padding-top: var(--pf-section); }
 .pf-label-row { display: flex; justify-content: space-between; padding: 14px 12px; margin-bottom: 24px; border-top: 1px solid var(--pf-black); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
 .pf-label-row h2 { font-size: inherit; font-weight: 400; }
 .pf-tiles { row-gap: clamp(40px, 5vw, 72px); margin: 0; padding: 0; list-style: none; }
@@ -150,11 +194,21 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-hero { display: flex; flex-direction: column; gap: 24px; height: auto; min-height: 0; }
   .pf-word-hero { font-size: 30vw; }
   .pf-hero-tall { order: 1; margin: -9vw 0 0; min-height: 0; aspect-ratio: 4 / 5; }
-  .pf-hero-copy { order: 2; }
-  .pf-hero-small { order: 3; margin-inline: 0; }
+  /* align-self: end is for the desktop grid; in this column it would shrink them to the right edge. */
+  .pf-hero-copy { order: 2; align-self: stretch; }
+  .pf-hero-small { order: 3; align-self: stretch; margin-inline: 0; }
   .pf-about-photo { grid-column: 1; margin-inline: 0; aspect-ratio: 4 / 3; }
   .pf-word-about { font-size: 28vw; }
   .pf-about-side, .pf-statement { grid-column: 1; }
+  .pf-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
+  .pf-fact { padding-inline: 0 12px; }
+  .pf-fact + .pf-fact { border-left: 0; }
+  .pf-disciplines { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
+  .pf-disciplines > li, .pf-stack, .pf-with { padding-inline: 0; }
+  .pf-index-list li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
+  .pf-index-list li > * { padding-inline: 0; }
+  .pf-index-meta { grid-column: 1 / -1; }
+  .pf-index-status { padding-left: 16px !important; }
   .pf-label-row { padding-inline: 0; }
   .pf-tiles { row-gap: 32px; }
   .pf-contact-row > div:first-child { grid-column: 1; }
@@ -164,6 +218,6 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-tile-media img, .pf-tile-veil, .pf-tile-veil span, .pf-hero-small img, .pf-pill, .pf-pill svg { transition: none; }
+  .pf-tile-media img, .pf-tile-veil, .pf-tile-veil span, .pf-pill, .pf-pill svg { transition: none; }
   .pf-menu[open] nav { animation: none; }
 }

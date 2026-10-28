@@ -3,6 +3,15 @@ import { authCookieOptions } from "@/lib/supabase/cookie-options";
 import { type NextRequest, NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
+  // Supabase sends the sign-in code to its Site URL (the home page) when the callback URL is not on its
+  // allow-list. Forward it to the callback so sign-in still completes; the home page itself is untouched.
+  if (request.nextUrl.pathname === "/") {
+    const code = request.nextUrl.searchParams.get("code");
+    if (!code) return NextResponse.next();
+    const callback = new URL("/auth/callback", request.url);
+    callback.searchParams.set("code", code);
+    return NextResponse.redirect(callback);
+  }
   if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY) {
     return NextResponse.next({ request });
   }
@@ -28,4 +37,4 @@ export async function proxy(request: NextRequest) {
   return response;
 }
 
-export const config = { matcher: ["/loginauthentication", "/analytics/:path*"] };
+export const config = { matcher: ["/", "/loginauthentication", "/analytics/:path*"] };

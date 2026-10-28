@@ -11,16 +11,19 @@ const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--
 // Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
 const themeScript = `try{var t=localStorage.getItem("theme-preference");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
 
-const title = "Ivan Christian Salinas — Full-Stack Software Engineer";
+const title = "Ivan Christian Salinas — Full-Stack Developer for Research & Data Systems";
+// Kept under 160 characters so search results show it whole.
 const description =
-  "Full-stack web developer in the Philippines building live information systems with Laravel, Next.js, TypeScript, and PostgreSQL, including a monitoring system used by every member university of a research consortium. Data engineering, IoT, and published research. Open to full-time, contract, and remote roles.";
+  "Full-stack developer in the Philippines: Laravel, Next.js and PostgreSQL systems for research institutions. Data, IoT, published research. Open to remote roles.";
+// Preview deployments share the content but must not compete with the real site in search.
+const indexable = !process.env.VERCEL_ENV || process.env.VERCEL_ENV === "production";
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#dcd9d0" },
+    { media: "(prefers-color-scheme: light)", color: "#f0f0f0" },
     { media: "(prefers-color-scheme: dark)", color: "#161615" },
   ],
 };
@@ -29,6 +32,7 @@ export const metadata: Metadata = {
   title,
   description,
   metadataBase: getSiteUrl(),
+  robots: indexable ? { index: true, follow: true } : { index: false, follow: false },
   alternates: {
     canonical: "/",
   },
@@ -48,8 +52,11 @@ export const metadata: Metadata = {
     description,
   },
   keywords: [
+    "Ivan Christian Salinas",
     "Full-Stack Software Engineer",
     "Full-Stack Web Developer",
+    "Data Engineering",
+    "IoT",
     "Laravel Developer",
     "PHP",
     "Next.js",

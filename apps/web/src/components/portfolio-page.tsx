@@ -1,11 +1,17 @@
 import Image from "next/image";
-import { ArrowDown, ArrowUpRight } from "lucide-react";
+import { ArrowDown, ArrowUpRight, Code2, Cpu, Database } from "lucide-react";
 import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
 import { ClipReveal, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
+import { TechIcon } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
+
+const serviceIcons = { code: Code2, database: Database, cpu: Cpu };
+// A plausible year only: "PH 12023050744, 2025" must give 2025, not 1202.
+const firstYear = (text: string) => Number(text.match(/\b(?:19|20)\d{2}\b/)?.[0]) || null;
+const ipStatus = (detail: string) => (/pending/i.test(detail) ? "Pending" : /published/i.test(detail) ? "Published" : "Registered");
 
 // Tile picture: the screenshot, or a title card when there is none. The whole picture links to the
 // live site (or the source when there is no live site) and shows a hint on hover.
@@ -25,7 +31,7 @@ function TileMedia({ project, title }: { project: Project; title: string }) {
   );
 }
 
-// The page says little on purpose; the résumé carries the detail, so every section ends on it.
+// The page says little on purpose; the résumé carries the detail. Shown once at the top and once at the end.
 function ResumeButton() {
   return (
     <div className="pf-cta">
@@ -44,9 +50,25 @@ function SocialLinks() {
   );
 }
 
+function LabelRow({ id, title, aside }: { id: string; title: string; aside?: string }) {
+  return <div className="pf-label-row"><h2 id={id}>{title}</h2>{aside ? <span>{aside}</span> : null}</div>;
+}
+
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
-  const { settings: s, projects } = portfolio;
-  const featured = projects.find((project) => isAllowedImage(project.image_url));
+  const { settings: s, projects, timeline, publications, ipItems } = portfolio;
+  // Facts are computed from the content, so they stay true as it changes.
+  const startYears = timeline.filter((entry) => entry.type === "experience").map((entry) => firstYear(entry.start_date)).filter((year): year is number => year !== null);
+  const since = startYears.length ? Math.min(...startYears) : null;
+  const facts = [
+    since ? { figure: `${new Date().getFullYear() - since}`, label: "Years building systems" } : null,
+    { figure: `${projects.length}`, label: "Systems shipped" },
+    { figure: `${publications.length}`, label: ipItems.length ? `Publications, plus ${ipItems.length} IP filings` : "Publications" },
+    { figure: "150+", label: "Students mentored a semester" },
+  ].filter((fact) => fact !== null);
+  const recognition = [
+    ...publications.map((item) => ({ key: `p${item.id}`, year: firstYear(item.venue), venue: item.venue.replace(/,?\s*(?:19|20)\d{2}$/, ""), title: item.title, status: item.status as string, doi: item.doi })),
+    ...ipItems.map((item) => ({ key: `i${item.id}`, year: firstYear(item.detail), venue: "Intellectual property", title: item.title, status: ipStatus(item.detail), doi: null })),
+  ];
 
   return (
     <div className="pf">
@@ -57,8 +79,10 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <a className="pf-brand" href="#top" aria-label="Ivan Salinas, back to top"><span className="pf-mark" aria-hidden="true">I<span>S</span></span>Ivan Salinas</a>
         <SiteMenu>
           <ul>
+            <li><a href="#practice">Practice</a></li>
+            <li><a href="#disciplines">Disciplines</a></li>
             <li><a href="#work">Work</a></li>
-            <li><a href="#about">About</a></li>
+            <li><a href="#recognition">Recognition</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
             <SocialLinks />
@@ -68,26 +92,29 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
       <main id="main-content">
         <section id="top" className="pf-hero" aria-labelledby="pf-title">
-          <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {profile.role}</h1>
+          <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {s.roleLine}</h1>
           <Wordmark text="Salinas" className="pf-word pf-word-hero" onLoad />
           {isAllowedImage(s.heroImage) ? (
             <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload sizes="(max-width: 800px) 100vw, 33vw" /></Parallax></ClipReveal>
           ) : null}
-          {featured ? (
-            <ClipReveal className="pf-hero-small" delay={0.4}>
-              <a href="#work" aria-label={`Selected work, starting with ${projectDisplayTitle(featured)}`}>
-                <Image src={featured.image_url!} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" />
-              </a>
-            </ClipReveal>
-          ) : null}
+          <ClipReveal className="pf-hero-small" delay={0.4}>
+            {isAllowedImage(s.studioImage) ? <Image src={s.studioImage} alt="" fill sizes="(max-width: 800px) 100vw, 30vw" /> : (
+              <div className="pf-practice-card">
+                <span className="pf-mark" aria-hidden="true">I<span>S</span></span>
+                <p><span>Independent software practice</span>Systems, data &amp; IoT for research institutions.</p>
+                <p className="pf-practice-meta">{since ? `Est. ${since} · ` : ""}{profile.region}, PH</p>
+              </div>
+            )}
+          </ClipReveal>
           <Reveal className="pf-hero-copy" delay={0.55}>
+            <p className="pf-role">{s.roleLine}</p>
             <p>{s.aboutCardTitle}</p>
             <ResumeButton />
           </Reveal>
         </section>
 
-        <section id="about" className="pf-about" aria-labelledby="about-title">
-          <h2 id="about-title" className="visually-hidden">About</h2>
+        <section id="practice" className="pf-about" aria-labelledby="practice-title">
+          <h2 id="practice-title" className="visually-hidden">Practice</h2>
           <div className="pf-about-photo">
             {isAllowedImage(s.portraitImage) ? <Parallax><Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill sizes="(max-width: 800px) 100vw, 66vw" /></Parallax> : null}
             <Wordmark text="Ivan" className="pf-word pf-word-about" />
@@ -95,16 +122,44 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <Reveal className="pf-about-side">
             <p className="pf-status"><span aria-hidden="true" />{s.statusLine}</p>
             <p>{s.heroIntro}</p>
-            <ResumeButton />
           </Reveal>
           <Reveal className="pf-statement"><p>{s.aboutStatement}.</p></Reveal>
+          <dl className="pf-facts">
+            {facts.map((fact) => (
+              <Reveal key={fact.label} className="pf-fact"><dt>{fact.label}</dt><dd>{fact.figure}</dd></Reveal>
+            ))}
+          </dl>
         </section>
 
-        <section id="work" className="pf-work" aria-labelledby="work-title">
-          <div className="pf-label-row">
-            <h2 id="work-title">Selected work</h2>
-            <span>({projects.length})</span>
-          </div>
+        <section id="disciplines" className="pf-section" aria-labelledby="disciplines-title">
+          <LabelRow id="disciplines-title" title="Disciplines" aside={`(${s.services.length})`} />
+          <ol className="pf-disciplines">
+            {s.services.map(({ icon, title, text }, i) => {
+              const Icon = serviceIcons[icon] ?? Code2;
+              return (
+                <li key={title}>
+                  <Reveal delay={i * 0.08}>
+                    <span className="pf-index">{String(i + 1).padStart(2, "0")}</span>
+                    <Icon size={20} aria-hidden="true" />
+                    <h3>{title}</h3>
+                    <p>{text}</p>
+                  </Reveal>
+                </li>
+              );
+            })}
+          </ol>
+          {s.heroStack.length ? (
+            <div className="pf-stack">
+              <span>Everyday stack</span>
+              <ul aria-label="Everyday stack">
+                {s.heroStack.map((tech) => <li key={tech} title={tech}><TechIcon name={tech} size={20} /><span className="visually-hidden">{tech}</span></li>)}
+              </ul>
+            </div>
+          ) : null}
+        </section>
+
+        <section id="work" className="pf-section" aria-labelledby="work-title">
+          <LabelRow id="work-title" title="Selected work" aside={`(${projects.length})`} />
           <ul className="pf-tiles">
             {projects.map((project) => {
               const title = projectDisplayTitle(project);
@@ -122,6 +177,28 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           </ul>
         </section>
 
+        {s.institutions.length ? (
+          <section className="pf-section" aria-labelledby="with-title">
+            <LabelRow id="with-title" title="Worked with" />
+            <Reveal><p className="pf-with">{s.institutions.map((name, i) => <span key={name}>{i ? <span aria-hidden="true"> / </span> : null}{name}</span>)}</p></Reveal>
+          </section>
+        ) : null}
+
+        {recognition.length ? (
+          <section id="recognition" className="pf-section" aria-labelledby="recognition-title">
+            <LabelRow id="recognition-title" title="Recognition" aside={`(${recognition.length})`} />
+            <ol className="pf-index-list">
+              {recognition.map((item) => (
+                <li key={item.key}>
+                  <span className="pf-index-meta">{item.year ? `${item.year} · ` : ""}{item.venue}</span>
+                  <h3>{item.doi ? <a href={`https://doi.org/${item.doi}`} target="_blank" rel="noopener noreferrer">{item.title} <ArrowUpRight size={15} aria-hidden="true" /><span className="visually-hidden"> (DOI, opens in a new tab)</span></a> : item.title}</h3>
+                  <span className="pf-index-status" data-status={item.status}>{item.status}</span>
+                </li>
+              ))}
+            </ol>
+          </section>
+        ) : null}
+
         <section id="contact" className="pf-contact" aria-labelledby="contact-title">
           <h2 id="contact-title" className="visually-hidden">Contact</h2>
           <Wordmark text="Let’s talk" className="pf-word pf-word-contact" />
@@ -136,7 +213,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             </div>
           </div>
           <footer className="pf-foot">
-            <span>© 2026 {profile.name}</span>
+            <span>© {new Date().getFullYear()} {profile.name}</span>
             <span>{profile.location}</span>
             <a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">View source<span className="visually-hidden"> (opens in a new tab)</span></a>
           </footer>

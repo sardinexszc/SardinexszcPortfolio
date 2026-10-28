@@ -101,29 +101,39 @@ export const sections: Section[] = [
 export const findSection = (slug: string) => sections.find((section) => section.slug === slug);
 
 // Site copy stored in site_settings.content. Only the fields the home page shows are edited here;
-// saving merges over the stored copy, so older fields (services, research quotes) are kept, not wiped.
+// saving merges over the stored copy, so older fields (research quotes) are kept, not wiped.
+// Disciplines are edited separately as three fixed cards.
 export const settingsGroups: { title: string; fields: Field[] }[] = [
   {
     title: "Hero",
     fields: [
+      { name: "roleLine", label: "Role line", kind: "text", required: true },
+      { name: "aboutCardTitle", label: "Intro above the résumé button", kind: "text", required: true },
       { name: "heroImage", label: "Tall photo (right column)", kind: "image", hint: "Keep the top third plain (sky, wall): the big name crosses it." },
-      { name: "aboutCardTitle", label: "Intro beside the résumé button", kind: "text", required: true },
+      { name: "studioImage", label: "Middle picture (optional)", kind: "image", hint: "Leave empty to show the black practice card." },
     ],
   },
   {
-    title: "About",
+    title: "Practice",
     fields: [
       { name: "portraitImage", label: "Wide photo", kind: "image" },
       { name: "statusLine", label: "Availability", kind: "text" },
       { name: "heroIntro", label: "Short paragraph", kind: "textarea", required: true },
       { name: "aboutStatement", label: "Big italic statement", kind: "text", required: true, hint: "A full stop is added at the end." },
+      { name: "heroStack", label: "Everyday stack icons", kind: "list", hint: "Comma-separated tool names." },
     ],
   },
   {
-    title: "Contact",
-    fields: [{ name: "contactLead", label: "Line above the email", kind: "text" }],
+    title: "Worked with and contact",
+    fields: [
+      { name: "institutions", label: "Institutions worked with", kind: "list", hint: "Comma-separated." },
+      { name: "contactLead", label: "Line above the email", kind: "text" },
+    ],
   },
 ];
+
+export const SERVICE_ICONS = ["code", "database", "cpu"] as const;
+export const SERVICE_SLOTS = 3;
 
 // Value shown in an input for a stored value.
 export function formValue(field: Field, value: unknown): string {

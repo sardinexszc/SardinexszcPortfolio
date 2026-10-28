@@ -65,6 +65,10 @@ export type SiteSettings = {
   training: string;
   contactLead: string;
   contactStrong: string;
+  roleLine: string;
+  // Optional picture for the hero practice card; empty shows the card itself.
+  studioImage: string;
+  institutions: string[];
 };
 
 export type Portfolio = {

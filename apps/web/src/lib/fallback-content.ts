@@ -32,6 +32,9 @@ export const fallbackContent: Portfolio = {
     training: "GIS workshops, DOST-PCAARRD (2024, 2025) · Flexible Learning Systems, CLSU (2020) · Intercultural Fluency Essentials, British Council (2018)",
     contactLead: "Hiring for a full-stack role, or need a system built?",
     contactStrong: "I'd like to hear about it.",
+    roleLine: "Full-stack developer for research and data systems",
+    studioImage: "",
+    institutions: ["Central Luzon State University", "CLAARRDEC Consortium", "CLSU CRRDC", "DOST-PCAARRD", "CHED–British Council JDNP"],
   },
   projects: [
     {
