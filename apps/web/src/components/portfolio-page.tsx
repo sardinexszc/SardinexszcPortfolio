@@ -44,9 +44,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
     <div className="pf">
       <header className="pf-side">
         <div className="pf-side-photo">
-          {isAllowedImage(s.heroImage) ? <Image src={s.heroImage} alt="Portrait of Ivan Salinas" fill preload sizes="(max-width: 1000px) 100vw, 40vw" /> : null}
-          <span className="pf-side-vertical" aria-hidden="true">Ivan</span>
-        </div>
+          {isAllowedImage(s.heroImage) ? <Image src={s.heroImage} alt="Portrait of Ivan Salinas" fill preload sizes="(max-width: 1000px) 100vw, 40vw" /> : null}        </div>
         <div className="pf-side-body">
           <h1 id="pf-title">Ivan Salinas</h1>
           <p className="pf-tagline">{s.aboutCardTitle}</p>
