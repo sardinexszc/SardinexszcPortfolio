@@ -11,7 +11,8 @@ const mono = DM_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--
 // Applies the saved or system theme before first paint so dark-mode visitors do not see a light flash.
 const themeScript = `try{var t=localStorage.getItem("theme-preference");if(t!=="light"&&t!=="dark")t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light";if(t==="dark")document.documentElement.classList.add("dark")}catch(e){}`;
 
-const title = "Ivan Christian Salinas — Full-Stack Developer (Laravel, Next.js, PostgreSQL)";
+// Under 60 characters so search results do not truncate it; the stack is in the description.
+const title = "Ivan Christian Salinas — Full-Stack Developer";
 // Kept under 160 characters so search results show it whole.
 const description =
   "Full-stack developer in the Philippines building production web apps with Laravel, Next.js and PostgreSQL. Data engineering, IoT. Open to remote IT roles.";
