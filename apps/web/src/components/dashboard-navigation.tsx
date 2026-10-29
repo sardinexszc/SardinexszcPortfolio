@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutDashboard, FilePenLine, Inbox, Settings } from "lucide-react";
+import { ArrowUpRight, LayoutDashboard, FilePenLine, Inbox, Settings } from "lucide-react";
 
 const items = [
   { href: "/analytics", label: "Dashboard", icon: LayoutDashboard },
   { href: "/analytics/content", label: "Content", icon: FilePenLine },
-  { href: "/analytics/services-request", label: "Services Request", icon: Inbox },
-  { href: "/analytics/account-settings", label: "Account Settings", icon: Settings },
+  { href: "/analytics/services-request", label: "Requests", icon: Inbox },
+  { href: "/analytics/account-settings", label: "Account", icon: Settings },
 ];
 
 export function DashboardNavigation() {
@@ -24,6 +24,10 @@ export function DashboardNavigation() {
           <span>{label}</span>
         </Link>
       ))}
+      <a href="/" target="_blank" rel="noopener noreferrer" title="View site" className="dashboard-nav-link dashboard-nav-site">
+        <ArrowUpRight size={18} strokeWidth={1.8} aria-hidden="true" />
+        <span>View site<span className="visually-hidden"> (opens in a new tab)</span></span>
+      </a>
     </nav>
   );
 }

@@ -12,6 +12,10 @@ export type Section = {
   description: string;
   fields: Field[];
   rowLabel: (row: Record<string, unknown>) => string;
+  // One line under the title in the collapsed row, an optional thumbnail, and a link badge.
+  rowMeta?: (row: Record<string, unknown>) => string;
+  rowImage?: (row: Record<string, unknown>) => string | null;
+  rowLink?: (row: Record<string, unknown>) => { label: string; href: string } | null;
 };
 
 const sortField: Field = { name: "sort_order", label: "Order", kind: "number", hint: "Lower numbers show first." };
@@ -24,6 +28,9 @@ export const sections: Section[] = [
     singular: "project",
     description: "Cards in the Projects grid and their case-study pop-ups.",
     rowLabel: (row) => String(row.title),
+    rowMeta: (row) => [row.featured ? "Featured" : null, Array.isArray(row.tech_stack) ? row.tech_stack.slice(0, 3).join(", ") : null].filter(Boolean).join(" · "),
+    rowImage: (row) => (typeof row.image_url === "string" && row.image_url ? row.image_url : null),
+    rowLink: (row) => (row.live_url ? { label: "Live", href: String(row.live_url) } : row.github_url ? { label: "GitHub", href: String(row.github_url) } : null),
     fields: [
       { name: "title", label: "Title", kind: "text", required: true },
       { name: "description", label: "Card description", kind: "textarea", required: true },
@@ -45,6 +52,7 @@ export const sections: Section[] = [
     singular: "entry",
     description: "The dark Experience panel. Each line of the description becomes a bullet for experience entries.",
     rowLabel: (row) => `${row.role} · ${row.organization}`,
+    rowMeta: (row) => `${row.type === "education" ? "Education" : "Experience"} · ${row.start_date} – ${row.end_date || "Present"}`,
     fields: [
       { name: "type", label: "Type", kind: "select", options: ["experience", "education"], required: true },
       { name: "role", label: "Role or degree", kind: "text", required: true },
@@ -62,6 +70,8 @@ export const sections: Section[] = [
     singular: "publication",
     description: "Research list with status tags. The About card counts these by status.",
     rowLabel: (row) => String(row.title),
+    rowMeta: (row) => `${row.status} · ${row.venue}`,
+    rowLink: (row) => (row.doi ? { label: "DOI", href: `https://doi.org/${row.doi}` } : null),
     fields: [
       { name: "title", label: "Title", kind: "text", required: true },
       { name: "venue", label: "Venue and year", kind: "text", required: true },
@@ -77,6 +87,8 @@ export const sections: Section[] = [
     singular: "item",
     description: "Patents, copyrights and filings under Research & IP.",
     rowLabel: (row) => String(row.title),
+    rowMeta: (row) => String(row.detail ?? ""),
+    rowLink: (row) => (row.proof_url ? { label: "Proof", href: String(row.proof_url) } : null),
     fields: [
       { name: "title", label: "Title", kind: "text", required: true },
       { name: "detail", label: "Detail", kind: "text" },
@@ -91,6 +103,7 @@ export const sections: Section[] = [
     singular: "group",
     description: "Rows of tool chips in the Capabilities section.",
     rowLabel: (row) => String(row.title),
+    rowMeta: (row) => (Array.isArray(row.tools) ? `${row.tools.length} tools · ${row.tools.slice(0, 4).join(", ")}` : ""),
     fields: [
       { name: "title", label: "Group title", kind: "text", required: true },
       { name: "tools", label: "Tools", kind: "list", hint: "Comma-separated." },

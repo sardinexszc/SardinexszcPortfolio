@@ -1,9 +1,13 @@
+import Image from "next/image";
 import { notFound } from "next/navigation";
+import { ArrowUpRight } from "lucide-react";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireAdmin } from "@/lib/supabase/require-admin";
 import { findSection, type Section } from "@/lib/cms";
 import { CmsField, CmsStatus, CmsTabs } from "@/components/cms-fields";
 import { ConfirmSubmit } from "@/components/cms-confirm";
+import { PageHeader } from "@/components/dashboard-page-header";
+import { isAllowedImage } from "@/lib/work-projects";
 import { deleteRow, saveRow } from "../actions";
 
 type Row = Record<string, unknown> & { id: number };
@@ -36,29 +40,38 @@ export default async function ContentSectionPage({ params, searchParams }: { par
 
   return (
     <div className="dashboard-content">
-      <header className="dashboard-page-header">
-        <p className="analytics-eyebrow">/ Content (02)</p>
-        <h1>{section.title}<span className="db-dot">.</span></h1>
-        <p>{section.description} Saving publishes immediately.</p>
-      </header>
+      <PageHeader eyebrow="/ Content (02)" title="Content" lede="Everything the home page shows. Saving publishes immediately." />
       <CmsTabs active={section.slug} />
+      <div className="cms-section-intro"><h2>{section.title}</h2><p>{section.description}</p><span>{rows.length} {rows.length === 1 ? section.singular : `${section.singular}s`}</span></div>
       <CmsStatus saved={saved} error={error ?? (loadError ? `${section.title} could not be loaded. Reload to try again.` : undefined)} />
-      <ol className="cms-rows">
-        {rows.map((row) => (
-          <li key={row.id}>
-            <details className="analytics-card cms-row">
-              <summary><span className="cms-row-order">{String(row.sort_order ?? "")}</span><span>{section.rowLabel(row)}</span></summary>
-              <RowForm section={section} row={row} />
-            </details>
-          </li>
-        ))}
-      </ol>
       {!loadError ? (
         <details className="analytics-card cms-row cms-row-new">
-          <summary><span className="cms-row-order">+</span><span>Add a new {section.singular}</span></summary>
+          <summary><span className="cms-row-order" aria-hidden="true">+</span><span className="cms-row-text"><strong>Add a new {section.singular}</strong></span></summary>
           <RowForm section={section} />
         </details>
       ) : null}
+      <ol className="cms-rows">
+        {rows.map((row) => {
+          const image = section.rowImage?.(row);
+          const meta = section.rowMeta?.(row);
+          const link = section.rowLink?.(row);
+          return (
+            <li key={row.id} className="cms-row-item">
+              <details className="analytics-card cms-row">
+                <summary>
+                  <span className="cms-row-order">{String(row.sort_order ?? "")}</span>
+                  {section.rowImage ? (image && isAllowedImage(image)
+                    ? <Image className="cms-row-thumb" src={image} alt="" width={72} height={45} sizes="72px" unoptimized={image.endsWith(".svg")} />
+                    : <span className="cms-row-thumb cms-image-empty" aria-hidden="true" />) : null}
+                  <span className="cms-row-text"><strong>{section.rowLabel(row)}</strong>{meta ? <small>{meta}</small> : null}</span>
+                </summary>
+                <RowForm section={section} row={row} />
+              </details>
+              {link ? <a className="cms-row-link" href={link.href} target="_blank" rel="noopener noreferrer">{link.label} <ArrowUpRight size={13} aria-hidden="true" /><span className="visually-hidden"> (opens in a new tab)</span></a> : null}
+            </li>
+          );
+        })}
+      </ol>
     </div>
   );
 }
