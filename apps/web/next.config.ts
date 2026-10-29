@@ -38,7 +38,9 @@ const nextConfig: NextConfig = {
       : [],
   },
   // CMS image uploads go through Server Actions; the bucket itself caps files at 4 MB.
-  experimental: { serverActions: { bodySizeLimit: "5mb" } },
+  // inlineCss: the home page CSS is ~11 KB compressed, so shipping it inside the HTML saves the
+  // render-blocking stylesheet round trip for first-time visitors (most visitors to a portfolio).
+  experimental: { serverActions: { bodySizeLimit: "5mb" }, inlineCss: true },
   async headers() {
     if (isDevelopment) {
       return [];
