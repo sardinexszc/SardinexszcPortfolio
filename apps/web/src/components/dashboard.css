@@ -137,9 +137,6 @@
 .db-facts dt { color: var(--db-muted); font: 500 .66rem var(--font-mono), monospace; letter-spacing: .04em; text-transform: uppercase; }
 .db-facts dd { font-size: .9rem; margin: 0; overflow-wrap: anywhere; }
 .db-facts small { color: var(--db-muted); }
-.db-rules { color: var(--db-body); display: flex; flex-wrap: wrap; font-size: .78rem; gap: 6px; list-style: none; margin: 14px 0 0; padding: 0; }
-.db-rules li { border: 1px solid var(--db-border); border-radius: 999px; padding: 4px 10px; }
-.db-show-password { color: var(--db-body); font: inherit; font-size: .85rem; letter-spacing: 0; min-height: 36px; }
 
 /* Analytics panels */
 .engagement-list { list-style: none; margin: 0; padding: 0; }

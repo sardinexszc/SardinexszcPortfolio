@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { signIn } from "./actions";
-import { AuthNotice, AuthSubmitButton, GoogleSignInLink } from "@/components/auth-feedback";
+import { AuthNotice, GoogleSignInLink } from "@/components/auth-feedback";
 import "@/components/dashboard.css";
 
 export const dynamic = "force-dynamic";
@@ -17,11 +16,7 @@ export default async function LoginPage({
   const messages: Record<string, string> = {
     unavailable: "Sign-in is unavailable right now. Please try again shortly.",
     google: "Google sign-in could not start. Please try again.",
-    "missing-fields": "Enter your email and password.",
-    "invalid-input": "Enter a valid email and password.",
-    unconfirmed: "Confirm your email address before signing in.",
-    credentials: "Email or password is incorrect.",
-    "rate-limited": "Too many sign-in attempts. Wait 15 minutes and try again.",
+    "google-only": "Sign in with Google to open the workspace.",
     unauthorized: "This account is not authorized to view analytics.",
     callback: "Google sign-in could not be completed. Please try again.",
   };
@@ -34,13 +29,6 @@ export default async function LoginPage({
         <p>Access portfolio analytics and content.</p>
         {error && <p role="alert" className="analytics-error">{messages[error] ?? "Sign-in failed. Please try again."}</p>}
         {notice === "signed-out" && <AuthNotice message="Signed out successfully." successNotice="signed-out" />}
-        <form action={signIn} className="analytics-form">
-          <label htmlFor="email">Email</label>
-          <input id="email" name="email" type="email" autoComplete="username" maxLength={254} required />
-          <label htmlFor="password">Password</label>
-          <input id="password" name="password" type="password" autoComplete="current-password" maxLength={1024} required />
-          <AuthSubmitButton action="sign-in" />
-        </form>
         <div className="analytics-social-form">
           <GoogleSignInLink />
         </div>
