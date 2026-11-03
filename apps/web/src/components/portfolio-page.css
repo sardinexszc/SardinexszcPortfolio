@@ -8,6 +8,7 @@
   --pf-radius: 4px;
   --pf-gutter: clamp(16px, 2.5vw, 40px);
   --pf-bar: 64px;
+  --pf-curve: 32px;
   --pf-section: clamp(96px, 14vh, 176px);
   --pf-ease: cubic-bezier(0.22, 1, 0.36, 1);
   --pf-mono: var(--font-mono), ui-monospace, monospace;
@@ -32,16 +33,10 @@
 .pf img { object-fit: cover; }
 .pf section { scroll-margin-top: var(--pf-bar); }
 
-/* Column guides */
-.pf-guides { position: fixed; inset: 0 var(--pf-gutter); pointer-events: none; }
-.pf-guides span { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--pf-border); }
-.pf-guides span:first-child { left: 33.333%; }
-.pf-guides span:last-child { left: 66.666%; }
-
 /* Shared three-column grid; text sits 12px inside the hairlines, and photos use the same inset as margin
    (next/image fill covers the padding box, so padding would not inset them). */
-.pf-hero, .pf-about, .pf-tiles, .pf-contact-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.pf-hero > *, .pf-about > *, .pf-tiles > li, .pf-contact-row > * { padding-inline: 12px; }
+.pf-hero, .pf-about, .pf-tiles { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.pf-hero > *, .pf-about > *, .pf-tiles > li { padding-inline: 12px; }
 
 /* Oversized words */
 .pf-word { position: relative; z-index: 3; overflow: hidden; color: var(--pf-white); mix-blend-mode: difference; font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; pointer-events: none; }
@@ -175,27 +170,58 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 .pf-work-links a:hover { border-color: currentColor; }
 
 /* Contact */
-.pf-contact { padding-top: var(--pf-section); }
-.pf-word-contact { font-size: 27vw; margin-left: -0.04em; }
-.pf-contact-row { margin-top: 16px; align-items: end; }
-.pf-contact-row > div:first-child { grid-column: 1 / 3; display: grid; gap: 12px; }
-.pf-contact-row > div:first-child > p { color: var(--pf-body); font-size: var(--fs-lede); }
 .pf-mail { width: fit-content; font-size: clamp(1.5rem, 1rem + 2vw, 2.6rem); font-weight: 600; letter-spacing: -0.04em; border-bottom: 2px solid var(--pf-black); transition: color 0.25s, border-color 0.25s; }
 .pf-mail:hover { color: var(--pf-accent); border-color: var(--pf-accent); }
 .pf-contact-side { display: grid; justify-items: start; gap: 16px; }
 .pf-socials { display: flex; gap: 20px; margin: 0; padding: 0; list-style: none; font-size: var(--fs-small); }
 .pf-socials a { border-bottom: 1px solid var(--pf-black); transition: color 0.25s, border-color 0.25s; }
 .pf-socials a:hover { color: var(--pf-accent); border-color: var(--pf-accent); }
-.pf-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; margin-top: var(--pf-section); padding: 16px 12px var(--pf-gutter); border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
-.pf-foot a:hover { color: var(--pf-black); }
 
 /* Phones: one column, no guides. Words stay sized to the screen width. */
+/* Contact footer: a black panel held under the page, which lifts off it like a curtain. */
+.pf-mf { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 48px; margin-inline: calc(-1 * var(--pf-gutter)); padding: calc(var(--pf-bar) + 24px) calc(var(--pf-gutter) + 12px) var(--pf-gutter); overflow: hidden; background: var(--pf-black); color: var(--pf-white); }
+.pf-mf-title { font-size: clamp(3.5rem, 12vw, 11rem); font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; margin-left: -0.04em; }
+.pf-mf-dot { color: var(--pf-accent); }
+.pf-mf-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.pf-mf-row > div:first-child { display: grid; gap: 12px; }
+.pf-mf-lead { color: #bdbdbd; font-size: var(--fs-lede); }
+.pf-mf .pf-mail, .pf-mf .pf-socials a { border-color: var(--pf-white); }
+.pf-mf .pf-mail:hover, .pf-mf .pf-socials a:hover { color: var(--pf-accent); border-color: var(--pf-accent); }
+.pf-mf .pf-cta p { color: var(--pf-white); }
+.pf-mf-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #333; color: #8a8a8a; font-family: var(--pf-mono); font-size: var(--fs-label); }
+.pf-mf-foot a:hover { color: var(--pf-white); }
+
+/* The page is an opaque sheet with rounded bottom corners that scrolls off the footer stuck beneath it.
+   The column guides are drawn in the sheet's background, so they never cross the footer. */
+/* The bar shares the sheet's bottom corners, so the curve reads as one edge when the sheet slides under it. */
+.pf .pf-bar { border-radius: 0 0 var(--pf-curve) var(--pf-curve); }
+/* Once the sheet has slid up past the bar, the bar sits over the black footer, so it turns black too. */
+.pf-bar { transition: background 0.3s, color 0.3s; }
+.pf-bar-dark .pf-bar { background: rgba(0, 0, 0, 0.8); color: var(--pf-white); }
+.pf-bar-dark .pf-mark { background: var(--pf-white); color: var(--pf-black); }
+.pf-bar-dark .pf-menu summary { background: #262626; }
+.pf-bar-dark .pf-menu summary:hover, .pf-bar-dark .pf-menu[open] summary { background: #3a3a3a; }
+.pf-bar-dark .pf-menu nav { color: var(--pf-black); }
+.pf main { position: relative; z-index: 1; margin-inline: calc(-1 * var(--pf-gutter)); padding: 0 var(--pf-gutter) var(--pf-section); border-radius: 0 0 var(--pf-curve) var(--pf-curve); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  background:
+    linear-gradient(var(--pf-border), var(--pf-border)) calc(var(--pf-gutter) + (100% - 2 * var(--pf-gutter)) / 3) 0 / 1px 100% no-repeat,
+    linear-gradient(var(--pf-border), var(--pf-border)) calc(var(--pf-gutter) + (100% - 2 * var(--pf-gutter)) * 2 / 3) 0 / 1px 100% no-repeat,
+    var(--pf-bg); }
+/* The held footer must fit the screen: taller, and its top could never scroll into view. Short screens
+   (phones on their side) get a normal footer instead. */
+/* Exactly one screen tall, so the page slides fully off it and no strip of page stays under the bar. */
+.pf-mf { position: sticky; bottom: 0; z-index: 0; min-height: 100vh; min-height: 100dvh; }
+@media (max-height: 620px) { .pf-mf { position: relative; } }
+
 @media (max-width: 800px) {
-  .pf { --pf-bar: 56px; --pf-section: clamp(64px, 10vh, 96px); }
-  .pf-guides { display: none; }
+  .pf-mf { gap: 28px; padding-top: calc(var(--pf-bar) + 16px); }
+  .pf-mf-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+  .pf-mf-foot { flex-direction: column; }
+  .pf main { background: var(--pf-bg); }
+  .pf { --pf-curve: 24px; --pf-bar: 56px; --pf-section: clamp(64px, 10vh, 96px); }
   .pf-bar { padding-inline: var(--pf-gutter); }
-  .pf-hero, .pf-about, .pf-tiles, .pf-contact-row { grid-template-columns: minmax(0, 1fr); }
-  .pf-hero > *, .pf-about > *, .pf-tiles > li, .pf-contact-row > * { padding-inline: 0; }
+  .pf-hero, .pf-about, .pf-tiles { grid-template-columns: minmax(0, 1fr); }
+  .pf-hero > *, .pf-about > *, .pf-tiles > li { padding-inline: 0; }
   .pf-hero { display: flex; flex-direction: column; gap: 24px; height: auto; min-height: 0; }
   .pf-word-hero { font-size: 30vw; }
   .pf-hero-tall { order: 1; margin: -9vw 0 0; min-height: 0; aspect-ratio: 4 / 5; }
@@ -216,10 +242,6 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-index-status { padding-left: 16px !important; }
   .pf-label-row { padding-inline: 0; }
   .pf-tiles { row-gap: 32px; }
-  .pf-contact-row > div:first-child { grid-column: 1; }
-  .pf-contact-side { margin-top: 24px; }
-  .pf-word-contact { font-size: 25vw; }
-  .pf-foot { flex-direction: column; padding-inline: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {

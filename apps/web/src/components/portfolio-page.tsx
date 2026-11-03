@@ -4,6 +4,7 @@ import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
 import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
+import { ContactFooter } from "./contact-footer";
 import { TechIcon } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
@@ -72,9 +73,6 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
   return (
     <div className="pf">
-      {/* Column guides. Decorative; hidden on phones. */}
-      <div className="pf-guides" aria-hidden="true"><span /><span /></div>
-
       <header className="pf-bar">
         <a className="pf-brand" href="#top" aria-label="Ivan Salinas, back to top"><span className="pf-mark" aria-hidden="true">I<span>S</span></span>Ivan Salinas</a>
         <SiteMenu>
@@ -198,27 +196,24 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             </ol>
           </section>
         ) : null}
-
-        <section id="contact" className="pf-contact" aria-labelledby="contact-title">
-          <h2 id="contact-title" className="visually-hidden">Contact</h2>
-          <Wordmark text="Let’s talk" className="pf-word pf-word-contact" />
-          <div className="pf-contact-row">
-            <div>
-              <p>{s.contactLead}</p>
-              <a className="pf-mail" href={`mailto:${profile.email}`}>{profile.email}</a>
-            </div>
-            <div className="pf-contact-side">
-              <ResumeButton />
-              <ul className="pf-socials"><SocialLinks /></ul>
-            </div>
-          </div>
-          <footer className="pf-foot">
-            <span>© {new Date().getFullYear()} {profile.name}</span>
-            <span>{profile.location}</span>
-            <a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">View source<span className="visually-hidden"> (opens in a new tab)</span></a>
-          </footer>
-        </section>
       </main>
+      <ContactFooter>
+        <div className="pf-mf-row">
+          <div>
+            <p className="pf-mf-lead">{s.contactLead}</p>
+            <a className="pf-mail" href={`mailto:${profile.email}`}>{profile.email}</a>
+          </div>
+          <div className="pf-contact-side">
+            <ResumeButton />
+            <ul className="pf-socials"><SocialLinks /></ul>
+          </div>
+        </div>
+        <div className="pf-mf-foot">
+          <span>© {new Date().getFullYear()} {profile.name}</span>
+          <span>{profile.location}</span>
+          <a href={profile.sourceUrl} target="_blank" rel="noopener noreferrer">View source<span className="visually-hidden"> (opens in a new tab)</span></a>
+        </div>
+      </ContactFooter>
     </div>
   );
 }
