@@ -215,7 +215,7 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 .pf-intro { position: relative; height: 320vh; margin-inline: calc(-1 * var(--pf-gutter)); }
 .pf-intro-stage { position: sticky; top: 0; display: grid; place-items: center; height: 100vh; height: 100svh; overflow: hidden; }
 .pf-intro-stage > * { grid-area: 1 / 1; }
-.pf-intro-glyphs { position: relative; font-size: min(15vw, 30vh); font-weight: 700; letter-spacing: -0.06em; line-height: 1; white-space: nowrap; will-change: transform; }
+.pf-intro-glyphs { position: relative; font-size: min(15vw, 30vh); font-weight: 700; letter-spacing: -0.06em; line-height: 1; white-space: nowrap; }
 .pf-intro-baseline { display: inline-block; width: 0; height: 0; }
 .pf-intro-mark-s { display: inline-block; color: var(--pf-accent); }
 .pf-intro-black { position: absolute; inset: 0; background: var(--pf-black); }

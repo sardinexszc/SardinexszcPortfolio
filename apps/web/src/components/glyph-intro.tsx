@@ -57,9 +57,11 @@ export function GlyphIntro() {
   // Timeline: dive into the s (0-0.42), a brief black beat (to 0.45), the I backs out (0.45-0.75), the S joins.
   const wordScale = useTransform(p, (v) => zoom.s.max ** Math.min(Math.max(v / 0.42, 0), 1));
   const markScale = useTransform(p, (v) => zoom.i.max ** (1 - Math.min(Math.max((v - 0.45) / 0.3, 0), 1)));
-  const wordOpacity = useTransform(p, [0.42, 0.43], [1, 0]);
+  // visibility, not opacity: a hidden layer is redrawn fresh when it returns. With opacity, the name could stay
+  // blank after scrolling back up from a deep zoom until the page was reloaded.
+  const wordShown = useTransform(p, (v) => (v < 0.43 ? "visible" : "hidden"));
   const black = useTransform(p, [0.38, 0.42, 0.45, 0.451], [0, 1, 1, 0]);
-  const markOpacity = useTransform(p, [0.449, 0.45], [0, 1]);
+  const markShown = useTransform(p, (v) => (v >= 0.45 ? "visible" : "hidden"));
   const markS = useTransform(p, [0.72, 0.82], [0, 1]);
   const markSx = useTransform(p, [0.72, 0.82], ["-0.25em", "0em"]);
   const cue = useTransform(p, [0, 0.05], [1, 0]);
@@ -71,11 +73,11 @@ export function GlyphIntro() {
   return (
     <section ref={section} className="pf-intro" aria-hidden="true">
       <div className="pf-intro-stage">
-        <motion.span className="pf-intro-glyphs" style={{ scale: wordScale, opacity: wordOpacity, transformOrigin: zoom.s.origin }}>
+        <motion.span className="pf-intro-glyphs" style={{ scale: wordScale, visibility: wordShown, transformOrigin: zoom.s.origin }}>
           Ivan Salina<span ref={wordBase} className="pf-intro-baseline" /><span ref={lastS}>s</span>
         </motion.span>
         <motion.span className="pf-intro-black" style={{ opacity: black }} />
-        <motion.span className="pf-intro-glyphs" style={{ scale: markScale, opacity: markOpacity, transformOrigin: zoom.i.origin }}>
+        <motion.span className="pf-intro-glyphs" style={{ scale: markScale, visibility: markShown, transformOrigin: zoom.i.origin }}>
           <span ref={markBase} className="pf-intro-baseline" /><span ref={firstI}>I</span><motion.span className="pf-intro-mark-s" style={{ opacity: markS, x: markSx }}>S</motion.span>
         </motion.span>
         <motion.span className="pf-intro-cue" style={{ opacity: cue }}>Scroll ↓</motion.span>
