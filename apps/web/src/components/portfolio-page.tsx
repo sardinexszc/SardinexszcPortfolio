@@ -5,6 +5,7 @@ import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
 import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
 import { ContactFooter } from "./contact-footer";
+import { GlyphIntro } from "./glyph-intro";
 import { TechIcon } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
@@ -89,9 +90,10 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
       </header>
 
       <main id="main-content">
+        <GlyphIntro />
         <section id="top" className="pf-hero" aria-labelledby="pf-title">
           <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {s.roleLine}</h1>
-          <Wordmark text="Salinas" className="pf-word pf-word-hero" onLoad />
+          <Wordmark text="Salinas" className="pf-word pf-word-hero" />
           {isAllowedImage(s.heroImage) ? (
             <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload quality={90} sizes="(max-width: 800px) 150vw, 120vw" /></Parallax></ClipReveal>
           ) : null}

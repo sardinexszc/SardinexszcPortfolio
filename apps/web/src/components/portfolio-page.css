@@ -1,4 +1,4 @@
-/* Home page: a light page on a three-column grid marked by hairlines. Oversized words cross the columns
+/* Home page: a light dot-matrix page on a three-column grid. Oversized words cross the columns
    and invert where they pass over a photo (mix-blend-mode: difference on white text). Copy is kept short;
    each section ends on the résumé download. The page keeps its own palette, so the site theme does not change it. */
 .pf {
@@ -108,7 +108,6 @@
 /* Facts: four figures across the full width. */
 .pf-facts { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin: 0; padding: 0 !important; }
 .pf-fact { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: 8px; padding: 16px 12px 0; border-top: 1px solid var(--pf-black); }
-.pf-fact + .pf-fact { border-left: 1px solid var(--pf-border); }
 .pf-fact dd { margin: 0; font-size: clamp(2.5rem, 1.6rem + 3vw, 4.5rem); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
 .pf-fact dt { color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); }
 
@@ -180,7 +179,7 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 /* Phones: one column, no guides. Words stay sized to the screen width. */
 /* Contact footer: a black panel held under the page, which lifts off it like a curtain. */
 .pf-mf { position: relative; display: flex; flex-direction: column; justify-content: space-between; gap: 48px; margin-inline: calc(-1 * var(--pf-gutter)); padding: calc(var(--pf-bar) + 24px) calc(var(--pf-gutter) + 12px) var(--pf-gutter); overflow: hidden; background: var(--pf-black); color: var(--pf-white); }
-.pf-mf-title { font-size: clamp(3.5rem, 12vw, 11rem); font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; margin-left: -0.04em; }
+.pf-mf-title { font-size: min(25vw, 36vh); font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; margin-left: -0.04em; }
 .pf-mf-dot { color: var(--pf-accent); }
 .pf-mf-row { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 32px; align-items: end; }
 .pf-mf-row > div:first-child { display: grid; gap: 12px; }
@@ -191,33 +190,38 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 .pf-mf-foot { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding-top: 16px; border-top: 1px solid #333; color: #8a8a8a; font-family: var(--pf-mono); font-size: var(--fs-label); }
 .pf-mf-foot a:hover { color: var(--pf-white); }
 
-/* The page is an opaque sheet with rounded bottom corners that scrolls off the footer stuck beneath it.
-   The column guides are drawn in the sheet's background, so they never cross the footer. */
+/* The page is an opaque sheet with rounded bottom corners that scrolls off the footer stuck beneath it. */
 /* The bar shares the sheet's bottom corners, so the curve reads as one edge when the sheet slides under it. */
 .pf .pf-bar { border-radius: 0 0 var(--pf-curve) var(--pf-curve); }
 /* Once the sheet has slid up past the bar, the bar sits over the black footer, so it turns black too. */
 .pf-bar { transition: background 0.3s, color 0.3s; }
-.pf-bar-dark .pf-bar { background: rgba(0, 0, 0, 0.8); color: var(--pf-white); }
-.pf-bar-dark .pf-mark { background: var(--pf-white); color: var(--pf-black); }
-.pf-bar-dark .pf-menu summary { background: #262626; }
-.pf-bar-dark .pf-menu summary:hover, .pf-bar-dark .pf-menu[open] summary { background: #3a3a3a; }
-.pf-bar-dark .pf-menu nav { color: var(--pf-black); }
+.pf-bar-dark .pf-bar, .pf-intro-dark .pf-bar { background: rgba(0, 0, 0, 0.8); color: var(--pf-white); }
+.pf-bar-dark .pf-mark, .pf-intro-dark .pf-mark { background: var(--pf-white); color: var(--pf-black); }
+.pf-bar-dark .pf-menu summary, .pf-intro-dark .pf-menu summary { background: #262626; }
+.pf-bar-dark .pf-menu summary:hover, .pf-bar-dark .pf-menu[open] summary, .pf-intro-dark .pf-menu summary:hover, .pf-intro-dark .pf-menu[open] summary { background: #3a3a3a; }
+.pf-bar-dark .pf-menu nav, .pf-intro-dark .pf-menu nav { color: var(--pf-black); }
+/* Dot-matrix sheet: a fine grid of dots replaces the column hairlines. */
 .pf main { position: relative; z-index: 1; margin-inline: calc(-1 * var(--pf-gutter)); padding: 0 var(--pf-gutter) var(--pf-section); border-radius: 0 0 var(--pf-curve) var(--pf-curve); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-  background:
-    linear-gradient(var(--pf-border), var(--pf-border)) calc(var(--pf-gutter) + (100% - 2 * var(--pf-gutter)) / 3) 0 / 1px 100% no-repeat,
-    linear-gradient(var(--pf-border), var(--pf-border)) calc(var(--pf-gutter) + (100% - 2 * var(--pf-gutter)) * 2 / 3) 0 / 1px 100% no-repeat,
-    var(--pf-bg); }
+  background: radial-gradient(circle, #c3c7c3 1px, transparent 1.5px) 0 0 / 22px 22px, var(--pf-bg); }
 /* The held footer must fit the screen: taller, and its top could never scroll into view. Short screens
-   (phones on their side) get a normal footer instead. */
-/* Exactly one screen tall, so the page slides fully off it and no strip of page stays under the bar. */
+   (phones on their side) get a normal footer instead. Exactly one screen tall, so the page slides fully off it and no strip of page stays under the bar. */
 .pf-mf { position: sticky; bottom: 0; z-index: 0; min-height: 100vh; min-height: 100dvh; }
 @media (max-height: 620px) { .pf-mf { position: relative; } }
+
+/* Glyph intro: a pinned first screen. Its length sets how many scrolls the dive takes. */
+.pf-intro { position: relative; height: 400vh; margin-inline: calc(-1 * var(--pf-gutter)); }
+.pf-intro-stage { position: sticky; top: 0; display: grid; place-items: center; height: 100vh; height: 100svh; overflow: hidden; }
+.pf-intro-stage > * { grid-area: 1 / 1; }
+.pf-intro-glyphs { position: relative; font-size: min(15vw, 30vh); font-weight: 700; letter-spacing: -0.06em; line-height: 1; white-space: nowrap; will-change: transform; }
+.pf-intro-baseline { display: inline-block; width: 0; height: 0; }
+.pf-intro-mark-s { display: inline-block; color: var(--pf-accent); }
+.pf-intro-black { position: absolute; inset: 0; background: var(--pf-black); }
+.pf-intro-cue { align-self: end; margin-bottom: 32px; color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); letter-spacing: 0.06em; text-transform: uppercase; }
 
 @media (max-width: 800px) {
   .pf-mf { gap: 28px; padding-top: calc(var(--pf-bar) + 16px); }
   .pf-mf-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .pf-mf-foot { flex-direction: column; }
-  .pf main { background: var(--pf-bg); }
   .pf { --pf-curve: 24px; --pf-bar: 56px; --pf-section: clamp(64px, 10vh, 96px); }
   .pf-bar { padding-inline: var(--pf-gutter); }
   .pf-hero, .pf-about, .pf-tiles { grid-template-columns: minmax(0, 1fr); }
@@ -233,7 +237,6 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-about-side, .pf-statement { grid-column: 1; }
   .pf-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 24px; }
   .pf-fact { padding-inline: 0 12px; }
-  .pf-fact + .pf-fact { border-left: 0; }
   .pf-disciplines { grid-template-columns: minmax(0, 1fr); row-gap: 40px; }
   .pf-disciplines > li, .pf-stack, .pf-with { padding-inline: 0; }
   .pf-index-list li { grid-template-columns: minmax(0, 1fr) auto; row-gap: 4px; }
