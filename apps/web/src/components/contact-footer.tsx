@@ -10,7 +10,13 @@ export function ContactFooter({ children }: { children: ReactNode }) {
   useEffect(() => {
     const page = ref.current?.closest(".pf"), main = document.getElementById("main-content"), bar = page?.querySelector(".pf-bar");
     if (!page || !main || !bar) return;
-    const update = () => page.classList.toggle("pf-bar-dark", main.getBoundingClientRect().bottom <= bar.getBoundingClientRect().bottom);
+    const update = () => {
+      const edge = main.getBoundingClientRect().bottom;
+      page.classList.toggle("pf-bar-dark", edge <= bar.getBoundingClientRect().bottom);
+      // Hidden until the page starts to lift off it: during fast scrolls or heavy repaints (the intro's
+      // zoom) the browser can briefly leave gaps in the page, and the held footer would show through.
+      page.classList.toggle("pf-mf-hidden", edge > window.innerHeight * 1.5);
+    };
     update();
     window.addEventListener("scroll", update, { passive: true });
     window.addEventListener("resize", update);

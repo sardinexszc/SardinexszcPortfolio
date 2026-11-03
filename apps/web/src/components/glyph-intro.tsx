@@ -6,18 +6,27 @@ import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, us
 type Zoom = { origin: string; max: number };
 const fallback: Zoom = { origin: "50% 50%", max: 60 };
 
-// Where the glyph's ink sits inside its wrapper, from the font's own metrics, and how far to scale it
-// so its stroke covers the whole screen. offsetLeft/Top ignore the zoom transform, so this works mid-scroll.
-function measure(glyph: HTMLElement, baseline: HTMLElement, letter: string): Zoom {
+// Where the glyph's ink sits inside its wrapper, from the font's own metrics, and the scale at which it
+// just covers the stage: any larger only adds scrolling through plain black. offsetLeft/Top ignore the
+// zoom transform, so this works mid-scroll.
+function measure(glyph: HTMLElement, baseline: HTMLElement, letter: "s" | "I"): Zoom {
+  const wrapper = glyph.offsetParent as HTMLElement | null, stage = wrapper?.offsetParent as HTMLElement | null;
   const style = getComputedStyle(glyph);
   const context = document.createElement("canvas").getContext("2d");
-  if (!context) return fallback;
+  if (!wrapper || !stage || !context) return fallback;
   context.font = `${style.fontWeight} ${style.fontSize} ${style.fontFamily}`;
   const ink = context.measureText(letter);
   const x = glyph.offsetLeft + (ink.actualBoundingBoxRight - ink.actualBoundingBoxLeft) / 2;
   const y = baseline.offsetTop - (ink.actualBoundingBoxAscent - ink.actualBoundingBoxDescent) / 2;
-  const stroke = parseFloat(style.fontSize) * 0.1;
-  return { origin: `${x}px ${y}px`, max: (2.4 * Math.hypot(window.innerWidth, window.innerHeight)) / stroke };
+  // Distance from the zoom point to the stage's farthest edges.
+  const reachX = Math.max(wrapper.offsetLeft + x, stage.clientWidth - wrapper.offsetLeft - x);
+  const reachY = Math.max(wrapper.offsetTop + y, stage.clientHeight - wrapper.offsetTop - y);
+  // The I is a plain bar, so its own box must reach both edges. The s is a curved band about 0.12em thick,
+  // so its half-thickness must reach the farthest corner.
+  const max = letter === "I"
+    ? Math.max(reachX / ((ink.actualBoundingBoxRight + ink.actualBoundingBoxLeft) / 2), reachY / ((ink.actualBoundingBoxAscent + ink.actualBoundingBoxDescent) / 2))
+    : (1.2 * Math.hypot(reachX, reachY)) / (parseFloat(style.fontSize) * 0.06);
+  return { origin: `${x}px ${y}px`, max: max * 1.02 };
 }
 
 // Studio intro: the name fills the first screen. Scrolling dives into the last "s" of Salinas until the
@@ -45,17 +54,18 @@ export function GlyphIntro() {
   }, []);
 
   // Exponential scale reads as a steady dive; a linear one rushes at the start and crawls at the end.
+  // Timeline: dive into the s (0-0.42), a brief black beat (to 0.45), the I backs out (0.45-0.75), the S joins.
   const wordScale = useTransform(p, (v) => zoom.s.max ** Math.min(Math.max(v / 0.42, 0), 1));
-  const markScale = useTransform(p, (v) => zoom.i.max ** (1 - Math.min(Math.max((v - 0.5) / 0.32, 0), 1)));
-  const wordOpacity = useTransform(p, [0.44, 0.45], [1, 0]);
-  const black = useTransform(p, [0.34, 0.44, 0.5, 0.501], [0, 1, 1, 0]);
-  const markOpacity = useTransform(p, [0.499, 0.5], [0, 1]);
-  const markS = useTransform(p, [0.8, 0.9], [0, 1]);
-  const markSx = useTransform(p, [0.8, 0.9], ["-0.25em", "0em"]);
+  const markScale = useTransform(p, (v) => zoom.i.max ** (1 - Math.min(Math.max((v - 0.45) / 0.3, 0), 1)));
+  const wordOpacity = useTransform(p, [0.42, 0.43], [1, 0]);
+  const black = useTransform(p, [0.38, 0.42, 0.45, 0.451], [0, 1, 1, 0]);
+  const markOpacity = useTransform(p, [0.449, 0.45], [0, 1]);
+  const markS = useTransform(p, [0.72, 0.82], [0, 1]);
+  const markSx = useTransform(p, [0.72, 0.82], ["-0.25em", "0em"]);
   const cue = useTransform(p, [0, 0.05], [1, 0]);
 
   // While the screen is mostly black, the fixed bar switches to its dark look.
-  useMotionValueEvent(p, "change", (v) => section.current?.closest(".pf")?.classList.toggle("pf-intro-dark", v > 0.4 && v < 0.62));
+  useMotionValueEvent(p, "change", (v) => section.current?.closest(".pf")?.classList.toggle("pf-intro-dark", v > 0.38 && v < 0.5));
 
   if (reduce) return null;
   return (

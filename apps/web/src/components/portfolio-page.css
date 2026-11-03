@@ -209,9 +209,10 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
    (phones on their side) get a normal footer instead. Exactly one screen tall, so the page slides fully off it and no strip of page stays under the bar. */
 .pf-mf { position: sticky; bottom: 0; z-index: 0; min-height: 100vh; min-height: 100dvh; }
 @media (max-height: 620px) { .pf-mf { position: relative; } }
+.pf-mf-hidden .pf-mf { visibility: hidden; }
 
 /* Glyph intro: a pinned first screen. Its length sets how many scrolls the dive takes. */
-.pf-intro { position: relative; height: 400vh; margin-inline: calc(-1 * var(--pf-gutter)); }
+.pf-intro { position: relative; height: 320vh; margin-inline: calc(-1 * var(--pf-gutter)); }
 .pf-intro-stage { position: sticky; top: 0; display: grid; place-items: center; height: 100vh; height: 100svh; overflow: hidden; }
 .pf-intro-stage > * { grid-area: 1 / 1; }
 .pf-intro-glyphs { position: relative; font-size: min(15vw, 30vh); font-weight: 700; letter-spacing: -0.06em; line-height: 1; white-space: nowrap; will-change: transform; }
