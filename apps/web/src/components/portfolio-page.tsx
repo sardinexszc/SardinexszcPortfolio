@@ -3,7 +3,7 @@ import { ArrowDown, ArrowUpRight, Code2, Cpu, Database } from "lucide-react";
 import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
-import { ClipReveal, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
+import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
 import { TechIcon } from "./tech-icon";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
@@ -36,7 +36,7 @@ function ResumeButton() {
   return (
     <div className="pf-cta">
       <p>Want to know more about me?</p>
-      <a className="pf-pill" href={profile.resumeUrl} download={profile.resumeFilename}>Download my résumé <ArrowDown size={15} aria-hidden="true" /></a>
+      <MagneticPill className="pf-pill" href={profile.resumeUrl} download={profile.resumeFilename}>Download my résumé <ArrowDown size={15} aria-hidden="true" /></MagneticPill>
     </div>
   );
 }

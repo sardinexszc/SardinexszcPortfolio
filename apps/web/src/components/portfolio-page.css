@@ -93,6 +93,10 @@
 .pf-pill svg { transition: transform 0.3s var(--pf-ease); }
 .pf-pill:hover { background: var(--pf-black); transform: translateY(-1px); }
 .pf-pill:hover svg { transform: translateY(2px); }
+.pf-magnet { position: relative; display: inline-block; padding: 28px; margin: -28px; cursor: none; }
+.pf-magnet .pf-pill, .pf-magnet .pf-pill:hover { background: var(--pf-accent); cursor: none; }
+.pf-magnet-blob { position: absolute; translate: -50% -50%; border-radius: 999px; background: #fff; mix-blend-mode: difference; pointer-events: none; z-index: 2; }
+.pf-magnet-spark { position: absolute; width: 6px; height: 6px; margin: -3px 0 0 -3px; border-radius: 50%; background: var(--pf-accent); pointer-events: none; z-index: 3; }
 
 /* About */
 .pf-about { padding-top: var(--pf-section); row-gap: clamp(40px, 6vw, 80px); }
