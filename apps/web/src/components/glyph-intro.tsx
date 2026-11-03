@@ -31,7 +31,8 @@ function measure(glyph: HTMLElement, baseline: HTMLElement, letter: "s" | "I"): 
 
 // Studio intro: the name fills the first screen. Scrolling dives into the last "s" of Salinas until the
 // screen is black (inside the letter), then a giant "I" shrinks out of the black and settles into the
-// IS mark before the page carries on. Decorative only; reduced-motion visitors skip it.
+// IS mark before the page carries on. Decorative only. Reduced-motion visitors skip it: CSS hides it, so the
+// server and browser render the same markup (returning null here broke hydration, React error #418).
 export function GlyphIntro() {
   const reduce = useReducedMotion();
   const section = useRef<HTMLElement>(null);
@@ -67,17 +68,16 @@ export function GlyphIntro() {
   const cue = useTransform(p, [0, 0.05], [1, 0]);
 
   // While the screen is mostly black, the fixed bar switches to its dark look.
-  useMotionValueEvent(p, "change", (v) => section.current?.closest(".pf")?.classList.toggle("pf-intro-dark", v > 0.38 && v < 0.5));
+  useMotionValueEvent(p, "change", (v) => section.current?.closest(".pf")?.classList.toggle("pf-intro-dark", !reduce && v > 0.38 && v < 0.5));
 
   // The intro already shows the name, so the bar's name waits until the intro hands over to the hero.
   // Read from the raw scroll (not the spring) so it never lags behind the page.
-  const markIntro = (v: number) => section.current?.closest(".pf")?.classList.toggle("pf-intro-active", v < 0.99);
+  const markIntro = (v: number) => section.current?.closest(".pf")?.classList.toggle("pf-intro-active", !reduce && v < 0.99);
   useMotionValueEvent(scrollYProgress, "change", markIntro);
   useEffect(() => {
-    if (!reduce) markIntro(scrollYProgress.get());
+    markIntro(scrollYProgress.get());
   });
 
-  if (reduce) return null;
   return (
     <section ref={section} className="pf-intro" aria-hidden="true">
       <div className="pf-intro-stage">

@@ -9,10 +9,12 @@ import { TrackedLink } from "./tracked-elements";
 const EASE = [0.22, 1, 0.36, 1] as const;
 
 // Fades and lifts its content in once it scrolls into view.
+// Reduced motion keeps the same starting state (so server and browser markup match, and hydration can
+// finish) but jumps straight to the end instead of animating.
 export function Reveal({ children, delay = 0, className }: { children: ReactNode; delay?: number; className?: string }) {
   const reduce = useReducedMotion();
   return (
-    <motion.div className={className} initial={reduce ? false : { opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={{ duration: 0.8, ease: EASE, delay }}>
+    <motion.div className={className} initial={{ opacity: 0, y: 28 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, amount: 0.2 }} transition={reduce ? { duration: 0 } : { duration: 0.8, ease: EASE, delay }}>
       {children}
     </motion.div>
   );
@@ -25,8 +27,8 @@ export function Wordmark({ text, className, onLoad = false }: { text: string; cl
   const reduce = useReducedMotion();
   const trigger = onLoad ? { animate: "show" } : { whileInView: "show", viewport: { once: true, amount: 0.4 } };
   return (
-    <motion.div className={className} aria-hidden="true" initial={reduce ? false : "hidden"} {...trigger}>
-      <motion.span variants={{ hidden: { y: "105%" }, show: { y: "0%", transition: { duration: 1.1, ease: EASE } } }}>{text}</motion.span>
+    <motion.div className={className} aria-hidden="true" initial="hidden" {...trigger}>
+      <motion.span variants={{ hidden: { y: "105%" }, show: { y: "0%", transition: reduce ? { duration: 0 } : { duration: 1.1, ease: EASE } } }}>{text}</motion.span>
     </motion.div>
   );
 }
@@ -35,7 +37,7 @@ export function Wordmark({ text, className, onLoad = false }: { text: string; cl
 export function ClipReveal({ children, className, delay = 0 }: { children: ReactNode; className: string; delay?: number }) {
   const reduce = useReducedMotion();
   return (
-    <motion.div className={className} initial={reduce ? false : { clipPath: "inset(100% 0 0 0)" }} animate={{ clipPath: "inset(0% 0 0 0)" }} transition={{ duration: 1.1, ease: EASE, delay }}>
+    <motion.div className={className} initial={{ clipPath: "inset(100% 0 0 0)" }} animate={{ clipPath: "inset(0% 0 0 0)" }} transition={reduce ? { duration: 0 } : { duration: 1.1, ease: EASE, delay }}>
       {children}
     </motion.div>
   );

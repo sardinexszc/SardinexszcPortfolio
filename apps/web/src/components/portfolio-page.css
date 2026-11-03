@@ -255,4 +255,5 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 @media (prefers-reduced-motion: reduce) {
   .pf-tile-media img, .pf-tile-veil, .pf-tile-veil span, .pf-pill, .pf-pill svg { transition: none; }
   .pf-menu[open] nav { animation: none; }
+  .pf-intro { display: none; }
 }
