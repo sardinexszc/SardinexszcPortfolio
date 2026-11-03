@@ -46,7 +46,7 @@ export function Parallax({ children }: { children: ReactNode }) {
   const reduce = useReducedMotion();
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
-  const y = useTransform(scrollYProgress, [0, 1], ["-6%", "6%"]);
+  const y = useTransform(useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4 }), [0, 1], ["-6%", "6%"]);
   return (
     <div ref={ref} className="pf-parallax">
       <motion.div className="pf-parallax-inner" style={reduce ? undefined : { y, scale: 1.12 }}>{children}</motion.div>

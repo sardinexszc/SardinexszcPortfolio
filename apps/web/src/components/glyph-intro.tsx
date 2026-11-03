@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useScroll, useTransform } from "framer-motion";
+import { motion, useMotionValueEvent, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion";
 
 type Zoom = { origin: string; max: number };
 const fallback: Zoom = { origin: "50% 50%", max: 60 };
@@ -29,7 +29,9 @@ export function GlyphIntro() {
   const wordBase = useRef<HTMLSpanElement>(null), lastS = useRef<HTMLSpanElement>(null);
   const markBase = useRef<HTMLSpanElement>(null), firstI = useRef<HTMLSpanElement>(null);
   const [zoom, setZoom] = useState({ s: fallback, i: fallback });
-  const { scrollYProgress: p } = useScroll({ target: section, offset: ["start start", "end end"] });
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] });
+  // A mouse wheel scrolls in ~100px steps; the spring glides between them so the dive never stutters.
+  const p = useSpring(scrollYProgress, { stiffness: 140, damping: 30, mass: 0.4, restDelta: 0.0001 });
 
   useEffect(() => {
     const update = () => {

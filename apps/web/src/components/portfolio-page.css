@@ -26,6 +26,7 @@
   color: var(--pf-black);
   font-family: var(--font-sans), system-ui, sans-serif;
   overflow-x: clip;
+  container-type: inline-size; /* 100cqw = the content width the dot grid divides */
 }
 .pf a { color: inherit; text-decoration: none; }
 .pf h1, .pf h2, .pf h3, .pf p { max-width: none; margin: 0; }
@@ -200,9 +201,10 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 .pf-bar-dark .pf-menu summary, .pf-intro-dark .pf-menu summary { background: #262626; }
 .pf-bar-dark .pf-menu summary:hover, .pf-bar-dark .pf-menu[open] summary, .pf-intro-dark .pf-menu summary:hover, .pf-intro-dark .pf-menu[open] summary { background: #3a3a3a; }
 .pf-bar-dark .pf-menu nav, .pf-intro-dark .pf-menu nav { color: var(--pf-black); }
-/* Dot-matrix sheet: a fine grid of dots replaces the column hairlines. */
-.pf main { position: relative; z-index: 1; margin-inline: calc(-1 * var(--pf-gutter)); padding: 0 var(--pf-gutter) var(--pf-section); border-radius: 0 0 var(--pf-curve) var(--pf-curve); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
-  background: radial-gradient(circle, #c3c7c3 1px, transparent 1.5px) 0 0 / 22px 22px, var(--pf-bg); }
+/* Dot-matrix sheet: square dot grid locked to the three columns, 6 dots across each (18 across the page;
+   9 on phones, where the columns stack). */
+.pf main { --pf-dots: 18; --pf-dot-gap: calc(100cqw / var(--pf-dots)); position: relative; z-index: 1; margin-inline: calc(-1 * var(--pf-gutter)); padding: 0 var(--pf-gutter) var(--pf-section); border-radius: 0 0 var(--pf-curve) var(--pf-curve); box-shadow: 0 30px 60px rgba(0, 0, 0, 0.25);
+  background: radial-gradient(circle, #b9bdb9 1.5px, transparent 2px) var(--pf-gutter) 0 / var(--pf-dot-gap) var(--pf-dot-gap), var(--pf-bg); }
 /* The held footer must fit the screen: taller, and its top could never scroll into view. Short screens
    (phones on their side) get a normal footer instead. Exactly one screen tall, so the page slides fully off it and no strip of page stays under the bar. */
 .pf-mf { position: sticky; bottom: 0; z-index: 0; min-height: 100vh; min-height: 100dvh; }
@@ -222,6 +224,7 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-mf { gap: 28px; padding-top: calc(var(--pf-bar) + 16px); }
   .pf-mf-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .pf-mf-foot { flex-direction: column; }
+  .pf main { --pf-dots: 9; }
   .pf { --pf-curve: 24px; --pf-bar: 56px; --pf-section: clamp(64px, 10vh, 96px); }
   .pf-bar { padding-inline: var(--pf-gutter); }
   .pf-hero, .pf-about, .pf-tiles { grid-template-columns: minmax(0, 1fr); }
