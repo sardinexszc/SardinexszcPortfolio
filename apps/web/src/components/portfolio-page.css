@@ -50,7 +50,8 @@
 
 /* Top bar: fixed and frosted so the menu is always in reach. */
 .pf-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: var(--pf-bar); padding: 0 calc(var(--pf-gutter) + 12px); background: rgba(240, 240, 240, 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
-.pf-brand { display: inline-flex; align-items: center; gap: 10px; font-size: var(--fs-small); font-weight: 600; letter-spacing: -0.02em; }
+.pf-brand { display: inline-flex; align-items: center; gap: 10px; font-size: var(--fs-small); font-weight: 600; letter-spacing: -0.02em; transition: opacity 0.4s var(--pf-ease), visibility 0.4s; }
+.pf-intro-active .pf-brand { opacity: 0; visibility: hidden; }
 .pf-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--pf-black); color: var(--pf-white); font-size: var(--fs-label); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
 .pf-mark span { color: var(--pf-accent); }
 .pf-menu { position: relative; }

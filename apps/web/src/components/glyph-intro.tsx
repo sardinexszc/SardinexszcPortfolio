@@ -69,6 +69,14 @@ export function GlyphIntro() {
   // While the screen is mostly black, the fixed bar switches to its dark look.
   useMotionValueEvent(p, "change", (v) => section.current?.closest(".pf")?.classList.toggle("pf-intro-dark", v > 0.38 && v < 0.5));
 
+  // The intro already shows the name, so the bar's name waits until the intro hands over to the hero.
+  // Read from the raw scroll (not the spring) so it never lags behind the page.
+  const markIntro = (v: number) => section.current?.closest(".pf")?.classList.toggle("pf-intro-active", v < 0.99);
+  useMotionValueEvent(scrollYProgress, "change", markIntro);
+  useEffect(() => {
+    if (!reduce) markIntro(scrollYProgress.get());
+  });
+
   if (reduce) return null;
   return (
     <section ref={section} className="pf-intro" aria-hidden="true">
