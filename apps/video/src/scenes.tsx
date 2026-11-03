@@ -80,59 +80,28 @@ const HeroInner = () => {
 };
 export const Hero = Interactive.create({ Component: HeroInner, layout: "absolute-fill" });
 
-const projects = [
-  { image: "rtms.webp", name: "CLAARRDEC RTMS", tag: "Live · Laravel" },
-  { image: "crrdc.webp", name: "CRRDC", tag: "Live · Next.js" },
-  { image: "smart-farm-login.webp", name: "Smart Indoor Farming", tag: "Live · IoT" },
-  { image: "tcehub.webp", name: "TCEHub", tag: "Live · Next.js" },
-];
-
-// 3. Selected work: four live systems slide up one after another.
-const WorkInner = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  return (
-    <>
-      <div style={{ position: "absolute", left: 80, right: 80, top: 100, display: "flex", justifyContent: "space-between", paddingTop: 20, borderTop: `2px solid ${color.black}`, ...label }}>
-        <span>Selected work</span><span>Live in production</span>
-      </div>
-      <div style={{ position: "absolute", left: 80, right: 80, top: 220, display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 40 }}>
-        {projects.map((project, index) => {
-          const start = (0.3 + index * 0.35) * fps;
-          return (
-            <div key={project.name} style={{ opacity: interpolate(frame, [start, start + 0.5 * fps], [0, 1], clamp), translate: `0 ${interpolate(frame, [start, start + 0.7 * fps], [80, 0], { ...clamp, easing: ease })}px` }}>
-              <Img src={staticFile(`images/${project.image}`)} style={{ width: "100%", height: 300, objectFit: "cover", objectPosition: "top", borderRadius: 4 }} />
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline", marginTop: 14 }}>
-                <span style={{ fontFamily: sans, fontSize: 48, fontWeight: 600, letterSpacing: "-0.03em" }}>{project.name}</span>
-                <span style={{ ...label, fontSize: 26, color: color.body }}>{project.tag}</span>
-              </div>
-            </div>
-          );
-        })}
-      </div>
-    </>
-  );
-};
-export const Work = Interactive.create({ Component: WorkInner, layout: "absolute-fill" });
-
 const facts = [
   { value: 9, label: "Years building systems" },
   { value: 5, label: "Live in production" },
   { value: 4, label: "Publications" },
 ];
 
-// 4. Facts: three numbers count up under black rules, like the site's facts row.
+// 3. Facts: each number rolls up like an odometer through every value and eases to a stop.
 const FactsInner = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   return (
     <div style={{ position: "absolute", left: 80, right: 80, top: 330, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 40 }}>
       {facts.map((fact, index) => {
-        const start = index * 0.2 * fps;
-        const progress = interpolate(frame, [start, start + 1.2 * fps], [0, 1], { ...clamp, easing: ease });
+        const start = (0.2 + index * 0.25) * fps;
+        const progress = interpolate(frame, [start, start + 2 * fps], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
         return (
-          <div key={fact.label} style={{ borderTop: `2px solid ${color.black}`, paddingTop: 24, opacity: interpolate(frame, [start, start + 0.3 * fps], [0, 1], clamp) }}>
-            <div style={{ fontFamily: sans, fontSize: 300, fontWeight: 600, letterSpacing: "-0.06em", lineHeight: 0.9 }}>{Math.round(fact.value * progress)}</div>
+          <div key={fact.label} style={{ borderTop: `2px solid ${color.black}`, paddingTop: 24, opacity: interpolate(frame, [start - 0.2 * fps, start], [0, 1], clamp) }}>
+            <div style={{ height: "1.05em", overflow: "hidden", fontFamily: sans, fontSize: 300, fontWeight: 600, letterSpacing: "-0.06em", lineHeight: 1.05 }}>
+              <div style={{ translate: `0 ${-progress * fact.value * 1.05}em` }}>
+                {Array.from({ length: fact.value + 1 }, (_, n) => <div key={n}>{n}</div>)}
+              </div>
+            </div>
             <div style={{ ...label, marginTop: 24, color: color.body }}>{fact.label}</div>
           </div>
         );
@@ -142,7 +111,12 @@ const FactsInner = () => {
 };
 export const Facts = Interactive.create({ Component: FactsInner, layout: "absolute-fill" });
 
-// 5. Contact: the black footer the page lifts off, with the email and the résumé pill.
+// The résumé pill, placed absolutely so the cursor and blob can target its centre.
+const pill = { x: 1570, y: 835, w: 540, h: 110 };
+const sparkAngles = [0, 36, 72, 108, 144, 180, 216, 252, 288, 324];
+
+// 4. Contact: the black footer the page lifts off. A cursor glides to the résumé pill, the site's white
+// difference blob swells into it (red reads cyan, white text reads black), and the click pops sparks.
 const ContactInner = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -150,20 +124,37 @@ const ContactInner = () => {
     opacity: interpolate(frame, [delay, delay + 0.4 * fps], [0, 1], clamp),
     translate: `0 ${interpolate(frame, [delay, delay + 0.6 * fps], [40, 0], { ...clamp, easing: ease })}px`,
   });
+  const arrive = 2 * fps, click = 2.6 * fps;
+  const travel = interpolate(frame, [1.2 * fps, arrive], [0, 1], { ...clamp, easing: ease });
+  const cursorX = interpolate(travel, [0, 1], [1830, pill.x + 60]), cursorY = interpolate(travel, [0, 1], [1110, pill.y + 25]);
+  const hover = interpolate(frame, [arrive - 0.15 * fps, arrive + 0.25 * fps], [0, 1], { ...clamp, easing: ease });
+  const press = interpolate(frame, [click, click + 3, click + 0.3 * fps], [1, 0.94, 1], clamp);
+  const burst = interpolate(frame, [click, click + 0.6 * fps], [0, 1], { ...clamp, easing: Easing.out(Easing.cubic) });
+  // Magnetic pull: the pill leans 30% of the way toward the pointer while hovered.
+  const pullX = hover * 60 * 0.3, pullY = hover * 25 * 0.3;
+  const shown = interpolate(frame, [1.2 * fps, 1.4 * fps], [0, 1], clamp);
   return (
     <>
       <div style={{ position: "absolute", left: 70, top: 120, fontFamily: sans, fontSize: 400, fontWeight: 600, letterSpacing: "-0.065em", lineHeight: 0.82, whiteSpace: "nowrap", color: color.white, ...rise(0.2 * fps) }}>
         Let’s talk<span style={{ color: color.accent }}>.</span>
       </div>
-      <div style={{ position: "absolute", left: 80, right: 80, bottom: 120, display: "flex", justifyContent: "space-between", alignItems: "flex-end", color: color.white }}>
-        <div style={rise(0.6 * fps)}>
-          <div style={{ fontFamily: sans, fontSize: 44, color: "#bdbdbd" }}>Hiring a remote full-stack developer?</div>
-          <div style={{ marginTop: 12, fontFamily: sans, fontSize: 84, fontWeight: 600, letterSpacing: "-0.04em", borderBottom: `4px solid ${color.white}`, width: "fit-content" }}>banbansalinas@gmail.com</div>
-        </div>
-        <div style={{ ...rise(0.9 * fps), display: "grid", justifyItems: "end", gap: 20 }}>
-          <div style={{ padding: "22px 40px", borderRadius: 999, backgroundColor: color.accent, fontFamily: sans, fontSize: 40, fontWeight: 500 }}>Download my résumé ↓</div>
-          <div style={{ ...label, color: "#8a8a8a" }}>ivansalinas.vercel.app</div>
-        </div>
+      <div style={{ position: "absolute", left: 80, bottom: 120, color: color.white, ...rise(0.6 * fps) }}>
+        <div style={{ fontFamily: sans, fontSize: 44, color: "#bdbdbd" }}>Hiring a remote full-stack developer?</div>
+        <div style={{ marginTop: 12, fontFamily: sans, fontSize: 84, fontWeight: 600, letterSpacing: "-0.04em", borderBottom: `4px solid ${color.white}`, width: "fit-content" }}>banbansalinas@gmail.com</div>
+      </div>
+      <div style={{ position: "absolute", right: 80, bottom: 120, ...label, color: "#8a8a8a", ...rise(0.9 * fps) }}>ivansalinas.vercel.app</div>
+      <div style={{ position: "absolute", left: pill.x - pill.w / 2, top: pill.y - pill.h / 2, width: pill.w, height: pill.h, display: "flex", justifyContent: "center", alignItems: "center", borderRadius: 999, backgroundColor: color.accent, color: color.white, fontFamily: sans, fontSize: 40, fontWeight: 500, opacity: interpolate(frame, [0.9 * fps, 1.3 * fps], [0, 1], clamp), translate: `${pullX}px ${pullY + interpolate(frame, [0.9 * fps, 1.5 * fps], [40, 0], { ...clamp, easing: ease })}px`, scale: press }}>
+        Download my résumé ↓
+      </div>
+      <div style={{ position: "absolute", left: interpolate(hover, [0, 1], [cursorX, pill.x + pullX]), top: interpolate(hover, [0, 1], [cursorY, pill.y + pullY]), width: interpolate(hover, [0, 1], [36, pill.w + 10]), height: interpolate(hover, [0, 1], [36, pill.h + 10]), translate: "-50% -50%", borderRadius: 999, backgroundColor: color.white, mixBlendMode: "difference", scale: press, opacity: shown }} />
+      {sparkAngles.map((angle) => (
+        <div key={angle} style={{ position: "absolute", left: cursorX + Math.cos((angle * Math.PI) / 180) * 160 * burst, top: cursorY + Math.sin((angle * Math.PI) / 180) * 160 * burst, width: 16, height: 16, translate: "-50% -50%", borderRadius: "50%", backgroundColor: color.accent, opacity: frame < click ? 0 : 1 - burst, scale: 1 - 0.6 * burst }} />
+      ))}
+      <svg width="44" height="44" viewBox="0 0 24 24" style={{ position: "absolute", left: cursorX - 6, top: cursorY - 4, opacity: shown, scale: interpolate(frame, [click, click + 3, click + 0.25 * fps], [1, 0.85, 1], clamp) }}>
+        <path d="M4 2l16 9.5-7 1.5 4 7.5-3 1.5-4-7.5-6 5z" fill={color.white} stroke={color.black} strokeWidth="1.5" strokeLinejoin="round" />
+      </svg>
+      <div style={{ position: "absolute", right: 80, top: pill.y - pill.h / 2 - 90, padding: "14px 26px", borderRadius: 14, backgroundColor: "#1c1c1c", color: color.white, ...label, fontSize: 26, opacity: interpolate(frame, [click + 0.3 * fps, click + 0.6 * fps], [0, 1], clamp), translate: `0 ${interpolate(frame, [click + 0.3 * fps, click + 0.7 * fps], [20, 0], { ...clamp, easing: ease })}px` }}>
+        ↓ 2026_ICLSalinas_Resume.pdf
       </div>
     </>
   );
