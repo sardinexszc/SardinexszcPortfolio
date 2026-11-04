@@ -298,7 +298,7 @@
 /* Testimonials review queue */
 .tq-list { display: grid; gap: 16px; margin: 0; padding: 0; list-style: none; }
 .tq-card { border-top: 1px solid var(--db-border); padding-top: 16px; }
-.tq-card blockquote { margin: 0; font-size: 1.05rem; line-height: 1.5; }
+.tq-card blockquote { margin: 0; font-size: 1.05rem; line-height: 1.5; white-space: pre-line; }
 .tq-who { margin: 10px 0 0; }
 .tq-meta { margin: 4px 0 0; color: var(--db-muted); font: .78rem/1.5 var(--font-mono), monospace; }
 .tq-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }

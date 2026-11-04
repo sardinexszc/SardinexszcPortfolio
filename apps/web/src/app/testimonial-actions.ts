@@ -25,10 +25,12 @@ export async function submitTestimonial(_previous: SubmitState, form: FormData):
   const fail = (error: string): SubmitState => ({
     error, attempt: Date.now(), values: { name, role, relationship, quote, email, consent: form.get("consent") === "on" ? "on" : "" },
   });
-  if (name.length < 2 || name.length > 80) return fail("Enter your name (2–80 characters).");
-  if (role.length > 120) return fail("Keep your role and company under 120 characters.");
+  // Count code points like Postgres char_length, so an emoji can't pass here and fail the DB check.
+  const chars = (value: string) => [...value].length;
+  if (chars(name) < 2 || chars(name) > 80) return fail("Enter your name (2–80 characters).");
+  if (chars(role) > 120) return fail("Keep your role and company under 120 characters.");
   if (!(RELATIONSHIPS as readonly string[]).includes(relationship)) return fail("Choose how we worked together.");
-  if (quote.length < 20 || quote.length > 800) return fail("Write a message between 20 and 800 characters.");
+  if (chars(quote) < 20 || chars(quote) > 800) return fail("Write a message between 20 and 800 characters.");
   if (/https?:\/\/|www\./i.test(quote)) return fail("Please leave links out of the message.");
   if (email && (email.length > 254 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))) return fail("Check your email address, or leave it empty.");
   if (form.get("consent") !== "on") return fail("Tick the box to agree to your words being shown.");

@@ -80,7 +80,8 @@ create table if not exists public.testimonials (
   status text not null default 'pending' check (status in ('pending', 'approved', 'hidden')),
   source text not null default 'form' check (source in ('form', 'admin')),
   sort_order integer not null default 0,
-  created_at timestamptz not null default now()
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now() -- the CMS save action writes it on every table
 );
 
 do $$

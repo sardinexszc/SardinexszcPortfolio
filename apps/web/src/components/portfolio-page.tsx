@@ -207,7 +207,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <LabelRow id="testimonials-title" title="Testimonials" aside={testimonials.length ? `(${testimonials.length})` : "Kind words"} />
           {featured ? (
             <Reveal>
-              <figure className="pf-tfeature">
+              <figure className={featured.quote.length > 240 ? "pf-tfeature pf-tfeature-long" : "pf-tfeature"}>
                 <blockquote>“{featured.quote}”</blockquote>
                 <figcaption>{featured.name}{featured.role ? ` · ${featured.role}` : ""} · {featured.relationship}</figcaption>
               </figure>

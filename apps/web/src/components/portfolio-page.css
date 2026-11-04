@@ -156,6 +156,9 @@
 .pf-tfeature figcaption { margin-top: 20px; color: var(--pf-body); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
 .pf-tlist li { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
 .pf-tlist blockquote { margin: 0; font-size: var(--fs-body); line-height: 1.5; }
+/* Keep the visitor's line breaks; shrink an 800-character feature so it doesn't fill several screens. */
+.pf-tfeature blockquote, .pf-tlist blockquote { white-space: pre-line; }
+.pf-tfeature-long blockquote { max-width: 46ch; font-size: clamp(1.15rem, 0.9rem + 1vw, 1.7rem); line-height: 1.3; }
 .pf-tcta { margin-top: 32px; padding-inline: 12px; }
 .pf-tcta summary { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 10px 18px; border: 1px solid var(--pf-black); border-radius: 999px; font-size: var(--fs-small); font-weight: 500; cursor: pointer; list-style: none; }
 .pf-tcta summary::-webkit-details-marker { display: none; }

@@ -18,7 +18,7 @@ function Card({ row }: { row: Row }) {
       <p className="tq-who"><strong>{row.name}</strong>{row.role ? ` · ${row.role}` : ""} · {row.relationship}</p>
       <p className="tq-meta">
         {dateFormat.format(new Date(row.created_at))} · {row.source === "form" ? "Submitted on the site" : "Added in the CMS"}
-        {row.email ? <> · <a href={`mailto:${row.email}`}>{row.email}</a> (private)</> : " · no email given"}
+        {row.email ? <> · <a href={`mailto:${encodeURIComponent(row.email)}`}>{row.email}</a> (private)</> : " · no email given"}
       </p>
       <form className="tq-actions">
         <input type="hidden" name="id" value={row.id} />
