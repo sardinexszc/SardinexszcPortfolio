@@ -110,6 +110,25 @@ export const sections: Section[] = [
       sortField,
     ],
   },
+  {
+    slug: "testimonials",
+    table: "testimonials",
+    title: "Testimonials",
+    singular: "testimonial",
+    description: "Edit wording and order here. Approve or reject visitor submissions on the Testimonials page; only approved ones show on the site.",
+    rowLabel: (row) => `${row.name} · ${row.relationship}`,
+    rowMeta: (row) => [row.status === "pending" ? "Pending review" : row.status === "approved" ? "Approved" : "Hidden", row.role, row.source === "form" ? "From the site" : "Added here"].filter(Boolean).join(" · "),
+    fields: [
+      { name: "name", label: "Name", kind: "text", required: true },
+      { name: "role", label: "Role and company", kind: "text" },
+      { name: "relationship", label: "Relationship", kind: "select", options: ["Client", "Colleague", "Manager", "Collaborator", "Other"], required: true },
+      { name: "quote", label: "Testimonial", kind: "textarea", required: true, hint: "20–800 characters." },
+      { name: "email", label: "Email", kind: "text", hint: "Private, never shown on the site." },
+      { name: "status", label: "Status", kind: "select", options: ["pending", "approved", "hidden"], required: true, hint: "Only approved shows on the site." },
+      { name: "source", label: "Source", kind: "select", options: ["admin", "form"], required: true },
+      sortField,
+    ],
+  },
 ];
 
 export const findSection = (slug: string) => sections.find((section) => section.slug === slug);

@@ -7,6 +7,7 @@ import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, Wor
 import { ContactFooter } from "./contact-footer";
 import { GlyphIntro } from "./glyph-intro";
 import { TechIcon } from "./tech-icon";
+import { TestimonialForm } from "./testimonial-form";
 import { TrackedLink } from "./tracked-elements";
 import "./portfolio-page.css";
 
@@ -57,7 +58,8 @@ function LabelRow({ id, title, aside }: { id: string; title: string; aside?: str
 }
 
 export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
-  const { settings: s, projects, timeline, publications, ipItems } = portfolio;
+  const { settings: s, projects, timeline, publications, ipItems, testimonials } = portfolio;
+  const [featured, ...moreTestimonials] = testimonials;
   // Facts are computed from the content, so they stay true as it changes.
   const startYears = timeline.filter((entry) => entry.type === "experience").map((entry) => firstYear(entry.start_date)).filter((year): year is number => year !== null);
   const since = startYears.length ? Math.min(...startYears) : null;
@@ -82,6 +84,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <li><a href="#disciplines">Disciplines</a></li>
             <li><a href="#work">Work</a></li>
             <li><a href="#recognition">Recognition</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
             <SocialLinks />
@@ -198,6 +201,33 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             </ol>
           </section>
         ) : null}
+
+        {/* Only approved testimonials reach this page. With none yet, the section is just the invitation. */}
+        <section id="testimonials" className="pf-section" aria-labelledby="testimonials-title">
+          <LabelRow id="testimonials-title" title="Testimonials" aside={testimonials.length ? `(${testimonials.length})` : "Kind words"} />
+          {featured ? (
+            <Reveal>
+              <figure className="pf-tfeature">
+                <blockquote>“{featured.quote}”</blockquote>
+                <figcaption>{featured.name}{featured.role ? ` · ${featured.role}` : ""} · {featured.relationship}</figcaption>
+              </figure>
+            </Reveal>
+          ) : null}
+          {moreTestimonials.length ? (
+            <ol className="pf-index-list pf-tlist">
+              {moreTestimonials.map((item) => (
+                <li key={item.id}>
+                  <span className="pf-index-meta">{item.name}{item.role ? <><br />{item.role}</> : null}<br />{item.relationship}</span>
+                  <blockquote>“{item.quote}”</blockquote>
+                </li>
+              ))}
+            </ol>
+          ) : null}
+          <details className="pf-tcta">
+            <summary>Worked with me? Leave a testimonial <ArrowDown size={15} aria-hidden="true" /></summary>
+            <TestimonialForm />
+          </details>
+        </section>
       </main>
       <ContactFooter>
         <div className="pf-mf-row">

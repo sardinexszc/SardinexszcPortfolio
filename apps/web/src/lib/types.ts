@@ -71,6 +71,10 @@ export type SiteSettings = {
   institutions: string[];
 };
 
+// Only approved testimonials are ever loaded for the site; the private email column is not selected.
+export const RELATIONSHIPS = ["Client", "Colleague", "Manager", "Collaborator", "Other"] as const;
+export type Testimonial = { id: number; name: string; role: string | null; relationship: (typeof RELATIONSHIPS)[number]; quote: string };
+
 export type Portfolio = {
   settings: SiteSettings;
   projects: Project[];
@@ -78,4 +82,5 @@ export type Portfolio = {
   publications: Publication[];
   ipItems: IpItem[];
   capabilities: CapabilityGroup[];
+  testimonials: Testimonial[];
 };

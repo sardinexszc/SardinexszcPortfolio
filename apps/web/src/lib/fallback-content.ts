@@ -197,4 +197,5 @@ export const fallbackContent: Portfolio = {
     { id: 4, title: "IoT, embedded & GIS", tools: ["ESP32", "Arduino", "PlatformIO", "Python", "ArcGIS", "QGIS"] },
     { id: 5, title: "Tools & delivery", tools: ["Git", "GitHub", "GitHub Actions", "Vercel", "XAMPP"] },
   ],
+  testimonials: [],
 };

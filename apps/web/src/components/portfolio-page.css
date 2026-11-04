@@ -149,6 +149,30 @@
 /* Selected work */
 .pf-label-row { display: flex; justify-content: space-between; padding: 14px 12px; margin-bottom: 24px; border-top: 1px solid var(--pf-black); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
 .pf-label-row h2 { font-size: inherit; font-weight: 400; }
+
+/* Testimonials: one featured quote in large type, the rest as an index list, then the invitation form. */
+.pf-tfeature { margin: 0 0 clamp(40px, 6vw, 72px); padding-inline: 12px; }
+.pf-tfeature blockquote { max-width: 28ch; margin: 0; font-size: clamp(1.6rem, 1rem + 2.4vw, 3.2rem); font-weight: 500; letter-spacing: -0.035em; line-height: 1.12; text-wrap: balance; }
+.pf-tfeature figcaption { margin-top: 20px; color: var(--pf-body); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; }
+.pf-tlist li { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); }
+.pf-tlist blockquote { margin: 0; font-size: var(--fs-body); line-height: 1.5; }
+.pf-tcta { margin-top: 32px; padding-inline: 12px; }
+.pf-tcta summary { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 10px 18px; border: 1px solid var(--pf-black); border-radius: 999px; font-size: var(--fs-small); font-weight: 500; cursor: pointer; list-style: none; }
+.pf-tcta summary::-webkit-details-marker { display: none; }
+.pf-tcta[open] summary svg { rotate: 180deg; }
+.pf-tform { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 24px; max-width: 960px; margin-top: 24px; }
+.pf-tform label { display: grid; gap: 6px; font-size: var(--fs-small); font-weight: 500; }
+.pf-tform label > span, .pf-tform-hint { color: var(--pf-muted); font-weight: 400; font-size: var(--fs-label); }
+.pf-tform input, .pf-tform select, .pf-tform textarea { width: 100%; padding: 10px 12px; border: 1px solid #c3c7c3; border-radius: var(--pf-radius); background: var(--pf-white); color: var(--pf-black); font: inherit; font-weight: 400; }
+.pf-tform textarea { resize: vertical; }
+.pf-tform-wide { grid-column: 1 / -1; }
+.pf-tform-check { display: flex !important; align-items: flex-start; gap: 10px !important; font-weight: 400 !important; }
+.pf-tform-check input { width: auto; margin-top: 3px; }
+.pf-tform-trap { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.pf-tform-error { grid-column: 1 / -1; color: #b00000; font-size: var(--fs-small); }
+.pf-tform .pf-pill { justify-self: start; border: 0; cursor: pointer; }
+.pf-tform .pf-pill:disabled { opacity: 0.6; cursor: progress; }
+.pf-tform-done { margin-top: 20px; font-size: var(--fs-lede); }
 .pf-tiles { row-gap: clamp(40px, 5vw, 72px); margin: 0; padding: 0; list-style: none; }
 .pf-tiles > li { display: flex; scroll-margin-top: var(--pf-bar); }
 /* Each tile is a column with its links pushed to the bottom, so link rows line up across a row. */
@@ -223,6 +247,9 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
 .pf-intro-cue { align-self: end; margin-bottom: 32px; color: var(--pf-muted); font-family: var(--pf-mono); font-size: var(--fs-label); letter-spacing: 0.06em; text-transform: uppercase; }
 
 @media (max-width: 800px) {
+  .pf-tfeature, .pf-tcta { padding-inline: 0; }
+  .pf-tform { grid-template-columns: minmax(0, 1fr); }
+  .pf-tlist blockquote { grid-column: 1 / -1; }
   .pf-mf { gap: 28px; padding-top: calc(var(--pf-bar) + 16px); }
   .pf-mf-row { grid-template-columns: minmax(0, 1fr); gap: 24px; }
   .pf-mf-foot { flex-direction: column; }

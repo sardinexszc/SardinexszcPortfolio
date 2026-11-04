@@ -17,10 +17,12 @@ const loadContent =unstable_cache(async (): Promise<Portfolio> => {
     ordered("publications"),
     ordered("ip_items"),
     ordered("capability_groups"),
+    // Approved only, and never the private email.
+    db.from("testimonials").select("id,name,role,relationship,quote").eq("status", "approved").order("sort_order").order("id"),
   ]);
   const failed = results.find((result) => result.error);
   if (failed) throw failed.error;
-  const [settings, projects, timeline, publications, ipItems, capabilities] = results;
+  const [settings, projects, timeline, publications, ipItems, capabilities, testimonials] = results;
   // No settings row means the seed has not run yet; once it has, an empty table is a deliberate edit.
   if (!settings.data) return fallbackContent;
   return {
@@ -30,6 +32,7 @@ const loadContent =unstable_cache(async (): Promise<Portfolio> => {
     publications: publications.data ?? [],
     ipItems: ipItems.data ?? [],
     capabilities: capabilities.data ?? [],
+    testimonials: testimonials.data ?? [],
   };
 }, [CONTENT_TAG], { tags: [CONTENT_TAG], revalidate: 3600 });
 

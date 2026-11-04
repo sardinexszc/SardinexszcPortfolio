@@ -17,6 +17,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
 
   let visitorCount: number | null = null;
   let downloadCount: number | null = null;
+  let pendingTestimonials = 0;
   let countsError = false;
   let engagementError = false;
   let audienceError = false;
@@ -30,13 +31,15 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   if (process.env.SUPABASE_SECRET_KEY && process.env.NEXT_PUBLIC_SUPABASE_URL) {
     try {
       const db = createAdminClient();
-      const [visitors, downloads] = await Promise.all([
+      const [visitors, downloads, pending] = await Promise.all([
         db.from("visitors").select("*", { count: "exact", head: true }),
         db.from("resume_downloads").select("*", { count: "exact", head: true }),
+        db.from("testimonials").select("*", { count: "exact", head: true }).eq("status", "pending"),
       ]);
       if (visitors.error || downloads.error) throw visitors.error ?? downloads.error;
       visitorCount = visitors.count;
       downloadCount = downloads.count;
+      pendingTestimonials = pending.count ?? 0;
     } catch (error) {
       console.error("Analytics counts could not be loaded", error);
       countsError = true;
@@ -135,6 +138,11 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
       {notice === "signed-in" && <AuthNotice message="Signed in successfully." successNotice="signed-in" />}
       {notice === "signout-failed" && <AuthNotice message="Could not sign out. Please try again." error />}
       {!configured && <p role="status" className="cms-status">Analytics data will appear when this deployment can access its Supabase server credentials.</p>}
+      {pendingTestimonials > 0 && (
+        <p role="status" className="analytics-success">
+          {pendingTestimonials} testimonial{pendingTestimonials === 1 ? "" : "s"} awaiting review. <Link href="/analytics/testimonials">Review now</Link>
+        </p>
+      )}
       <div className="db-grid">
         {kpis.map((kpi) => (
           <section key={kpi.label} className="analytics-card db-card db-kpi db-span-3">
