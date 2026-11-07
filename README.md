@@ -86,7 +86,10 @@ The analytics and rate-limit tables have RLS enabled and no public policies. Onl
 
 ## Resume
 
-The downloadable resume is generated from `scripts/build_resume.py` (requires `reportlab`) and served by `/api/track-download`:
+`scripts/build_resume.py` (requires `reportlab`) generates two files in `apps/web/assets/resume/`:
+
+- `2026_ICLSalinas_Resume.pdf`: the one-page resume served by `/api/track-download`.
+- `2026_ICLSalinas_CV.pdf`: the full CV, adding education, publications, intellectual property, training and languages. It is not linked from the site.
 
 ```powershell
 python scripts/build_resume.py
