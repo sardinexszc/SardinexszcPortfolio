@@ -129,8 +129,8 @@ def skills_table():
     return table
 
 
-def doc(path, title):
-    return SimpleDocTemplate(str(path), pagesize=A4, leftMargin=17 * mm, rightMargin=17 * mm, topMargin=14 * mm, bottomMargin=13 * mm, title=title, author=NAME_TEXT, subject="Full-stack developer")
+def doc(path, title, top=14 * mm, bottom=13 * mm):
+    return SimpleDocTemplate(str(path), pagesize=A4, leftMargin=17 * mm, rightMargin=17 * mm, topMargin=top, bottomMargin=bottom, title=title, author=NAME_TEXT, subject="Full-stack developer")
 
 
 def page_number(canvas, document):
@@ -145,26 +145,28 @@ def page_number(canvas, document):
 
 def build_resume():
     story = header("Full-Stack Developer · Web, Data &amp; IoT")
-    story += section("Summary")
+    story += section("Summary", 6)
     story.append(Paragraph(
         "Full-stack web developer with 7 years at Central Luzon State University building and maintaining live information systems "
         "in Laravel, PHP, MySQL, Next.js and TypeScript, including a real-time monitoring system used by all member universities of the "
         "CLAARRDEC research consortium. Ships end to end, from database design to deployed UI, and works fast across stacks with "
         "AI-assisted development. Remote-ready, with strong written English and a structured, detail-focused approach.", BODY))
-    story += block("Skills", [skills_table()])
+    story += block("Skills", [skills_table()], 6)
     story += block("Experience", [
         entry("Full-Stack Web Developer", "2026–present", "Independent and collaborative product work",
               ["Building web applications and automation workflows with Next.js, Laravel and Supabase."]),
         entry("Instructor I, Department of Information Technology", "Aug 2019–Jun 2026", "Central Luzon State University, Science City of Muñoz",
               INSTRUCTOR_POINTS, note="Also designated to the Crops and Resources Research and Development Center (CRRDC); Information and Communication Division Head, Jul 2024–Dec 2025."),
         entry("Project Technical Staff", "Jul 2017–Jul 2019", "Central Luzon State University · CHED–British Council JDNP", JDNP_POINTS, gap=0),
-    ])
+    ], 6)
     story += block("Selected Projects", [
         bullet("<b>Disaster Response Intelligence Warehouse:</b> PostgreSQL 17 Kimball warehouse (4 star schemas) for multi-agency Philippine disaster data; Python and dbt Core ETL with 36 data-quality rules and 99+ tests; materialized views made dashboard queries 78x faster."),
         bullet(f"<b>Portfolio and Analytics Platform</b> ({link('https://ivansalinas.vercel.app/', 'ivansalinas.vercel.app')}): Next.js and Supabase site with a private analytics dashboard and rate-limited tracking APIs; Lighthouse 100 accessibility."),
-        bullet(f"<b>TCEHub</b> ({link('https://tcehub-alpha.vercel.app/', 'tcehub-alpha.vercel.app')}): mobile-first community site with a filterable shop directory, journals, events and galleries."),
-    ])
-    out = doc(RESUME, f"{NAME_TEXT} | Resume")
+        bullet(f"<b>TCEHub</b> ({link('https://tcehub-alpha.vercel.app/', 'tcehub-alpha.vercel.app')}): mobile-first community site with a shop directory, journals, events and galleries."),
+    ], 6)
+    story += section("References", 6)
+    story.append(Paragraph("Available upon request.", BODY))
+    out = doc(RESUME, f"{NAME_TEXT} | Resume", top=11 * mm, bottom=10 * mm)
     out.build(story)
     return out
 

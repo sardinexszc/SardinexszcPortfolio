@@ -57,6 +57,9 @@ SELECTED PROJECTS
   dashboard queries 78x faster.
 • Portfolio and Analytics Platform (ivansalinas.vercel.app): Next.js and Supabase site with a private analytics
   dashboard and rate-limited tracking APIs; Lighthouse 100 accessibility.
-• TCEHub (tcehub-alpha.vercel.app): mobile-first community site with a filterable shop directory, journals, events and
-  galleries.
+• TCEHub (tcehub-alpha.vercel.app): mobile-first community site with a shop directory, journals, events and galleries.
+
+REFERENCES
+
+Available upon request.
 
