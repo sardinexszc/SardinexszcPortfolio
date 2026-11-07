@@ -1,0 +1,153 @@
+Ivan Christian L. Salinas
+Curriculum Vitae · Full-Stack Developer · Web, Data & IoT
+Science City of Muñoz, Nueva Ecija, Philippines · +63 926 745 9456 · banbansalinas@gmail.com
+ivansalinas.vercel.app · linkedin.com/in/banbansalinas · github.com/sardinexszc
+
+PROFILE
+
+Full-stack web developer with 7 years at Central Luzon State University building and maintaining live information
+systems in Laravel, PHP, MySQL, Next.js and TypeScript, including a real-time monitoring system used by all member
+universities of the CLAARRDEC research consortium. Ships end to end, from database design to deployed UI, and
+works fast across stacks with AI-assisted development in Claude Code. Brings data engineering (PostgreSQL, Kimball
+modeling, dbt), IoT control systems, published research and a teaching background. Currently completing an MS in IT
+(Data Science). Remote-ready, with strong written English and a structured, detail-focused approach.
+
+SKILLS
+
+Full-stack web                PHP, Laravel, JavaScript, TypeScript, Next.js, React, Tailwind CSS, Supabase, REST
+                              APIs, HTML/CSS
+Databases & data              MySQL, PostgreSQL (row-level security, materialized views, window functions,
+                              CUBE/ROLLUP), Kimball dimensional modeling, SCD Type 2, Python ETL, dbt Core
+AI-assisted dev &             Claude Code, Codex, Gemini, GitHub Copilot; n8n email automations, webhooks and
+automation                    bots
+IoT & GIS                     ESP32, Arduino, PlatformIO, Python sensor control systems; ArcGIS, QGIS
+Tools & delivery              Git, GitHub, GitHub Actions CI, Vercel, XAMPP; requirements gathering, technical
+                              documentation, stakeholder coordination
+
+PROFESSIONAL EXPERIENCE
+
+Full-Stack Web Developer                                                                                     2026–present
+Independent and collaborative product work
+• Building web applications and automation workflows with Next.js, Laravel and Supabase.
+
+Instructor I, Department of Information Technology                                             Aug 2019–Jun 2026
+Central Luzon State University, Science City of Muñoz, Philippines
+Also designated to the Crops and Resources Research and Development Center (CRRDC); Information and
+Communication Division Head, Jul 2024–Dec 2025.
+• Co-developed the CLAARRDEC Real-Time Monitoring System (rtms.clsu.edu.ph) in Laravel, PHP and MySQL, used
+  by all member State Universities and Colleges of the regional R&D consortium.
+• Built the CRRDC enterprise information system (crrdc.vercel.app) in Next.js, React, TypeScript, Tailwind CSS and
+  Supabase (PostgreSQL) with role-based access control, and the CLAARRDEC CMS and e-library in Laravel and
+  MySQL.
+• Lead developer for IoT smart indoor-farming systems (ESP32, Arduino, sensors, Python): automated evaporative
+  cooling, fertigation, light and climate monitoring and retractable solar panels, with a real-time monitoring web app.
+• Led the CRRDC Information and Communication Division (1 of 4 divisions), turning R&D outputs into databases,
+  knowledge products and ICT-based innovations.
+• Taught web and Java programming, media and business courses to 150–250 students per semester; designed
+  outcomes-based curriculum and mentored student capstone system-development teams.
+
+Project Technical Staff                                                                          Jul 2017–Jul 2019
+Central Luzon State University, Science City of Muñoz, Philippines
+CHED–British Council Joint Development of Niche Programmes through Philippine–UK Linkages (JDNP).
+• Managed project documents and correspondence, and monitored fund utilization.
+• Prepared work, financial and accomplishment reports for project stakeholders.
+
+
+
+
+                                                                                        Ivan Christian L. Salinas · CV · page 1
+PROJECTS
+
+CLAARRDEC Real-Time Monitoring System (RTMS)                                                        Laravel · PHP · MySQL
+rtms.clsu.edu.ph
+• Shared R&D project reporting and oversight, used by all member State Universities and Colleges of the CLAARRDEC
+  consortium. Co-developer of the monitoring and reporting workflows.
+
+CRRDC Enterprise Information System                                                                      Next.js · Supabase
+crrdc.vercel.app · github.com/sardinexszc/crrdc
+• A single platform for research, extension, personnel and administrative records, with role-based access control for
+  each team. Built end to end: requirements, database design, access control and deployment.
+
+Disaster Response Intelligence Warehouse                                                         PostgreSQL · Python · dbt
+• PostgreSQL 17 data warehouse unifying multi-agency Philippine disaster data: Kimball model with 4 star schemas
+  and 9 conformed dimensions, Python and dbt Core ETL, 36 data-quality rules that caught all 19 planted defect types,
+  materialized views that made dashboard queries 78x faster, row-level security, 99+ dbt tests and Next.js dashboards.
+
+Smart Indoor Farming IoT System                                                                   ESP32 · Arduino · Python
+smart-indoor-farming-website.vercel.app
+• Automated evaporative cooling, fertigation, light and climate monitoring and retractable solar panels, with a real-time
+  monitoring web app. Lead developer for the sensor control systems and the web app.
+
+CLAARRDEC Website, CMS and E-Library                                                                        Laravel · MySQL
+• Public website and e-library with controlled access, administration and usage reporting.
+
+Portfolio and Analytics Platform                                                                         Next.js · Supabase
+ivansalinas.vercel.app · github.com/sardinexszc/SardinexszcPortfolio
+• Server-rendered portfolio with a private analytics dashboard, admin sign-in and rate-limited tracking APIs (Next.js,
+  TypeScript, Supabase). Lighthouse 100 for accessibility on mobile and desktop.
+
+TCEHub                                                                                                   Next.js · TypeScript
+tcehub-alpha.vercel.app · github.com/sardinexszc/tcehub
+• Mobile-first community site for the Toyota Camry Elite community: filterable, paginated shop directory, journals,
+  events and galleries (Next.js, TypeScript, Tailwind CSS).
+
+EDUCATION
+
+MS Information Technology, major in Data Science                                                          Feb 2026–present
+Nueva Ecija University of Science and Technology, Philippines
+• In progress, expected 2027–2028. Coursework includes Enterprise Data Warehousing.
+
+BS Information Technology, major in Systems Development                                                           2013–2017
+Central Luzon State University, Science City of Muñoz, Philippines
+• Capstone: “CLSU Open University Student Academic Information Monitoring and Record Keeping System” (C#
+  desktop application, MySQL).
+• 300-hour OJT at CLSU Open University (web development, portal updates), commended for excellent performance.
+
+PUBLICATIONS
+
+• Salvador, M.A., Botangen, K.A., Rabang, M.C., Salinas, I.C., et al. (2024). Development of a Web-based Research
+  Consortium Database Management System: Advancing Data-driven and Knowledge-based Project Management.
+  ACM. doi:10.1145/3670105.3670120
+• Vicencio, J.J., et al., Salinas, I.C. (2025). Senior Digital World: Social Media Usage and Online Identity Expression
+  Among Senior Citizens in Selected Barangays of Talavera, Nueva Ecija. CGCI International Journal of Administration,
+  Management, Education and Technology. doi:10.70059/nv6q0j65
+• Maglaque, E.J., Basinga, K., Ravela, R.A., Botangen, K.A., Salinas, I.C., Ledesma, A. (2026). Designing an
+  IoT-Based Tilapia Fingerling Counter for Smart Aquaculture Operations. Accepted, ICEECIT 2026.
+• Hidalgo, L.G., Guevarra, A., Quitos, R., Sebbey, G., Villanueva, E., Salinas, I.C., Nate, J.V. Automated and Real-Time
+  Monitoring Feeder System for CLSU Tunnel-Type Broiler Production Project. Under review, IEEE NEPCON 2026.
+
+
+
+
+                                                                                          Ivan Christian L. Salinas · CV · page 2
+INTELLECTUAL PROPERTY
+
+• Registered software copyrights N2026-331 to N2026-335 (5 programs): smart indoor-farming control software,
+  National Library of the Philippines, 2026 (co-author).
+• Published patent application (named inventor): “Automated Vitamins and Antibiotics Injection System for Broiler
+  Production”, PH 12023050744 (published 2025).
+• Registered copyright: “Solar Grow” and “Ang Solar Grow” brochures.
+• Pending team filings (smart indoor farming): 1 software copyright, 2 documentation copyrights, 4 utility models, 1
+  patent application (Solar-Powered Elevated Pots).
+
+TRAINING AND CERTIFICATES
+
+• Advanced GIS Applications for Agricultural Resources Management (5-day workshop), DOST-PCAARRD, Oct 2025.
+• Fundamentals of GIS (3-day workshop), DOST-PCAARRD, Nov 2024.
+• Flexible Learning Systems Training Course, Central Luzon State University, Jul 2020.
+• Intercultural Fluency Essentials, British Council, Jan 2018.
+• Networking Fundamentals (2016) and C# Fundamentals (2015), Microsoft Virtual Academy.
+
+LANGUAGES
+
+• Filipino (native); English (C2 written, OnlineJobs.ph English test; B2 spoken).
+
+REFERENCES
+
+Available upon request.
+
+
+
+
+                                                                                         Ivan Christian L. Salinas · CV · page 3
+
