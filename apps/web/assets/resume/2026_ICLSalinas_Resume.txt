@@ -5,7 +5,7 @@ ivansalinas.vercel.app · linkedin.com/in/banbansalinas · github.com/sardinexsz
 
 SUMMARY
 
-Full-stack web developer with seven years at Central Luzon State University building and maintaining live information
+Full-stack web developer with 7 years at Central Luzon State University building and maintaining live information
 systems in Laravel, PHP, MySQL, Next.js and TypeScript, including a real-time monitoring system used by all member
 universities of the CLAARRDEC research consortium. Ships end to end, from database design to deployed UI, and
 works fast across stacks with AI-assisted development. Remote-ready, with strong written English and a structured,

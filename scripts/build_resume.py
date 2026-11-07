@@ -147,7 +147,7 @@ def build_resume():
     story = header("Full-Stack Developer · Web, Data &amp; IoT")
     story += section("Summary")
     story.append(Paragraph(
-        "Full-stack web developer with seven years at Central Luzon State University building and maintaining live information systems "
+        "Full-stack web developer with 7 years at Central Luzon State University building and maintaining live information systems "
         "in Laravel, PHP, MySQL, Next.js and TypeScript, including a real-time monitoring system used by all member universities of the "
         "CLAARRDEC research consortium. Ships end to end, from database design to deployed UI, and works fast across stacks with "
         "AI-assisted development. Remote-ready, with strong written English and a structured, detail-focused approach.", BODY))
@@ -175,7 +175,7 @@ def build_cv():
     story = header("Curriculum Vitae · Full-Stack Developer · Web, Data &amp; IoT")
     story += section("Profile")
     story.append(Paragraph(
-        "Full-stack web developer with seven years at Central Luzon State University building and maintaining live information systems "
+        "Full-stack web developer with 7 years at Central Luzon State University building and maintaining live information systems "
         "in Laravel, PHP, MySQL, Next.js and TypeScript, including a real-time monitoring system used by all member universities of the "
         "CLAARRDEC research consortium. Ships end to end, from database design to deployed UI, and works fast across stacks with "
         "AI-assisted development in Claude Code. Brings data engineering (PostgreSQL, Kimball modeling, dbt), IoT control systems, "
@@ -196,7 +196,7 @@ def build_cv():
         entry("CLAARRDEC Real-Time Monitoring System (RTMS)", "Laravel · PHP · MySQL", link("https://rtms.clsu.edu.ph/"),
               ["Shared R&amp;D project reporting and oversight, used by all member State Universities and Colleges of the CLAARRDEC consortium. Co-developer of the monitoring and reporting workflows."]),
         entry("CRRDC Enterprise Information System", "Next.js · Supabase", link("https://crrdc.vercel.app/") + " · " + link("https://github.com/sardinexszc/crrdc"),
-              ["One platform for research, extension, personnel and administrative records, with role-based access control for each team. Built end to end: requirements, database design, access control and deployment."]),
+              ["A single platform for research, extension, personnel and administrative records, with role-based access control for each team. Built end to end: requirements, database design, access control and deployment."]),
         entry("Disaster Response Intelligence Warehouse", "PostgreSQL · Python · dbt", None, [WAREHOUSE]),
         entry("Smart Indoor Farming IoT System", "ESP32 · Arduino · Python", link("https://smart-indoor-farming-website.vercel.app/", "smart-indoor-farming-website.vercel.app"),
               ["Automated evaporative cooling, fertigation, light and climate monitoring and retractable solar panels, with a real-time monitoring web app. Lead developer for the sensor control systems and the web app."]),
