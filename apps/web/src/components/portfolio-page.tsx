@@ -87,6 +87,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <li><a href="#testimonials">Testimonials</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
+            <li><a href={profile.cvUrl} download={profile.cvFilename}>Full CV</a></li>
             <SocialLinks />
           </ul>
         </SiteMenu>
@@ -237,7 +238,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           </div>
           <div className="pf-contact-side">
             <ResumeButton />
-            <ul className="pf-socials"><SocialLinks /></ul>
+            <ul className="pf-socials"><li><a href={profile.cvUrl} download={profile.cvFilename}>Full CV</a></li><SocialLinks /></ul>
           </div>
         </div>
         <div className="pf-mf-foot">
