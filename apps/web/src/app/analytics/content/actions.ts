@@ -34,10 +34,12 @@ async function parseField(field: Field, form: FormData, folder: string): Promise
   const raw = String(form.get(field.name) ?? "").trim();
   if (raw.length > MAX_TEXT) throw new InputError(`${field.label} is too long.`);
   if (field.required && !raw) throw new InputError(`${field.label} is required.`);
+  if (raw && field.pattern && !field.pattern.regex.test(raw)) throw new InputError(field.pattern.message);
   switch (field.kind) {
     case "number": {
       const value = Number.parseInt(raw || "0", 10);
       if (!Number.isFinite(value)) throw new InputError(`${field.label} must be a whole number.`);
+      if (field.min !== undefined && value < field.min) throw new InputError(`${field.label} must be at least ${field.min}.`);
       return value;
     }
     case "list": return raw.split(",").map((item) => item.trim()).filter(Boolean);
@@ -64,6 +66,7 @@ async function parseField(field: Field, form: FormData, folder: string): Promise
 function publish() {
   updateTag(CONTENT_TAG);
   revalidatePath("/");
+  revalidatePath("/shop", "layout"); // the shop pages read products under the same tag
 }
 
 // Runs a CMS write and sends the editor back with a status message instead of throwing.

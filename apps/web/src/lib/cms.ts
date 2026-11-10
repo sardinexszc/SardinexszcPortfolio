@@ -2,7 +2,12 @@
 // The actions only ever write the fields listed here, to the table listed here.
 
 export type FieldKind = "text" | "textarea" | "url" | "list" | "lines" | "bool" | "select" | "image" | "number";
-export type Field = { name: string; label: string; kind: FieldKind; required?: boolean; options?: readonly string[]; hint?: string };
+export type Field = {
+  name: string; label: string; kind: FieldKind; required?: boolean; options?: readonly string[]; hint?: string;
+  // Optional checks with a clear message, run by the save action.
+  pattern?: { regex: RegExp; message: string };
+  min?: number;
+};
 
 export type Section = {
   slug: string;
@@ -107,6 +112,30 @@ export const sections: Section[] = [
     fields: [
       { name: "title", label: "Group title", kind: "text", required: true },
       { name: "tools", label: "Tools", kind: "list", hint: "Comma-separated." },
+      sortField,
+    ],
+  },
+  {
+    slug: "products",
+    table: "products",
+    title: "Shop products",
+    singular: "product",
+    description: "Products on /shop. Only active products are shown and sold. Upload product files in Supabase > Storage > shop-files, then type the file name below.",
+    rowLabel: (row) => String(row.title),
+    rowMeta: (row) => [row.active ? "Active" : "Hidden", row.kind === "service" ? "Service" : row.kind === "guide" ? "Guide" : "Code kit", `₱${Number(row.price_php).toLocaleString("en-PH")}`, row.kind !== "service" && !row.file_path ? "No file yet" : null].filter(Boolean).join(" · "),
+    rowImage: (row) => (typeof row.cover_image === "string" && row.cover_image ? row.cover_image : null),
+    rowLink: (row) => (row.active ? { label: "View", href: `/shop/${row.slug}` } : null),
+    fields: [
+      { name: "title", label: "Title", kind: "text", required: true },
+      { name: "slug", label: "Link name", kind: "text", required: true, hint: "Lowercase words and hyphens, e.g. portfolio-kit. The page is /shop/portfolio-kit.", pattern: { regex: /^[a-z0-9]+(-[a-z0-9]+)*$/, message: "Link name must be lowercase letters, numbers and single hyphens, e.g. portfolio-kit." } },
+      { name: "kind", label: "Type", kind: "select", options: ["digital", "guide", "service"], required: true, hint: "digital = code kit (file), guide = PDF (file), service = work done for the buyer (no file)." },
+      { name: "price_php", label: "Price (₱, whole pesos)", kind: "number", required: true, min: 20, hint: "At least ₱20 (PayMongo's minimum)." },
+      { name: "summary", label: "Short description", kind: "textarea", required: true, hint: "One or two sentences for the product card." },
+      { name: "body", label: "Full description", kind: "textarea", hint: "What's included, who it's for, requirements. A blank line starts a new paragraph." },
+      { name: "cover_image", label: "Cover image", kind: "image", hint: "Upload a WebP, JPEG, PNG or AVIF up to 4 MB. 4:3 works best." },
+      { name: "file_path", label: "File name in shop-files", kind: "text", hint: "For code kits and guides, e.g. portfolio-kit-v1.zip. Leave empty for services.", pattern: { regex: /^[A-Za-z0-9._-]+(\/[A-Za-z0-9._-]+)*$/, message: "File name may use letters, numbers, dots, hyphens, underscores and folders (a/b.zip)." } },
+      { name: "service_instructions", label: "After-payment instructions (services)", kind: "textarea", hint: "Shown to the buyer after paying and in the receipt: booking link, intake form, what happens next." },
+      { name: "active", label: "Active (shown and sold on /shop)", kind: "bool" },
       sortField,
     ],
   },

@@ -303,3 +303,13 @@
 .tq-meta { margin: 4px 0 0; color: var(--db-muted); font: .78rem/1.5 var(--font-mono), monospace; }
 .tq-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
 .tq-empty { display: flex; align-items: center; gap: 8px; margin: 0; color: var(--db-muted); }
+
+/* Shop orders */
+.db-span-6 { grid-column: span 6; }
+@media (max-width: 900px) { .db-span-6 { grid-column: 1 / -1; } }
+.shop-setup { display: grid; gap: 8px; list-style: none; margin: 0; padding: 0; font-size: .85rem; }
+.shop-setup span { display: inline-block; width: 1.2em; }
+.shop-orders a { color: inherit; text-decoration: underline; }
+.shop-order-actions { display: flex; flex-wrap: wrap; gap: 6px; justify-content: flex-end; }
+.shop-order-actions .db-button { font-size: .72rem; padding: 6px 10px; }
+@media (max-width: 700px) { .shop-orders li { align-items: flex-start; flex-direction: column; } .shop-order-actions { justify-content: flex-start; } }

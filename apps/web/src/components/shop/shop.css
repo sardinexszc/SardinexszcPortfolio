@@ -1,0 +1,58 @@
+/* Shop and policy pages: the portfolio's palette and type (portfolio-page.css), in a simpler single-column frame. */
+.shop { display: flex; flex-direction: column; }
+.shop-bar { display: flex; align-items: center; justify-content: space-between; min-height: var(--pf-bar); }
+.shop-bar nav { display: flex; gap: 20px; font-size: var(--fs-small); }
+.shop-bar nav a, .shop-foot a, .shop-legal a, .shop-status a:not(.pf-pill), .shop-empty a, .shop-agree a { border-bottom: 1px solid currentColor; }
+.shop-bar nav a:hover, .shop-foot a:hover { color: var(--pf-accent); }
+/* .pf main is the home page's curved, shadowed sheet over its sticky footer; the shop is a plain page. */
+.pf.shop main.shop-main { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(24px, 5vw, 64px) 0 var(--pf-section); border-radius: 0; box-shadow: none; background: none; }
+/* globals.css styles bare footers (and stacks them on phones); this one is a simple wrapped row. */
+.pf.shop footer.shop-foot { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 8px 20px; padding: 24px 0 32px; border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-size: var(--fs-label); }
+.pf.shop footer.shop-foot span { flex-basis: 100%; }
+
+.shop-intro { display: grid; gap: 12px; margin-bottom: clamp(32px, 5vw, 56px); }
+.shop-intro h1, .shop-product h1, .shop-status h1, .shop-legal h1 { font-size: clamp(2.2rem, 1.4rem + 4vw, 4.6rem); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
+.shop-intro > p:last-child, .shop-lede { max-width: 40em !important; color: var(--pf-body); font-size: var(--fs-lede); line-height: 1.5; }
+
+.shop-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 40px 24px; margin: 0; padding: 0; list-style: none; }
+.shop-card a { display: grid; gap: 8px; }
+.shop-card-media, .shop-product-media { position: relative; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--pf-radius); background: var(--pf-raised); }
+.shop-card-media .pf-tile-card { position: absolute; inset: 0; }
+.shop-card h2 { font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; }
+.shop-card-summary { color: var(--pf-body); font-size: var(--fs-small); line-height: 1.5; }
+.shop-card a:hover h2 { color: var(--pf-accent); }
+.shop-price { font-family: var(--pf-mono); font-size: var(--fs-small); }
+.shop-price-big { font-family: var(--font-sans), system-ui, sans-serif; font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem); font-weight: 600; letter-spacing: -0.04em; }
+.shop-empty { display: grid; gap: 12px; max-width: 36em; padding: 32px; border: 1px solid var(--pf-border); border-radius: var(--pf-radius); background: var(--pf-white); }
+.shop-empty h2 { font-size: var(--fs-title); }
+
+.shop-back { display: inline-flex; align-items: center; gap: 6px; margin-bottom: 24px; font-size: var(--fs-small); }
+.shop-back:hover { color: var(--pf-accent); }
+.shop-product-grid { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(280px, 1fr); gap: clamp(24px, 4vw, 64px); align-items: start; }
+.shop-product-grid > div { display: grid; gap: 20px; }
+.shop-body { display: grid; gap: 14px; color: var(--pf-body); font-size: var(--fs-body); line-height: 1.65; white-space: pre-line; }
+.shop-aside { position: sticky; top: calc(var(--pf-bar) + 16px); display: grid; gap: 14px; padding: 24px; border: 1px solid var(--pf-border); border-radius: var(--pf-radius); background: var(--pf-white); }
+
+.shop-buy { display: grid; gap: 8px; }
+.shop-buy label { font-size: var(--fs-small); font-weight: 500; }
+.shop-buy label small { color: var(--pf-muted); font-weight: 400; }
+.shop-buy input:not([type="checkbox"]) { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid var(--pf-border); border-radius: var(--pf-radius); background: var(--pf-bg); color: var(--pf-black); font: inherit; }
+.shop-buy input:focus-visible { border-color: var(--pf-black); }
+.shop-agree { display: flex; gap: 8px; align-items: flex-start; margin: 6px 0; font-weight: 400 !important; line-height: 1.4; }
+.shop-agree input { margin-top: 3px; accent-color: var(--pf-accent); }
+.shop-pay { justify-content: center; min-height: 48px; border: 0; cursor: pointer; font: inherit; }
+.shop-pay[disabled] { background: var(--pf-muted); cursor: not-allowed; transform: none; }
+.shop-error { padding: 10px 12px; border-radius: var(--pf-radius); background: #fde8e8; color: #9b1c1c; font-size: var(--fs-small); }
+.shop-note { color: var(--pf-muted); font-size: var(--fs-label); line-height: 1.5; }
+.shop-cancelled { color: var(--pf-black); }
+
+.shop-status, .shop-legal { display: grid; gap: 16px; max-width: 44em; }
+.shop-status > p, .shop-legal > p { color: var(--pf-body); font-size: var(--fs-body); line-height: 1.6; }
+.shop-next { display: grid; gap: 10px; justify-items: start; padding: 24px; border: 1px solid var(--pf-border); border-radius: var(--pf-radius); background: var(--pf-white); }
+.shop-next h2, .shop-legal h2 { margin-top: 8px; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; }
+.shop-pre { white-space: pre-line; line-height: 1.6; }
+
+@media (max-width: 800px) {
+  .shop-product-grid { grid-template-columns: minmax(0, 1fr); }
+  .shop-aside { position: static; }
+}
