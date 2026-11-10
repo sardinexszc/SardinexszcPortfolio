@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowUpRight, LayoutDashboard, FilePenLine, Inbox, MessageSquareQuote, Settings } from "lucide-react";
+import { ArrowUpRight, LayoutDashboard, FilePenLine, Inbox, MessageSquareQuote, Settings, ShoppingBag } from "lucide-react";
 
 const items = [
   { href: "/analytics", label: "Dashboard", icon: LayoutDashboard },
   { href: "/analytics/content", label: "Content", icon: FilePenLine },
+  { href: "/analytics/shop", label: "Shop", icon: ShoppingBag },
   { href: "/analytics/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { href: "/analytics/services-request", label: "Requests", icon: Inbox },
   { href: "/analytics/account-settings", label: "Account", icon: Settings },

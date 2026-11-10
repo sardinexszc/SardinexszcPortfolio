@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { profile } from "@/lib/profile";
 import { DOWNLOAD_DAYS, DOWNLOAD_LIMIT } from "@/lib/shop";
 
@@ -19,7 +20,7 @@ export default function TermsPage() {
       <h2>License for code kits and guides</h2>
       <p>You may use what you buy in your own personal and commercial projects, including client work. You may not resell, share or publish the files themselves, or offer them as a template or course of your own.</p>
       <h2>Refunds</h2>
-      <p>See the <a href="/shop/refunds">refund policy</a>.</p>
+      <p>See the <Link href="/shop/refunds">refund policy</Link>.</p>
       <h2>Liability</h2>
       <p>Code kits and guides are provided as is. I take care that they work as described, but I am not liable for indirect losses from their use. Nothing in these terms limits your rights under Philippine consumer law.</p>
       <h2>Contact</h2>
