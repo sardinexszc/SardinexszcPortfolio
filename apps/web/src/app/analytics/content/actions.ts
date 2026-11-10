@@ -66,6 +66,7 @@ async function parseField(field: Field, form: FormData, folder: string): Promise
 function publish() {
   updateTag(CONTENT_TAG);
   revalidatePath("/");
+  revalidatePath("/shop", "layout"); // the shop pages read products under the same tag
 }
 
 // Runs a CMS write and sends the editor back with a status message instead of throwing.

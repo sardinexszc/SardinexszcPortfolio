@@ -4,8 +4,11 @@
 .shop-bar nav { display: flex; gap: 20px; font-size: var(--fs-small); }
 .shop-bar nav a, .shop-foot a, .shop-legal a, .shop-status a:not(.pf-pill), .shop-empty a, .shop-agree a { border-bottom: 1px solid currentColor; }
 .shop-bar nav a:hover, .shop-foot a:hover { color: var(--pf-accent); }
-.shop-main { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(24px, 5vw, 64px) 0 var(--pf-section); }
-.shop-foot { display: flex; flex-wrap: wrap; gap: 8px 20px; padding: 24px 0 32px; border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-size: var(--fs-label); }
+/* .pf main is the home page's curved, shadowed sheet over its sticky footer; the shop is a plain page. */
+.pf.shop main.shop-main { flex: 1; width: 100%; max-width: 1200px; margin: 0 auto; padding: clamp(24px, 5vw, 64px) 0 var(--pf-section); border-radius: 0; box-shadow: none; background: none; }
+/* globals.css styles bare footers (and stacks them on phones); this one is a simple wrapped row. */
+.pf.shop footer.shop-foot { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex-start; align-items: baseline; gap: 8px 20px; padding: 24px 0 32px; border-top: 1px solid var(--pf-border); color: var(--pf-muted); font-size: var(--fs-label); }
+.pf.shop footer.shop-foot span { flex-basis: 100%; }
 
 .shop-intro { display: grid; gap: 12px; margin-bottom: clamp(32px, 5vw, 56px); }
 .shop-intro h1, .shop-product h1, .shop-status h1, .shop-legal h1 { font-size: clamp(2.2rem, 1.4rem + 4vw, 4.6rem); font-weight: 600; letter-spacing: -0.05em; line-height: 0.95; }
