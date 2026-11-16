@@ -41,7 +41,9 @@
 
 /* Oversized words */
 .pf-word { position: relative; z-index: 3; overflow: hidden; color: var(--pf-white); mix-blend-mode: difference; font-weight: 600; letter-spacing: -0.065em; line-height: 0.82; white-space: nowrap; pointer-events: none; }
-.pf-word > span { display: inline-block; padding-bottom: 0.04em; }
+/* Right padding: the negative tracking also applies after the last letter, so without it the clip box ends
+   before the letter does and cuts off a round end (the "o" in "Hello"). */
+.pf-word > span { display: inline-block; padding: 0 0.1em 0.04em 0; }
 
 /* Photo frames clip their image; the parallax layer is scaled so its moving edges stay hidden. */
 .pf-hero-tall, .pf-hero-small, .pf-tile-media, .pf-parallax { overflow: hidden; border-radius: var(--pf-radius); }
