@@ -9,7 +9,8 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
-  "form-action 'self'",
+  // PayMongo: the buy form's server action redirects there (a real form post when JavaScript is off).
+  "form-action 'self' https://checkout.paymongo.com",
   "frame-ancestors 'none'",
   "frame-src 'none'",
   "object-src 'none'",
