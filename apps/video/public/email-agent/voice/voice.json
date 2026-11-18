@@ -1,0 +1,442 @@
+[
+ {
+  "file": "email-agent/voice/line-0.mp3",
+  "duration": 4.125,
+  "words": [
+   {
+    "text": "Job",
+    "start": 0.1,
+    "end": 0.375
+   },
+   {
+    "text": "hunting",
+    "start": 0.3875,
+    "end": 0.75
+   },
+   {
+    "text": "floods",
+    "start": 0.7625,
+    "end": 1.15
+   },
+   {
+    "text": "my",
+    "start": 1.1625,
+    "end": 1.3
+   },
+   {
+    "text": "inbox",
+    "start": 1.3125,
+    "end": 1.9625
+   },
+   {
+    "text": "and",
+    "start": 2.2375,
+    "end": 2.3125
+   },
+   {
+    "text": "the",
+    "start": 2.325,
+    "end": 2.4000000000000004
+   },
+   {
+    "text": "interview",
+    "start": 2.4125,
+    "end": 2.825
+   },
+   {
+    "text": "invites",
+    "start": 2.8375,
+    "end": 3.2624999999999997
+   },
+   {
+    "text": "get",
+    "start": 3.275,
+    "end": 3.475
+   },
+   {
+    "text": "buried",
+    "start": 3.4875,
+    "end": 3.875
+   }
+  ]
+ },
+ {
+  "file": "email-agent/voice/line-1.mp3",
+  "duration": 7.487,
+  "words": [
+   {
+    "text": "So",
+    "start": 0.1125,
+    "end": 0.25
+   },
+   {
+    "text": "I",
+    "start": 0.2625,
+    "end": 0.325
+   },
+   {
+    "text": "built",
+    "start": 0.3375,
+    "end": 0.6000000000000001
+   },
+   {
+    "text": "an",
+    "start": 0.6125,
+    "end": 0.7250000000000001
+   },
+   {
+    "text": "email",
+    "start": 0.7375,
+    "end": 1.0875
+   },
+   {
+    "text": "agent",
+    "start": 1.1,
+    "end": 1.4500000000000002
+   },
+   {
+    "text": "in",
+    "start": 1.5625,
+    "end": 1.7125
+   },
+   {
+    "text": "n8n",
+    "start": 1.8375,
+    "end": 2.5
+   },
+   {
+    "text": "Every",
+    "start": 2.9125,
+    "end": 3.1125000000000003
+   },
+   {
+    "text": "morning",
+    "start": 3.125,
+    "end": 3.45
+   },
+   {
+    "text": "at",
+    "start": 3.4625,
+    "end": 3.55
+   },
+   {
+    "text": "seven",
+    "start": 3.5625,
+    "end": 3.95
+   },
+   {
+    "text": "it",
+    "start": 4.325,
+    "end": 4.4
+   },
+   {
+    "text": "pulls",
+    "start": 4.4125,
+    "end": 4.699999999999999
+   },
+   {
+    "text": "the",
+    "start": 4.7125,
+    "end": 4.8125
+   },
+   {
+    "text": "last",
+    "start": 4.825,
+    "end": 5.2250000000000005
+   },
+   {
+    "text": "day",
+    "start": 5.2375,
+    "end": 5.475
+   },
+   {
+    "text": "of",
+    "start": 5.4875,
+    "end": 5.6
+   },
+   {
+    "text": "job",
+    "start": 5.6125,
+    "end": 5.9375
+   },
+   {
+    "text": "emails",
+    "start": 6.05,
+    "end": 6.5
+   },
+   {
+    "text": "from",
+    "start": 6.5125,
+    "end": 6.7125
+   },
+   {
+    "text": "Gmail",
+    "start": 6.725,
+    "end": 7.2375
+   }
+  ]
+ },
+ {
+  "file": "email-agent/voice/line-2.mp3",
+  "duration": 9.162,
+  "words": [
+   {
+    "text": "A",
+    "start": 0.0875,
+    "end": 0.125
+   },
+   {
+    "text": "local",
+    "start": 0.1375,
+    "end": 0.4625
+   },
+   {
+    "text": "Qwen",
+    "start": 0.475,
+    "end": 0.75
+   },
+   {
+    "text": "2.5",
+    "start": 0.7625,
+    "end": 1.625
+   },
+   {
+    "text": "model",
+    "start": 1.6375,
+    "end": 2.0375
+   },
+   {
+    "text": "on",
+    "start": 2.0625,
+    "end": 2.225
+   },
+   {
+    "text": "Ollama",
+    "start": 2.325,
+    "end": 2.625
+   },
+   {
+    "text": "sorts",
+    "start": 2.6375,
+    "end": 3.0250000000000004
+   },
+   {
+    "text": "each",
+    "start": 3.1625,
+    "end": 3.3375
+   },
+   {
+    "text": "one",
+    "start": 3.35,
+    "end": 3.625
+   },
+   {
+    "text": "interviews",
+    "start": 4.1125,
+    "end": 4.7124999999999995
+   },
+   {
+    "text": "offers",
+    "start": 4.925,
+    "end": 5.5249999999999995
+   },
+   {
+    "text": "updates",
+    "start": 5.6875,
+    "end": 6.1625
+   },
+   {
+    "text": "and",
+    "start": 6.175,
+    "end": 6.2625
+   },
+   {
+    "text": "applications",
+    "start": 6.275,
+    "end": 7.0875
+   },
+   {
+    "text": "No",
+    "start": 7.5,
+    "end": 7.65
+   },
+   {
+    "text": "paid",
+    "start": 7.6625,
+    "end": 7.9375
+   },
+   {
+    "text": "AI",
+    "start": 8.05,
+    "end": 8.3625
+   },
+   {
+    "text": "API",
+    "start": 8.375,
+    "end": 8.9125
+   }
+  ]
+ },
+ {
+  "file": "email-agent/voice/line-3.mp3",
+  "duration": 8.275,
+  "words": [
+   {
+    "text": "Then",
+    "start": 0.1,
+    "end": 0.1875
+   },
+   {
+    "text": "it",
+    "start": 0.2,
+    "end": 0.2875
+   },
+   {
+    "text": "groups",
+    "start": 0.3,
+    "end": 0.625
+   },
+   {
+    "text": "them",
+    "start": 0.6375,
+    "end": 0.8125
+   },
+   {
+    "text": "into",
+    "start": 0.875,
+    "end": 1.125
+   },
+   {
+    "text": "one",
+    "start": 1.1375,
+    "end": 1.4625
+   },
+   {
+    "text": "clean",
+    "start": 1.475,
+    "end": 1.8
+   },
+   {
+    "text": "digest",
+    "start": 1.8125,
+    "end": 2.4875
+   },
+   {
+    "text": "and",
+    "start": 2.8,
+    "end": 2.925
+   },
+   {
+    "text": "emails",
+    "start": 2.975,
+    "end": 3.375
+   },
+   {
+    "text": "it",
+    "start": 3.3875,
+    "end": 3.475
+   },
+   {
+    "text": "to",
+    "start": 3.4875,
+    "end": 3.5749999999999997
+   },
+   {
+    "text": "me",
+    "start": 3.5875,
+    "end": 3.7875
+   },
+   {
+    "text": "This",
+    "start": 4.2125,
+    "end": 4.362500000000001
+   },
+   {
+    "text": "morning",
+    "start": 4.375,
+    "end": 4.75
+   },
+   {
+    "text": "thirteen",
+    "start": 5.1625,
+    "end": 5.5874999999999995
+   },
+   {
+    "text": "emails",
+    "start": 5.6,
+    "end": 6.137499999999999
+   },
+   {
+    "text": "sorted",
+    "start": 6.3375,
+    "end": 6.6625000000000005
+   },
+   {
+    "text": "in",
+    "start": 6.675,
+    "end": 6.8374999999999995
+   },
+   {
+    "text": "about",
+    "start": 6.85,
+    "end": 7.1
+   },
+   {
+    "text": "twenty",
+    "start": 7.1125,
+    "end": 7.4125
+   },
+   {
+    "text": "seconds",
+    "start": 7.425,
+    "end": 8.025
+   }
+  ]
+ },
+ {
+  "file": "email-agent/voice/line-4.mp3",
+  "duration": 3.975,
+  "words": [
+   {
+    "text": "Email",
+    "start": 0.1,
+    "end": 0.4125
+   },
+   {
+    "text": "summary",
+    "start": 0.425,
+    "end": 0.8125
+   },
+   {
+    "text": "agent",
+    "start": 0.825,
+    "end": 1.2
+   },
+   {
+    "text": "Built",
+    "start": 1.6125,
+    "end": 1.8
+   },
+   {
+    "text": "with",
+    "start": 1.8125,
+    "end": 1.975
+   },
+   {
+    "text": "n8n",
+    "start": 2.1,
+    "end": 2.975
+   },
+   {
+    "text": "and",
+    "start": 3.1125,
+    "end": 3.25
+   },
+   {
+    "text": "Ollama",
+    "start": 3.2625,
+    "end": 3.725
+   }
+  ]
+ }
+]

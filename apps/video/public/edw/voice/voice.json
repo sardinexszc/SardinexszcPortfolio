@@ -1,0 +1,432 @@
+[
+ {
+  "file": "edw/voice/line-0.mp3",
+  "duration": 5.275,
+  "words": [
+   {
+    "text": "Disaster",
+    "start": 0.1,
+    "end": 0.5625
+   },
+   {
+    "text": "data",
+    "start": 0.575,
+    "end": 0.8374999999999999
+   },
+   {
+    "text": "comes",
+    "start": 0.85,
+    "end": 1.1625
+   },
+   {
+    "text": "from",
+    "start": 1.175,
+    "end": 1.3375000000000001
+   },
+   {
+    "text": "five",
+    "start": 1.35,
+    "end": 1.7375
+   },
+   {
+    "text": "agencies",
+    "start": 1.75,
+    "end": 2.4
+   },
+   {
+    "text": "in",
+    "start": 2.6125,
+    "end": 2.7125
+   },
+   {
+    "text": "five",
+    "start": 2.725,
+    "end": 3.0
+   },
+   {
+    "text": "formats",
+    "start": 3.0125,
+    "end": 3.6875
+   },
+   {
+    "text": "and",
+    "start": 3.9375,
+    "end": 4.075
+   },
+   {
+    "text": "none",
+    "start": 4.0875,
+    "end": 4.25
+   },
+   {
+    "text": "of",
+    "start": 4.2625,
+    "end": 4.3375
+   },
+   {
+    "text": "it",
+    "start": 4.35,
+    "end": 4.425
+   },
+   {
+    "text": "lines",
+    "start": 4.4375,
+    "end": 4.7625
+   },
+   {
+    "text": "up",
+    "start": 4.775,
+    "end": 5.025
+   }
+  ]
+ },
+ {
+  "file": "edw/voice/line-1.mp3",
+  "duration": 9.425,
+  "words": [
+   {
+    "text": "So",
+    "start": 0.1,
+    "end": 0.2
+   },
+   {
+    "text": "I",
+    "start": 0.2125,
+    "end": 0.2625
+   },
+   {
+    "text": "built",
+    "start": 0.275,
+    "end": 0.4625
+   },
+   {
+    "text": "a",
+    "start": 0.475,
+    "end": 0.525
+   },
+   {
+    "text": "warehouse",
+    "start": 0.5375,
+    "end": 1.1749999999999998
+   },
+   {
+    "text": "Python",
+    "start": 1.6,
+    "end": 2.025
+   },
+   {
+    "text": "loads",
+    "start": 2.0375,
+    "end": 2.3000000000000003
+   },
+   {
+    "text": "the",
+    "start": 2.3125,
+    "end": 2.4125
+   },
+   {
+    "text": "raw",
+    "start": 2.425,
+    "end": 2.6875
+   },
+   {
+    "text": "files",
+    "start": 2.7,
+    "end": 3.1625
+   },
+   {
+    "text": "into",
+    "start": 3.175,
+    "end": 3.3625
+   },
+   {
+    "text": "PostgreSQL",
+    "start": 3.375,
+    "end": 4.45
+   },
+   {
+    "text": "and",
+    "start": 4.725,
+    "end": 4.8125
+   },
+   {
+    "text": "dbt",
+    "start": 4.825,
+    "end": 5.5125
+   },
+   {
+    "text": "builds",
+    "start": 5.7125,
+    "end": 6.0125
+   },
+   {
+    "text": "a",
+    "start": 6.025,
+    "end": 6.0875
+   },
+   {
+    "text": "star",
+    "start": 6.1,
+    "end": 6.4875
+   },
+   {
+    "text": "schema",
+    "start": 6.5,
+    "end": 6.9625
+   },
+   {
+    "text": "checked",
+    "start": 7.275,
+    "end": 7.5625
+   },
+   {
+    "text": "by",
+    "start": 7.575,
+    "end": 7.7125
+   },
+   {
+    "text": "forty-one",
+    "start": 7.725,
+    "end": 8.275
+   },
+   {
+    "text": "quality",
+    "start": 8.2875,
+    "end": 8.7
+   },
+   {
+    "text": "rules",
+    "start": 8.7125,
+    "end": 9.175
+   }
+  ]
+ },
+ {
+  "file": "edw/voice/line-2.mp3",
+  "duration": 8.575,
+  "words": [
+   {
+    "text": "Dashboards",
+    "start": 0.1125,
+    "end": 0.65
+   },
+   {
+    "text": "for",
+    "start": 0.6625,
+    "end": 0.8
+   },
+   {
+    "text": "leadership",
+    "start": 0.8125,
+    "end": 1.375
+   },
+   {
+    "text": "operations",
+    "start": 1.6375,
+    "end": 2.275
+   },
+   {
+    "text": "and",
+    "start": 2.2875,
+    "end": 2.3875
+   },
+   {
+    "text": "logistics",
+    "start": 2.4,
+    "end": 2.9875
+   },
+   {
+    "text": "read",
+    "start": 3.0,
+    "end": 3.2875
+   },
+   {
+    "text": "the",
+    "start": 3.3,
+    "end": 3.375
+   },
+   {
+    "text": "marts",
+    "start": 3.3875,
+    "end": 3.7125000000000004
+   },
+   {
+    "text": "live",
+    "start": 3.725,
+    "end": 4.125
+   },
+   {
+    "text": "through",
+    "start": 4.4125,
+    "end": 4.6
+   },
+   {
+    "text": "a",
+    "start": 4.6125,
+    "end": 4.6875
+   },
+   {
+    "text": "PHP",
+    "start": 4.7,
+    "end": 5.4125000000000005
+   },
+   {
+    "text": "API",
+    "start": 5.425,
+    "end": 5.95
+   },
+   {
+    "text": "Real",
+    "start": 6.3625,
+    "end": 6.575
+   },
+   {
+    "text": "events",
+    "start": 6.5875,
+    "end": 7.0875
+   },
+   {
+    "text": "synthetic",
+    "start": 7.2875,
+    "end": 7.762499999999999
+   },
+   {
+    "text": "figures",
+    "start": 7.775,
+    "end": 8.325000000000001
+   }
+  ]
+ },
+ {
+  "file": "edw/voice/line-3.mp3",
+  "duration": 5.888,
+  "words": [
+   {
+    "text": "One",
+    "start": 0.1125,
+    "end": 0.2375
+   },
+   {
+    "text": "hundred",
+    "start": 0.25,
+    "end": 0.525
+   },
+   {
+    "text": "seventy-four",
+    "start": 0.5375,
+    "end": 1.25
+   },
+   {
+    "text": "automated",
+    "start": 1.2625,
+    "end": 1.775
+   },
+   {
+    "text": "checks",
+    "start": 1.7875,
+    "end": 2.125
+   },
+   {
+    "text": "rebuild",
+    "start": 2.1375,
+    "end": 2.625
+   },
+   {
+    "text": "it",
+    "start": 2.6375,
+    "end": 2.7
+   },
+   {
+    "text": "from",
+    "start": 2.7125,
+    "end": 2.875
+   },
+   {
+    "text": "scratch",
+    "start": 2.8875,
+    "end": 3.475
+   },
+   {
+    "text": "and",
+    "start": 3.7375,
+    "end": 3.8874999999999997
+   },
+   {
+    "text": "every",
+    "start": 3.95,
+    "end": 4.175
+   },
+   {
+    "text": "planted",
+    "start": 4.1875,
+    "end": 4.5625
+   },
+   {
+    "text": "defect",
+    "start": 4.575,
+    "end": 5.075
+   },
+   {
+    "text": "is",
+    "start": 5.0875,
+    "end": 5.2
+   },
+   {
+    "text": "caught",
+    "start": 5.2125,
+    "end": 5.6375
+   }
+  ]
+ },
+ {
+  "file": "edw/voice/line-4.mp3",
+  "duration": 6.263,
+  "words": [
+   {
+    "text": "Disaster",
+    "start": 0.1,
+    "end": 0.575
+   },
+   {
+    "text": "Response",
+    "start": 0.5875,
+    "end": 1.05
+   },
+   {
+    "text": "Intelligence",
+    "start": 1.0625,
+    "end": 1.5875
+   },
+   {
+    "text": "Warehouse",
+    "start": 1.6,
+    "end": 2.2625
+   },
+   {
+    "text": "PostgreSQL",
+    "start": 2.6875,
+    "end": 3.6
+   },
+   {
+    "text": "dbt",
+    "start": 3.8625,
+    "end": 4.55
+   },
+   {
+    "text": "Next",
+    "start": 4.875,
+    "end": 5.125
+   },
+   {
+    "text": ".",
+    "start": 5.1375,
+    "end": 5.325
+   },
+   {
+    "text": "js",
+    "start": 5.3375,
+    "end": 6.0125
+   }
+  ]
+ }
+]

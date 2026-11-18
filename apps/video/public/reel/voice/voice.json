@@ -1,0 +1,158 @@
+[
+ {
+  "file": "reel/voice/line-0.mp3",
+  "duration": 12.312,
+  "words": [
+   {
+    "text": "I'm",
+    "start": 0.1125,
+    "end": 0.21250000000000002
+   },
+   {
+    "text": "a",
+    "start": 0.225,
+    "end": 0.2875
+   },
+   {
+    "text": "full-stack",
+    "start": 0.3,
+    "end": 0.9375
+   },
+   {
+    "text": "developer",
+    "start": 0.95,
+    "end": 1.4
+   },
+   {
+    "text": "who",
+    "start": 1.4125,
+    "end": 1.5375
+   },
+   {
+    "text": "builds",
+    "start": 1.55,
+    "end": 1.8625
+   },
+   {
+    "text": "with",
+    "start": 1.875,
+    "end": 2.0375
+   },
+   {
+    "text": "AI",
+    "start": 2.1375,
+    "end": 2.45
+   },
+   {
+    "text": "tools",
+    "start": 2.4625,
+    "end": 2.85
+   },
+   {
+    "text": "like",
+    "start": 2.8625,
+    "end": 3.0374999999999996
+   },
+   {
+    "text": "Claude",
+    "start": 3.05,
+    "end": 3.55
+   },
+   {
+    "text": "Codex",
+    "start": 3.7625,
+    "end": 4.3
+   },
+   {
+    "text": "and",
+    "start": 4.3875,
+    "end": 4.5375000000000005
+   },
+   {
+    "text": "GitHub",
+    "start": 4.55,
+    "end": 4.9624999999999995
+   },
+   {
+    "text": "Copilot",
+    "start": 4.975,
+    "end": 5.5625
+   },
+   {
+    "text": "and",
+    "start": 5.9375,
+    "end": 6.0
+   },
+   {
+    "text": "I",
+    "start": 6.0125,
+    "end": 6.0875
+   },
+   {
+    "text": "review",
+    "start": 6.1,
+    "end": 6.6625
+   },
+   {
+    "text": "and",
+    "start": 6.7875,
+    "end": 6.9125
+   },
+   {
+    "text": "test",
+    "start": 6.925,
+    "end": 7.325
+   },
+   {
+    "text": "every",
+    "start": 7.5,
+    "end": 7.7125
+   },
+   {
+    "text": "change",
+    "start": 7.725,
+    "end": 8.0125
+   },
+   {
+    "text": "myself",
+    "start": 8.025,
+    "end": 8.575000000000001
+   },
+   {
+    "text": "Ivan",
+    "start": 8.9875,
+    "end": 9.262500000000001
+   },
+   {
+    "text": "Salinas",
+    "start": 9.275,
+    "end": 9.85
+   },
+   {
+    "text": "ivansalinas",
+    "start": 10.2625,
+    "end": 11.0375
+   },
+   {
+    "text": "dot",
+    "start": 11.05,
+    "end": 11.200000000000001
+   },
+   {
+    "text": "vercel",
+    "start": 11.2125,
+    "end": 11.5625
+   },
+   {
+    "text": "dot",
+    "start": 11.575,
+    "end": 11.7625
+   },
+   {
+    "text": "app.",
+    "start": 11.775,
+    "end": 12.0625
+   }
+  ]
+ }
+]

@@ -25,3 +25,10 @@ Thumbs.db
 .idea/
 .vscode/*.log
 brag-output/
+
+# Video capture (Chrome profiles hold login cookies; footage is regenerated)
+apps/video/.chrome-profile/
+apps/video/.chrome-profile-headless/
+apps/video/footage-frames/
+apps/video/public/footage/
+apps/video/voice-sample.mp3

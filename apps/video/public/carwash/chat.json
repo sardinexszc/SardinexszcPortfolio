@@ -1,0 +1,42 @@
+[
+ {
+  "chat": "owner",
+  "from": "bot",
+  "text": "🚗 New booking\nBooking CW-0002 (New)\nName: Maria Santos\nPhone: 0917 000 1234\nVehicle: Toyota Vios / ABC 1234\nService: Full Detail\nWhen: 2026-11-14 10:00\n\n/confirm CW-0002"
+ },
+ {
+  "chat": "owner",
+  "from": "bot",
+  "text": "⚠️ SLOT ALREADY TAKEN - contact customer to rebook\nBooking CW-0003 (Conflict)\nName: Paolo Reyes\nPhone: 0918 000 5678\nVehicle: Honda City / XYZ 5678\nService: Basic Wash\nWhen: 2026-11-14 10:00\n\n/move CW-0003 YYYY-MM-DD HH:MM"
+ },
+ {
+  "chat": "customer",
+  "from": "user",
+  "text": "📱 Shared phone number"
+ },
+ {
+  "chat": "customer",
+  "from": "bot",
+  "text": "✅ Booking linked!\n\nBooking CW-0002 (New)\nName: Maria Santos\nPhone: 0917 000 1234\nVehicle: Toyota Vios / ABC 1234\nService: Full Detail\nWhen: 2026-11-14 10:00\n\nYou will get a reminder here the day before."
+ },
+ {
+  "chat": "owner",
+  "from": "user",
+  "text": "/confirm 2"
+ },
+ {
+  "chat": "owner",
+  "from": "bot",
+  "text": "CW-0002 (Maria Santos) -> Confirmed"
+ },
+ {
+  "chat": "customer",
+  "from": "bot",
+  "text": "✅ Your booking CW-0002 on 2026-11-14 10:00 is confirmed."
+ },
+ {
+  "chat": "customer",
+  "from": "bot",
+  "text": "⏰ Reminder: your Full Detail is tomorrow (2026-11-14) at 10:00.\nBooking CW-0002 - Toyota Vios / ABC 1234.\nNeed to change? /reschedule YYYY-MM-DD HH:MM or /cancel"
+ }
+]

@@ -1,0 +1,488 @@
+[
+ {
+  "file": "short/voice/line-0.mp3",
+  "duration": 8.487,
+  "words": [
+   {
+    "text": "CRRDC",
+    "start": 0.1,
+    "end": 1.075
+   },
+   {
+    "text": "an",
+    "start": 1.4625,
+    "end": 1.5374999999999999
+   },
+   {
+    "text": "information",
+    "start": 1.55,
+    "end": 2.1875
+   },
+   {
+    "text": "system",
+    "start": 2.2,
+    "end": 2.5875000000000004
+   },
+   {
+    "text": "for",
+    "start": 2.6,
+    "end": 2.7875
+   },
+   {
+    "text": "a",
+    "start": 2.8,
+    "end": 2.8249999999999997
+   },
+   {
+    "text": "university",
+    "start": 2.8375,
+    "end": 3.5625
+   },
+   {
+    "text": "research",
+    "start": 3.575,
+    "end": 4.025
+   },
+   {
+    "text": "center",
+    "start": 4.0375,
+    "end": 4.4125
+   },
+   {
+    "text": "with",
+    "start": 4.6375,
+    "end": 4.8125
+   },
+   {
+    "text": "role-based",
+    "start": 4.825,
+    "end": 5.425
+   },
+   {
+    "text": "access",
+    "start": 5.4375,
+    "end": 6.0375
+   },
+   {
+    "text": "Drive",
+    "start": 6.225,
+    "end": 6.55
+   },
+   {
+    "text": "storage",
+    "start": 6.5625,
+    "end": 7.0625
+   },
+   {
+    "text": "and",
+    "start": 7.275,
+    "end": 7.4125000000000005
+   },
+   {
+    "text": "audit",
+    "start": 7.425,
+    "end": 7.7124999999999995
+   },
+   {
+    "text": "logs",
+    "start": 7.725,
+    "end": 8.237499999999999
+   }
+  ]
+ },
+ {
+  "file": "short/voice/line-1.mp3",
+  "duration": 7.85,
+  "words": [
+   {
+    "text": "A",
+    "start": 0.1,
+    "end": 0.15000000000000002
+   },
+   {
+    "text": "disaster-response",
+    "start": 0.1625,
+    "end": 1.1125
+   },
+   {
+    "text": "data",
+    "start": 1.125,
+    "end": 1.3875
+   },
+   {
+    "text": "warehouse",
+    "start": 1.4,
+    "end": 1.9625
+   },
+   {
+    "text": "in",
+    "start": 1.975,
+    "end": 2.0875
+   },
+   {
+    "text": "PostgreSQL",
+    "start": 2.1,
+    "end": 3.175
+   },
+   {
+    "text": "and",
+    "start": 3.3375,
+    "end": 3.425
+   },
+   {
+    "text": "dbt",
+    "start": 3.4875,
+    "end": 4.225
+   },
+   {
+    "text": "tested",
+    "start": 4.6,
+    "end": 5.012499999999999
+   },
+   {
+    "text": "end",
+    "start": 5.1375,
+    "end": 5.3125
+   },
+   {
+    "text": "to",
+    "start": 5.325,
+    "end": 5.4625
+   },
+   {
+    "text": "end",
+    "start": 5.475,
+    "end": 5.824999999999999
+   },
+   {
+    "text": "feeding",
+    "start": 6.2125,
+    "end": 6.550000000000001
+   },
+   {
+    "text": "live",
+    "start": 6.5625,
+    "end": 6.8125
+   },
+   {
+    "text": "dashboards",
+    "start": 6.825,
+    "end": 7.6000000000000005
+   }
+  ]
+ },
+ {
+  "file": "short/voice/line-2.mp3",
+  "duration": 6.9,
+  "words": [
+   {
+    "text": "An",
+    "start": 0.1,
+    "end": 0.2625
+   },
+   {
+    "text": "n8n",
+    "start": 0.275,
+    "end": 0.9875
+   },
+   {
+    "text": "agent",
+    "start": 1.0,
+    "end": 1.375
+   },
+   {
+    "text": "that",
+    "start": 1.3875,
+    "end": 1.5125
+   },
+   {
+    "text": "sorts",
+    "start": 1.525,
+    "end": 1.8624999999999998
+   },
+   {
+    "text": "my",
+    "start": 1.875,
+    "end": 2.0125
+   },
+   {
+    "text": "job",
+    "start": 2.025,
+    "end": 2.3874999999999997
+   },
+   {
+    "text": "emails",
+    "start": 2.475,
+    "end": 2.9625
+   },
+   {
+    "text": "with",
+    "start": 2.975,
+    "end": 3.1125000000000003
+   },
+   {
+    "text": "a",
+    "start": 3.125,
+    "end": 3.1625
+   },
+   {
+    "text": "local",
+    "start": 3.175,
+    "end": 3.625
+   },
+   {
+    "text": "AI",
+    "start": 3.725,
+    "end": 4.025
+   },
+   {
+    "text": "model",
+    "start": 4.0375,
+    "end": 4.4624999999999995
+   },
+   {
+    "text": "and",
+    "start": 4.725,
+    "end": 4.7749999999999995
+   },
+   {
+    "text": "sends",
+    "start": 4.7875,
+    "end": 5.074999999999999
+   },
+   {
+    "text": "one",
+    "start": 5.0875,
+    "end": 5.3500000000000005
+   },
+   {
+    "text": "digest",
+    "start": 5.3625,
+    "end": 5.8999999999999995
+   },
+   {
+    "text": "every",
+    "start": 6.05,
+    "end": 6.2625
+   },
+   {
+    "text": "morning",
+    "start": 6.275,
+    "end": 6.65
+   }
+  ]
+ },
+ {
+  "file": "short/voice/line-3.mp3",
+  "duration": 5.625,
+  "words": [
+   {
+    "text": "A",
+    "start": 0.1,
+    "end": 0.1625
+   },
+   {
+    "text": "carwash",
+    "start": 0.175,
+    "end": 0.6499999999999999
+   },
+   {
+    "text": "booking",
+    "start": 0.6625,
+    "end": 1.0125
+   },
+   {
+    "text": "bot",
+    "start": 1.025,
+    "end": 1.2874999999999999
+   },
+   {
+    "text": "on",
+    "start": 1.375,
+    "end": 1.525
+   },
+   {
+    "text": "n8n",
+    "start": 1.5875,
+    "end": 2.45
+   },
+   {
+    "text": "and",
+    "start": 2.5375,
+    "end": 2.6375
+   },
+   {
+    "text": "Telegram",
+    "start": 2.65,
+    "end": 3.3
+   },
+   {
+    "text": "that",
+    "start": 3.4375,
+    "end": 3.5625
+   },
+   {
+    "text": "flags",
+    "start": 3.575,
+    "end": 4.0375000000000005
+   },
+   {
+    "text": "double",
+    "start": 4.05,
+    "end": 4.3374999999999995
+   },
+   {
+    "text": "bookings",
+    "start": 4.35,
+    "end": 4.7749999999999995
+   },
+   {
+    "text": "at",
+    "start": 4.7875,
+    "end": 4.875
+   },
+   {
+    "text": "once",
+    "start": 4.8875,
+    "end": 5.375
+   }
+  ]
+ },
+ {
+  "file": "short/voice/line-4.mp3",
+  "duration": 5.15,
+  "words": [
+   {
+    "text": "TCEHub",
+    "start": 0.1125,
+    "end": 0.925
+   },
+   {
+    "text": "a",
+    "start": 1.175,
+    "end": 1.2
+   },
+   {
+    "text": "mobile-first",
+    "start": 1.2125,
+    "end": 1.95
+   },
+   {
+    "text": "community",
+    "start": 1.9625,
+    "end": 2.4
+   },
+   {
+    "text": "site",
+    "start": 2.4125,
+    "end": 2.6875
+   },
+   {
+    "text": "for",
+    "start": 2.7,
+    "end": 2.8625000000000003
+   },
+   {
+    "text": "car",
+    "start": 2.875,
+    "end": 3.175
+   },
+   {
+    "text": "owners",
+    "start": 3.1875,
+    "end": 3.6125
+   },
+   {
+    "text": "still",
+    "start": 3.825,
+    "end": 4.2
+   },
+   {
+    "text": "in",
+    "start": 4.2125,
+    "end": 4.2875000000000005
+   },
+   {
+    "text": "development",
+    "start": 4.3,
+    "end": 4.8999999999999995
+   }
+  ]
+ },
+ {
+  "file": "short/voice/line-5.mp3",
+  "duration": 5.638,
+  "words": [
+   {
+    "text": "And",
+    "start": 0.1,
+    "end": 0.225
+   },
+   {
+    "text": "this",
+    "start": 0.2375,
+    "end": 0.425
+   },
+   {
+    "text": "portfolio",
+    "start": 0.4375,
+    "end": 1.2375
+   },
+   {
+    "text": "with",
+    "start": 1.5125,
+    "end": 1.675
+   },
+   {
+    "text": "its",
+    "start": 1.6875,
+    "end": 1.8125
+   },
+   {
+    "text": "own",
+    "start": 1.825,
+    "end": 2.075
+   },
+   {
+    "text": "CMS",
+    "start": 2.0875,
+    "end": 2.7874999999999996
+   },
+   {
+    "text": "and",
+    "start": 2.8,
+    "end": 2.9625
+   },
+   {
+    "text": "visitor",
+    "start": 2.975,
+    "end": 3.475
+   },
+   {
+    "text": "analytics",
+    "start": 3.4875,
+    "end": 3.9875
+   },
+   {
+    "text": "behind",
+    "start": 4.0,
+    "end": 4.4
+   },
+   {
+    "text": "a",
+    "start": 4.4125,
+    "end": 4.475
+   },
+   {
+    "text": "Google",
+    "start": 4.4875,
+    "end": 4.825
+   },
+   {
+    "text": "sign-in",
+    "start": 4.8375,
+    "end": 5.3875
+   }
+  ]
+ }
+]
