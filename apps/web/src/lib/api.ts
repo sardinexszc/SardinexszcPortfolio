@@ -2,7 +2,7 @@ import "server-only";
 import { unstable_cache } from "next/cache";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { fallbackContent } from "./fallback-content";
-import type { Portfolio } from "./types";
+import type { Portfolio, Product } from "./types";
 
 // CMS saves call updateTag(CONTENT_TAG) so the home page shows the edit on the next request.
 export const CONTENT_TAG = "portfolio-content";
@@ -43,5 +43,23 @@ export async function getPortfolio(): Promise<Portfolio> {
   } catch (error) {
     console.error("Portfolio content could not be loaded; showing built-in copy", error);
     return fallbackContent;
+  }
+}
+
+// Same tag as the home page, so a CMS save shows on /picks on the next request.
+const loadProducts = unstable_cache(async (): Promise<Product[]> => {
+  const { data, error } = await createAdminClient().from("affiliate_products")
+    .select("id,title,note,image_url,price,platform,affiliate_url,category").eq("visible", true).order("sort_order").order("id");
+  if (error) throw error;
+  return data ?? [];
+}, ["portfolio-products"], { tags: [CONTENT_TAG], revalidate: 3600 });
+
+export async function getProducts(): Promise<Product[]> {
+  if (!process.env.SUPABASE_SECRET_KEY || !process.env.NEXT_PUBLIC_SUPABASE_URL) return [];
+  try {
+    return await loadProducts();
+  } catch (error) {
+    console.error("Picks could not be loaded", error);
+    return [];
   }
 }

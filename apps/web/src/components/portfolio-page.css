@@ -282,7 +282,26 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-tiles { row-gap: 32px; }
 }
 
+/* /picks: affiliate product cards. auto-fill keeps it to one column on phones without a breakpoint. */
+.pf-picks { padding-top: var(--pf-bar); padding-bottom: var(--pf-section); }
+.pf-picks .pf-label-row h1 { font-size: inherit; font-weight: 400; }
+.pf-picks-disclosure { max-width: 60ch !important; margin: 0 12px 40px !important; color: var(--pf-body); font-size: var(--fs-small); }
+.pf-picks-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr)); gap: 40px 24px; padding: 0 12px; list-style: none; }
+.pf-picks-grid a { display: flex; flex-direction: column; gap: 8px; height: 100%; }
+.pf-picks-media { position: relative; display: grid; place-items: center; aspect-ratio: 1; overflow: hidden; border-radius: var(--pf-radius); background: var(--pf-raised); font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; color: var(--pf-muted); }
+.pf-picks-media img { transition: transform 0.6s var(--pf-ease); }
+.pf-picks-grid a:hover .pf-picks-media img { transform: scale(1.04); }
+.pf-picks-meta { margin-top: 6px !important; font-family: var(--pf-mono); font-size: var(--fs-label); text-transform: uppercase; letter-spacing: 0.06em; color: var(--pf-muted); }
+.pf-picks-grid h2 { font-size: var(--fs-lede); font-weight: 600; letter-spacing: -0.02em; }
+.pf-picks-note { color: var(--pf-body); font-size: var(--fs-small); white-space: pre-line; }
+.pf-picks > section > .pf-picks-note { padding: 0 12px; }
+.pf-picks-cta { display: inline-flex; align-items: center; gap: 6px; margin-top: auto; padding-top: 8px; font-size: var(--fs-small); font-weight: 600; }
+/* Racing Red on Ice Grey is below 4.5:1 for small text, so red marks the arrow and underline only. */
+.pf-picks-cta svg { color: var(--pf-accent); }
+.pf-picks-grid a:hover .pf-picks-cta { text-decoration: underline; text-decoration-color: var(--pf-accent); }
+
 @media (prefers-reduced-motion: reduce) {
+  .pf-picks-media img { transition: none; }
   .pf-tile-media img, .pf-tile-veil, .pf-tile-veil span, .pf-pill, .pf-pill svg { transition: none; }
   .pf-menu[open] nav { animation: none; }
   .pf-intro { display: none; }

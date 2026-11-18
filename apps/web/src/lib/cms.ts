@@ -129,6 +129,28 @@ export const sections: Section[] = [
       sortField,
     ],
   },
+  {
+    slug: "picks",
+    table: "affiliate_products",
+    title: "Picks",
+    singular: "product",
+    description: "Affiliate products on the /picks page. Each card links to your Shopee or TikTok Shop affiliate link; clicks, sales and commission show in those platforms' dashboards.",
+    rowLabel: (row) => String(row.title),
+    rowMeta: (row) => [row.visible ? null : "Hidden", row.platform, row.price, row.category].filter(Boolean).join(" · "),
+    rowImage: (row) => (typeof row.image_url === "string" && row.image_url ? row.image_url : null),
+    rowLink: (row) => (row.affiliate_url ? { label: String(row.platform ?? "Link"), href: String(row.affiliate_url) } : null),
+    fields: [
+      { name: "title", label: "Product name", kind: "text", required: true },
+      { name: "platform", label: "Platform", kind: "select", options: ["Shopee", "TikTok Shop"], required: true },
+      { name: "affiliate_url", label: "Affiliate link", kind: "url", required: true, hint: "The https:// link from your Shopee or TikTok affiliate dashboard, not the plain product page." },
+      { name: "image_url", label: "Photo", kind: "image", hint: "Use your own photo or one the affiliate program lets you share." },
+      { name: "price", label: "Price", kind: "text", hint: "Shown as typed, e.g. ₱499. Prices change; leave empty if unsure." },
+      { name: "category", label: "Category", kind: "text", hint: "e.g. Desk setup, Tech, Car care." },
+      { name: "note", label: "Why I recommend it", kind: "textarea" },
+      { name: "visible", label: "Show on the site", kind: "bool" },
+      sortField,
+    ],
+  },
 ];
 
 export const findSection = (slug: string) => sections.find((section) => section.slug === slug);
