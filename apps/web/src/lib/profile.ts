@@ -13,4 +13,6 @@ export const profile = {
   sourceUrl: "https://github.com/sardinexszc/SardinexszcPortfolio",
   resumeUrl: "/api/track-download",
   resumeFilename: "2026_ICLSalinas_Resume.pdf",
+  cvUrl: "/api/track-cv-download",
+  cvFilename: "2026_ICLSalinas_CV.pdf",
 } as const;

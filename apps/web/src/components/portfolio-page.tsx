@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { ArrowDown, ArrowUpRight, Code2, Cpu, Database } from "lucide-react";
 import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
@@ -77,7 +78,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
   return (
     <div className="pf">
       <header className="pf-bar">
-        <a className="pf-brand" href="#top" aria-label="Ivan Salinas, back to top"><span className="pf-mark" aria-hidden="true">I<span>S</span></span>Ivan Salinas</a>
+        <a className="pf-brand" href="#top" aria-label="Ivan Salinas, back to top"><span className="pf-mark" aria-hidden="true">I<span>S</span></span></a>
         <SiteMenu>
           <ul>
             <li><a href="#practice">Practice</a></li>
@@ -86,7 +87,9 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <li><a href="#recognition">Recognition</a></li>
             <li><a href="#testimonials">Testimonials</a></li>
             <li><a href="#contact">Contact</a></li>
+            <li><Link href="/shop">Shop</Link></li>
             <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
+            <li><a href={profile.cvUrl} download={profile.cvFilename}>Full CV</a></li>
             <SocialLinks />
           </ul>
         </SiteMenu>
@@ -96,7 +99,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
         <GlyphIntro />
         <section id="top" className="pf-hero" aria-labelledby="pf-title">
           <h1 id="pf-title" className="visually-hidden">Ivan Salinas, {s.roleLine}</h1>
-          <Wordmark text="Salinas" className="pf-word pf-word-hero" />
+          <Wordmark text="Systems" className="pf-word pf-word-hero" />
           {isAllowedImage(s.heroImage) ? (
             <ClipReveal className="pf-hero-tall" delay={0.25}><Parallax><Image src={s.heroImage} alt="Ivan Salinas by the sea" fill preload quality={90} sizes="(max-width: 800px) 150vw, 120vw" /></Parallax></ClipReveal>
           ) : null}
@@ -120,7 +123,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           <h2 id="practice-title" className="visually-hidden">Practice</h2>
           <div className="pf-about-photo">
             {isAllowedImage(s.portraitImage) ? <Parallax><Image src={s.portraitImage} alt="Ivan Salinas in formal attire" fill quality={90} sizes="(max-width: 800px) 120vw, 75vw" /></Parallax> : null}
-            <Wordmark text="Ivan" className="pf-word pf-word-about" />
+            <Wordmark text="Hello" className="pf-word pf-word-about" />
           </div>
           <Reveal className="pf-about-side">
             <p className="pf-status"><span aria-hidden="true" />{s.statusLine}</p>
@@ -237,7 +240,7 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
           </div>
           <div className="pf-contact-side">
             <ResumeButton />
-            <ul className="pf-socials"><SocialLinks /></ul>
+            <ul className="pf-socials"><li><a href={profile.cvUrl} download={profile.cvFilename}>Full CV</a></li><SocialLinks /></ul>
           </div>
         </div>
         <div className="pf-mf-foot">

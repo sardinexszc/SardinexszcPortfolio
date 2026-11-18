@@ -17,6 +17,8 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
 
   let visitorCount: number | null = null;
   let downloadCount: number | null = null;
+  // Full-CV downloads: null until sql/portfolio_cv_downloads.sql has been applied (or if the query fails).
+  let cvCounts: { last30: number; allTime: number } | null = null;
   let pendingTestimonials = 0;
   let countsError = false;
   let engagementError = false;
@@ -43,6 +45,18 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
     } catch (error) {
       console.error("Analytics counts could not be loaded", error);
       countsError = true;
+    }
+    try {
+      const db = createAdminClient();
+      const since = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      const [allTime, recent] = await Promise.all([
+        db.from("cv_downloads").select("*", { count: "exact", head: true }),
+        db.from("cv_downloads").select("*", { count: "exact", head: true }).gte("downloaded_at", since),
+      ]);
+      if (allTime.error || recent.error) throw allTime.error ?? recent.error;
+      cvCounts = { last30: recent.count ?? 0, allTime: allTime.count ?? 0 };
+    } catch (error) {
+      console.error("CV download counts could not be loaded", error);
     }
     try {
       const { data, error } = await createAdminClient().from("portfolio_daily_counts")
@@ -126,7 +140,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
   };
   const kpis = [
     { label: "New visitors", value: sum(last30, "visits"), change: delta(sum(last30, "visits"), sum(prev30, "visits")), note: visitorCount !== null ? `${visitorCount} all time` : null },
-    { label: "Résumé downloads", value: sum(last30, "downloads"), change: delta(sum(last30, "downloads"), sum(prev30, "downloads")), note: downloadCount !== null ? `${downloadCount} all time` : null },
+    { label: "Résumé downloads", value: sum(last30, "downloads"), change: delta(sum(last30, "downloads"), sum(prev30, "downloads")), note: downloadCount !== null ? `${downloadCount} all time` : null, extra: `Full CV: ${cvCounts ? `${cvCounts.last30} in 30 days · ${cvCounts.allTime} all time` : "—"}` },
     { label: "Download rate", value: `${Math.round(rate(last30) * 10) / 10}%`, change: delta(rate(last30), rate(prev30), " pts"), note: "Downloads per new visitor" },
     { label: "Engaged visits", value: sum(last30, "engaged"), change: delta(sum(last30, "engaged"), sum(prev30, "engaged")), note: sum(last30, "sessions") ? `${Math.round((sum(last30, "engaged") / sum(last30, "sessions")) * 100)}% of ${sum(last30, "sessions")} visits` : null },
   ];
@@ -150,6 +164,7 @@ export default async function AnalyticsPage({ searchParams }: { searchParams: Pr
             <strong>{dailyAvailable ? kpi.value : "—"}</strong>
             {dailyAvailable ? <p className="db-kpi-change">{kpi.change}</p> : null}
             {kpi.note ? <p className="audience-note">{kpi.note}</p> : null}
+            {"extra" in kpi && configured ? <p className="audience-note">{kpi.extra}</p> : null}
           </section>
         ))}
         {configured && countsError && !dailyError ? <div className="db-span-12">{retry("All-time totals")}</div> : null}
