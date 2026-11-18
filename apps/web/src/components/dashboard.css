@@ -1,9 +1,9 @@
 /* Admin dashboard and sign-in: the same monochrome palette as the home page (portfolio-page.css).
    Red is for small highlights only. Like the home page, it keeps its own palette in dark mode. */
 .dashboard-layout, .analytics-shell {
-  --db-black: #000; --db-white: #fff; --db-accent: #ff0000;
-  --db-body: #5c5c5c; --db-muted: #707070; --db-on-dark: #cfd8cf;
-  --db-border: #dfe4df; --db-border-dark: #333; --db-surface: #f0f0f0;
+  --db-black: #111217; --db-white: #fff; --db-accent: #ef223c;
+  --db-body: #5c5c5c; --db-muted: #5f6670; --db-on-dark: #dfe5eb;
+  --db-border: #d3dae1; --db-border-dark: #333; --db-surface: #dfe5eb;
   --db-radius: 14px;
   /* Light grey page like the home page; cards stay white on top of it. */
   background: var(--db-surface);
@@ -71,7 +71,7 @@
 .dashboard-nav { display: flex; flex-direction: column; gap: 4px; }
 .dashboard-nav-label { margin: 0 12px 10px; }
 .dashboard-nav-link { align-items: center; border-radius: 10px; color: var(--db-on-dark); display: flex; font-size: .85rem; gap: 12px; min-height: 42px; padding: 0 12px; transition: background .2s, color .2s; }
-.dashboard-nav-link:hover { background: #161616; color: var(--db-white); }
+.dashboard-nav-link:hover { background: #22242b; color: var(--db-white); }
 .dashboard-nav-link-active, .dashboard-nav-link-active:hover { background: var(--db-white); color: var(--db-black); font-weight: 500; }
 .dashboard-nav-link-active svg { color: var(--db-accent); }
 .dashboard-sidebar-footer { border-top: 1px solid var(--db-border-dark); display: grid; gap: 4px; margin-top: auto; padding: 18px 6px 0; }
@@ -237,7 +237,7 @@
 .analytics-auth-button[data-pending="true"], .analytics-social-form a[data-pending="true"] { opacity: .75; transform: translateY(1px); }
 .auth-loading-overlay { align-items: center; background: rgba(0, 0, 0, .82); display: flex; inset: 0; justify-content: center; position: fixed; z-index: 2000; }
 .auth-loading-content { align-items: center; color: #fff; display: flex; flex-direction: column; font: .82rem var(--font-mono), monospace; gap: 20px; letter-spacing: .03em; }
-.auth-loader { width: 45px; height: 40px; background: linear-gradient(#0000 calc(1*100%/6),#fff 0 calc(3*100%/6),#0000 0), linear-gradient(#0000 calc(2*100%/6),#fff 0 calc(4*100%/6),#0000 0), linear-gradient(#0000 calc(3*100%/6),#ff0000 0 calc(5*100%/6),#0000 0); background-size: 10px 400%; background-repeat: no-repeat; animation: matrix .7s infinite linear; }
+.auth-loader { width: 45px; height: 40px; background: linear-gradient(#0000 calc(1*100%/6),#fff 0 calc(3*100%/6),#0000 0), linear-gradient(#0000 calc(2*100%/6),#fff 0 calc(4*100%/6),#0000 0), linear-gradient(#0000 calc(3*100%/6),#ef223c 0 calc(5*100%/6),#0000 0); background-size: 10px 400%; background-repeat: no-repeat; animation: matrix .7s infinite linear; }
 @keyframes matrix { 0% { background-position: 0% 100%, 50% 100%, 100% 100%; } 100% { background-position: 0% 0%, 50% 0%, 100% 0%; } }
 @keyframes auth-notice-in { from { opacity: 0; transform: translateY(-7px); } to { opacity: 1; transform: translateY(0); } }
 

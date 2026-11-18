@@ -2,9 +2,9 @@
    and invert where they pass over a photo (mix-blend-mode: difference on white text). Copy is kept short;
    each section ends on the résumé download. The page keeps its own palette, so the site theme does not change it. */
 .pf {
-  --pf-black: #000; --pf-white: #fff; --pf-accent: #ff0000;
-  --pf-body: #5c5c5c; --pf-muted: #707070; --pf-border: #d9ddd9;
-  --pf-bg: #f0f0f0; --pf-raised: #e2e5e2;
+  --pf-black: #111217; --pf-white: #fff; --pf-accent: #ef223c;
+  --pf-body: #5c5c5c; --pf-muted: #5f6670; --pf-border: #c9d1d9;
+  --pf-bg: #dfe5eb; --pf-raised: #d0d8e0;
   --pf-radius: 4px;
   --pf-gutter: clamp(16px, 2.5vw, 40px);
   --pf-bar: 64px;
@@ -49,15 +49,15 @@
 .pf-parallax-inner { position: absolute; inset: 0; will-change: transform; }
 
 /* Top bar: fixed and frosted so the menu is always in reach. */
-.pf-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: var(--pf-bar); padding: 0 calc(var(--pf-gutter) + 12px); background: rgba(240, 240, 240, 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
+.pf-bar { position: fixed; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: space-between; height: var(--pf-bar); padding: 0 calc(var(--pf-gutter) + 12px); background: rgba(223, 229, 235, 0.72); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); }
 .pf-brand { display: inline-flex; align-items: center; gap: 10px; font-size: var(--fs-small); font-weight: 600; letter-spacing: -0.02em; transition: opacity 0.4s var(--pf-ease), visibility 0.4s; }
 .pf-intro-active .pf-brand { opacity: 0; visibility: hidden; }
 .pf-mark { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 7px; background: var(--pf-black); color: var(--pf-white); font-size: var(--fs-label); font-weight: 700; line-height: 1; letter-spacing: -0.02em; }
 .pf-mark span { color: var(--pf-accent); }
 .pf-menu { position: relative; }
-.pf-menu summary { display: grid; place-items: center; width: 48px; height: 32px; border-radius: 999px; background: #dcdfdc; cursor: pointer; list-style: none; transition: background 0.25s; }
+.pf-menu summary { display: grid; place-items: center; width: 48px; height: 32px; border-radius: 999px; background: #cfd7df; cursor: pointer; list-style: none; transition: background 0.25s; }
 .pf-menu summary::-webkit-details-marker { display: none; }
-.pf-menu summary:hover, .pf-menu[open] summary { background: #cfd3cf; }
+.pf-menu summary:hover, .pf-menu[open] summary { background: #c2cbd4; }
 .pf-menu nav { position: absolute; top: calc(100% + 8px); right: 0; min-width: 12rem; padding: 8px; border-radius: 12px; background: var(--pf-white); box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12); }
 .pf-menu[open] nav { animation: pf-menu-in 0.3s var(--pf-ease); }
 @keyframes pf-menu-in { from { opacity: 0; transform: translateY(-6px); } }
