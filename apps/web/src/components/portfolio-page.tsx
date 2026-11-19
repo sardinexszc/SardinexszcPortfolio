@@ -88,7 +88,6 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <li><a href="#testimonials">Testimonials</a></li>
             <li><a href="#contact">Contact</a></li>
             <li><Link href="/shop">Shop</Link></li>
-            <li><Link href="/picks">Picks</Link></li>
             <li><a href={profile.resumeUrl} download={profile.resumeFilename}>Résumé</a></li>
             <li><a href={profile.cvUrl} download={profile.cvFilename}>Full CV</a></li>
             <SocialLinks />

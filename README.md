@@ -89,17 +89,12 @@ The analytics and rate-limit tables have RLS enabled and no public policies. Onl
 
 ## Shop
 
-`/shop` sells code kits, guides and services, paid through PayMongo Checkout (GCash, Maya, cards; prices in PHP).
+`/shop` lists products I recommend, each linking out to a Shopee or TikTok Shop affiliate link. There is no checkout, order or payment on this site: the buyer pays on the platform, and the platform pays the commission and reports clicks and sales in its affiliate dashboard.
 
-- **Database:** apply `apps/web/sql/portfolio_shop.sql`. It creates `products`, `orders`, `payment_events`, the `consume_order_download` function and the private `shop-files` bucket. Same access model as the other tables: secret key only.
-- **Products:** edit them in `/analytics/content/products`. Only **active** products are shown and sold. Upload code kits and guides (zip/pdf, up to 50 MB) in Supabase Studio, Storage, `shop-files`, then type the file name in the product's "File name" field. Services need no file; their after-payment instructions are shown to the buyer and in the receipt.
-- **Checkout:** the buy form (`src/app/shop/actions.ts`) creates a `pending` order using the price from the database, then a PayMongo Checkout Session, then redirects. An order becomes `paid` only from PayMongo:
-  - the signed webhook `/api/payments/paymongo/webhook` (event `checkout_session.payment.paid`, signature and amount checked, each event processed once), or
-  - the thank-you page asking PayMongo's API directly, if the webhook has not arrived yet.
-- **Delivery:** `/api/orders/[id]/download?token=…` checks an HMAC token, then allows 5 downloads within 7 days of payment, then redirects to a 60-second signed Storage link. Receipts are emailed through Resend; without email settings, the thank-you page still shows everything.
-- **Orders:** `/analytics/shop` lists orders and sales, and shows which setup steps are missing. From there you can resend a receipt, reset downloads or mark an order refunded. Refunds themselves are issued in the PayMongo dashboard.
-- **Environment variables:** `PAYMONGO_SECRET_KEY`, `PAYMONGO_WEBHOOK_SECRET`, `RESEND_API_KEY`, `SHOP_FROM_EMAIL`; see `apps/web/.env.example`. Without `PAYMONGO_SECRET_KEY`, the buy button shows "Checkout opens soon".
-- **Policies:** `/shop/terms`, `/shop/refunds` and `/privacy`.
+- **Database:** the `affiliate_products` table in `apps/web/sql/portfolio_content.sql`. Same access model as the other tables: secret key only.
+- **Products:** edit them in `/analytics/content/shop` (the dashboard's Shop item). Paste the link from the affiliate dashboard, not the plain product page. Only rows with "Show on the site" ticked are shown.
+- **Disclosure:** the shop intro and footer say the links are affiliate links; links carry `rel="sponsored"`.
+- `/picks`, the first address of this page, redirects to `/shop`.
 
 ## Resume
 

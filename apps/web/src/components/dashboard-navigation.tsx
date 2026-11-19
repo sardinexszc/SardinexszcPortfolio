@@ -7,7 +7,7 @@ import { ArrowUpRight, LayoutDashboard, FilePenLine, Inbox, MessageSquareQuote, 
 const items = [
   { href: "/analytics", label: "Dashboard", icon: LayoutDashboard },
   { href: "/analytics/content", label: "Content", icon: FilePenLine },
-  { href: "/analytics/shop", label: "Shop", icon: ShoppingBag },
+  { href: "/analytics/content/shop", label: "Shop", icon: ShoppingBag },
   { href: "/analytics/testimonials", label: "Testimonials", icon: MessageSquareQuote },
   { href: "/analytics/services-request", label: "Requests", icon: Inbox },
   { href: "/analytics/account-settings", label: "Account", icon: Settings },
@@ -15,8 +15,9 @@ const items = [
 
 export function DashboardNavigation() {
   const pathname = usePathname();
-  // Content has sub-pages, so it stays active for every /analytics/content/… path.
-  const isActive = (href: string) => pathname === href || (href === "/analytics/content" && pathname.startsWith(`${href}/`));
+  // Content has sub-pages, so it stays active for every /analytics/content/… path that has no item of its own (Shop).
+  const isActive = (href: string) => pathname === href ||
+    (href === "/analytics/content" && pathname.startsWith(`${href}/`) && !items.some((item) => item.href === pathname));
   return (
     <nav id="dashboard-modules" className="dashboard-nav" aria-label="Dashboard modules">
       <span className="dashboard-nav-label">Modules</span>

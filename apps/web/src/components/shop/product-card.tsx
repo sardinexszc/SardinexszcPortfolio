@@ -1,22 +1,23 @@
 import Image from "next/image";
-import Link from "next/link";
-import { formatPeso, KIND_LABEL, type Product } from "@/lib/shop";
+import { ArrowUpRight } from "lucide-react";
+import type { Product } from "@/lib/types";
 import { isAllowedImage } from "@/lib/work-projects";
 
+// The whole card is the affiliate link: there is no product page or checkout on this site.
 export function ProductCard({ product }: { product: Product }) {
   return (
     <li className="shop-card">
-      <Link href={`/shop/${product.slug}`}>
+      <a href={product.affiliate_url} target="_blank" rel="sponsored nofollow noopener noreferrer">
         <div className="shop-card-media">
-          {isAllowedImage(product.cover_image)
-            ? <Image src={product.cover_image} alt="" fill quality={90} sizes="(max-width: 800px) 100vw, 33vw" />
-            : <div className="pf-tile-card"><span>{KIND_LABEL[product.kind]}</span><strong>{product.title}</strong></div>}
+          {isAllowedImage(product.image_url)
+            ? <Image src={product.image_url} alt="" fill quality={90} sizes="(max-width: 800px) 100vw, 33vw" />
+            : <div className="pf-tile-card"><span>{product.platform}</span><strong>{product.title}</strong></div>}
         </div>
-        <p className="pf-tile-kind">{KIND_LABEL[product.kind]}</p>
+        <p className="pf-tile-kind">{[product.category, product.price].filter(Boolean).join(" · ") || product.platform}</p>
         <h2>{product.title}</h2>
-        <p className="shop-card-summary">{product.summary}</p>
-        <p className="shop-price">{formatPeso(product.price_php)}</p>
-      </Link>
+        {product.note ? <p className="shop-card-summary">{product.note}</p> : null}
+        <span className="shop-cta">Buy on {product.platform} <ArrowUpRight size={15} aria-hidden="true" /><span className="visually-hidden"> (opens in a new tab)</span></span>
+      </a>
     </li>
   );
 }

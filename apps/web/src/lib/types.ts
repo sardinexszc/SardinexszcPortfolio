@@ -75,7 +75,7 @@ export type SiteSettings = {
 export const RELATIONSHIPS = ["Client", "Colleague", "Manager", "Collaborator", "Other"] as const;
 export type Testimonial = { id: number; name: string; role: string | null; relationship: (typeof RELATIONSHIPS)[number]; quote: string };
 
-// Affiliate picks on /picks. Only visible rows are loaded.
+// Affiliate products on /shop. Only visible rows are loaded.
 export type Product = { id: number; title: string; note: string | null; image_url: string | null; price: string | null; platform: "Shopee" | "TikTok Shop"; affiliate_url: string; category: string | null };
 
 export type Portfolio = {

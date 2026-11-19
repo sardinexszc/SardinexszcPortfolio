@@ -9,8 +9,7 @@ const isDevelopment = process.env.NODE_ENV !== "production";
 const contentSecurityPolicy = [
   "default-src 'self'",
   "base-uri 'self'",
-  // PayMongo: the buy form's server action redirects there (a real form post when JavaScript is off).
-  "form-action 'self' https://checkout.paymongo.com",
+  "form-action 'self'",
   "frame-ancestors 'none'",
   "frame-src 'none'",
   "object-src 'none'",
@@ -42,6 +41,10 @@ const nextConfig: NextConfig = {
   // inlineCss: the home page CSS is ~11 KB compressed, so shipping it inside the HTML saves the
   // render-blocking stylesheet round trip for first-time visitors (most visitors to a portfolio).
   experimental: { serverActions: { bodySizeLimit: "5mb" }, inlineCss: true },
+  // /picks was the first home of the affiliate products; the shop now holds them.
+  async redirects() {
+    return [{ source: "/picks", destination: "/shop", permanent: true }];
+  },
   async headers() {
     if (isDevelopment) {
       return [];

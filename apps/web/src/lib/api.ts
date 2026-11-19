@@ -46,7 +46,7 @@ export async function getPortfolio(): Promise<Portfolio> {
   }
 }
 
-// Same tag as the home page, so a CMS save shows on /picks on the next request.
+// Same tag as the home page, so a CMS save shows on /shop on the next request.
 const loadProducts = unstable_cache(async (): Promise<Product[]> => {
   const { data, error } = await createAdminClient().from("affiliate_products")
     .select("id,title,note,image_url,price,platform,affiliate_url,category").eq("visible", true).order("sort_order").order("id");
