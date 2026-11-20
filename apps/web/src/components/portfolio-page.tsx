@@ -170,16 +170,27 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
             <WorkAccordion>
               {projects.map((project, i) => {
                 const title = projectDisplayTitle(project);
+                const slug = projectSlug(project);
                 return (
-                  <li key={project.id} id={`project-${projectSlug(project)}`} data-open={i === 0 ? "" : undefined}>
+                  <li key={project.id} id={`project-${slug}`} data-open={i === 0 ? "" : undefined}>
                     <div className="pf-tile">
+                      {/* Accordion header: the button opens this panel; it covers the strip while closed. */}
+                      <h3 className="pf-tile-head">
+                        <button type="button" className="pf-tile-open" aria-expanded={i === 0} aria-controls={`panel-${slug}`}>{title}</button>
+                      </h3>
                       <TileMedia project={project} title={title} />
                       <span className="pf-tile-num pf-glass" aria-hidden="true">{String(i + 1).padStart(2, "0")}<span className="pf-tile-of"> / {String(projects.length).padStart(2, "0")}</span></span>
                       <span className="pf-tile-label" aria-hidden="true"><span>{title}</span></span>
-                      <div className="pf-tile-info pf-glass">
-                        <div>
+                      <div className="pf-tile-info pf-glass" id={`panel-${slug}`}>
+                        <div className="pf-tile-text">
                           <p className="pf-tile-kind">{inferCategory(project)}</p>
-                          <h3>{title}</h3>
+                          <p className="pf-tile-title" aria-hidden="true">{title}</p>
+                          <p className="pf-tile-sum">{project.outcome || project.description}</p>
+                          {project.tech_stack.length ? (
+                            <ul className="pf-tile-stack" aria-label="Built with">
+                              {project.tech_stack.slice(0, 4).map((tech) => <li key={tech} title={tech}><TechIcon name={tech} size={16} /><span className="visually-hidden">{tech}</span></li>)}
+                            </ul>
+                          ) : null}
                         </div>
                         <ProjectLinks project={project} title={title} />
                       </div>

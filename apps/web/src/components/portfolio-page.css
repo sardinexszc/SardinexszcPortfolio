@@ -187,7 +187,16 @@
 .pf-tile { position: absolute; inset: 0; transform: perspective(1100px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.35s var(--pf-ease); }
 .pf-tile-media { position: absolute; inset: 0; display: block; border-radius: 16px; background: var(--pf-raised); box-shadow: 0 28px 50px -28px rgba(17, 18, 23, 0.55); }
 .pf-tile-media img { object-position: top; transition: transform 0.6s var(--pf-ease), filter 0.6s var(--pf-ease); }
-.pf-tiles > li:not([data-open]) .pf-tile-media img { filter: brightness(0.55) saturate(0.8); }
+/* Closed strips share one dark tint so the row reads as a set and the open project stands out. */
+.pf-tile-media::after { content: ""; position: absolute; inset: 0; background: var(--pf-black); opacity: 0; transition: opacity 0.6s var(--pf-ease); pointer-events: none; }
+.pf-tiles > li:not([data-open]) .pf-tile-media::after { opacity: 0.72; }
+.pf-tiles > li:not([data-open]) .pf-tile-media img { filter: grayscale(1); }
+/* Header button: covers the closed strip (above the picture link); on the open panel it stays in the tab
+   order for screen readers but lets clicks through, and its focus ring outlines the panel. */
+.pf-tile-head { margin: 0; }
+.pf-tile-open { position: absolute; inset: 0; z-index: 2; padding: 0; border: 0; border-radius: 16px; background: none; color: transparent; font-size: 0; cursor: pointer; }
+.pf-tiles > li[data-open] .pf-tile-open { pointer-events: none; }
+.pf-tile-open:focus-visible { outline: 3px solid var(--pf-accent); outline-offset: 3px; }
 .pf-tile-card { position: absolute; inset: 0; background: radial-gradient(circle at 30% 20%, #3a3f4b, var(--pf-black) 70%); }
 .pf-tile-veil { position: absolute; inset: 0; display: grid; place-items: center; background: rgba(0, 0, 0, 0.25); opacity: 0; transition: opacity 0.4s var(--pf-ease); }
 .pf-tile-veil span { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; background: var(--pf-white); color: var(--pf-black); font-size: var(--fs-small); font-weight: 500; transform: translateY(6px); transition: transform 0.4s var(--pf-ease); }
@@ -196,22 +205,27 @@ a.pf-tile-media:hover img, a.pf-tile-media:focus-visible img { transform: scale(
 a.pf-tile-media:hover .pf-tile-veil, a.pf-tile-media:focus-visible .pf-tile-veil { opacity: 1; }
 a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile-veil span { transform: none; }
 /* Glass: a tinted, blurred pane with a light rim; reads on light and dark pictures alike. */
-.pf-glass { border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(17, 18, 23, 0.32); color: var(--pf-white); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
-.pf-tile-num { position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 999px; font-family: var(--pf-mono); font-size: var(--fs-label); white-space: nowrap; line-height: 1.2; pointer-events: none; }
+.pf-glass { border: 1px solid rgba(255, 255, 255, 0.28); background: rgba(17, 18, 23, 0.45); color: var(--pf-white); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18); -webkit-backdrop-filter: blur(16px) saturate(1.5); backdrop-filter: blur(16px) saturate(1.5); }
+/* No blur support (some WebViews, older engines): a near-solid pane keeps the text readable. */
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) { .pf-glass { background: rgba(17, 18, 23, 0.82); } }
+.pf-tile-num { z-index: 1; position: absolute; top: 14px; left: 14px; padding: 5px 10px; border-radius: 999px; font-family: var(--pf-mono); font-size: var(--fs-label); white-space: nowrap; line-height: 1.2; pointer-events: none; }
 /* Closed strip: centered by auto margins, not a translate, so every engine lands it in the middle. */
-.pf-tiles > li:not([data-open]) .pf-tile-num { right: 0; left: 0; width: fit-content; margin-inline: auto; padding-inline: 7px; }
+.pf-tiles > li:not([data-open]) .pf-tile-num { z-index: 1; right: 0; left: 0; width: fit-content; margin-inline: auto; padding-inline: 7px; }
 /* Strip title: a full-width box centers it with flexbox. Vertical text measures differently per engine,
    so left: 50% + translate drifted. In vertical-rl the cross axis is horizontal; the 180deg turn keeps the
    center and moves flex-start to the bottom, so the title reads upward from the base. */
-.pf-tile-label { position: absolute; top: 56px; right: 0; bottom: 20px; left: 0; display: flex; align-items: center; justify-content: flex-start; color: var(--pf-white); font-size: var(--fs-small); font-weight: 600; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); writing-mode: vertical-rl; transform: rotate(180deg); pointer-events: none; transition: opacity 0.3s; }
+.pf-tile-label { z-index: 1; position: absolute; top: 56px; right: 0; bottom: 20px; left: 0; display: flex; align-items: center; justify-content: flex-start; color: var(--pf-white); font-size: var(--fs-small); font-weight: 600; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.5); writing-mode: vertical-rl; transform: rotate(180deg); pointer-events: none; transition: opacity 0.3s; }
 .pf-tile-label > span { max-height: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pf-tiles > li[data-open] .pf-tile-label { opacity: 0; }
+.pf-tiles > li[data-open] .pf-tile-label { z-index: 1; opacity: 0; }
 .pf-tiles > li:not([data-open]) .pf-tile-of { display: none; }
-.pf-tile-info { position: absolute; right: 14px; bottom: 14px; left: 14px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 20px; padding: 16px 20px; border-radius: 12px; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
-.pf-tiles > li[data-open] .pf-tile-info { opacity: 1; visibility: visible; transition-delay: 0.25s; }
+.pf-tile-info { z-index: 3; position: absolute; right: 14px; bottom: 14px; left: 14px; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 10px 20px; padding: 16px 20px; border-radius: 12px; pointer-events: none; opacity: 0; visibility: hidden; transition: opacity 0.3s, visibility 0.3s; }
+.pf-tiles > li[data-open] .pf-tile-info { z-index: 3; opacity: 1; visibility: visible; transition-delay: 0.25s; }
 .pf-tile-info a { pointer-events: auto; }
 .pf-tile-kind { margin: 0; color: rgba(255, 255, 255, 0.75); font-family: var(--pf-mono); font-size: var(--fs-label); }
-.pf-tiles h3 { margin-top: 4px; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.pf-tile-text { flex: 1 1 18rem; min-width: 0; }
+.pf-tile-title { margin-top: 4px; font-size: var(--fs-title); font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; }
+.pf-tile-sum { display: -webkit-box; max-width: 44em; margin-top: 6px; overflow: hidden; color: rgba(255, 255, 255, 0.85); font-size: var(--fs-small); line-height: 1.45; -webkit-box-orient: vertical; -webkit-line-clamp: 2; line-clamp: 2; }
+.pf-tile-stack { display: flex; gap: 12px; margin: 10px 0 0; padding: 0; list-style: none; color: var(--pf-white); }
 .pf-work-links { display: flex; gap: 16px; font-size: var(--fs-small); }
 .pf-work-links a { display: inline-flex; align-items: center; gap: 2px; border-bottom: 1px solid transparent; transition: border-color 0.25s; }
 .pf-work-links a:hover { border-color: currentColor; }
@@ -302,8 +316,8 @@ a.pf-tile-media:hover .pf-tile-veil span, a.pf-tile-media:focus-visible .pf-tile
   .pf-tiles { flex-direction: column; gap: 8px; height: auto; padding: 0; }
   .pf-tiles > li { flex: none; height: 56px; min-width: 0; transition: height 0.6s var(--pf-ease); }
   .pf-tiles > li[data-open] { height: min(120vw, 520px); }
-  .pf-tiles > li:not([data-open]) .pf-tile-num { top: 0; bottom: 0; right: auto; left: 14px; height: fit-content; margin: auto 0; padding-inline: 10px; }
-  .pf-tile-label { top: 0; bottom: 0; left: 64px; right: 14px; writing-mode: horizontal-tb; transform: none; }
+  .pf-tiles > li:not([data-open]) .pf-tile-num { z-index: 1; top: 0; bottom: 0; right: auto; left: 14px; height: fit-content; margin: auto 0; padding-inline: 10px; }
+  .pf-tile-label { z-index: 1; top: 0; bottom: 0; left: 64px; right: 14px; writing-mode: horizontal-tb; transform: none; }
   .pf-tile-label > span { max-width: 100%; max-height: none; }
 }
 

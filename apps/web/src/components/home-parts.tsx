@@ -81,16 +81,23 @@ export function SiteMenu({ children }: { children: ReactNode }) {
   );
 }
 
-// Selected work as a row of panels: one is open (data-open), the rest are strips. Mouse hover, keyboard
-// focus or a tap opens a panel; a tap on a closed strip only opens it, so touch visitors don't leave by
-// accident. The open panel tilts toward a mouse pointer through --rx/--ry, which the CSS reads.
+// Selected work as a row of panels: one is open (data-open), the rest are strips. Each strip is an
+// accordion header button (aria-expanded); mouse hover, keyboard focus or a tap opens it, and the arrow,
+// Home and End keys move between headers. The open panel tilts toward a mouse pointer through --rx/--ry.
 const openPanel = (li: HTMLElement | null) => {
   if (!li || li.hasAttribute("data-open")) return;
   const old = li.parentElement?.querySelector<HTMLElement>(":scope > [data-open]");
   old?.removeAttribute("data-open");
+  old?.querySelector(".pf-tile-open")?.setAttribute("aria-expanded", "false");
   old?.style.removeProperty("--rx");
   old?.style.removeProperty("--ry");
   li.setAttribute("data-open", "");
+  li.querySelector(".pf-tile-open")?.setAttribute("aria-expanded", "true");
+};
+const headerKeys: Record<string, (i: number, n: number) => number> = {
+  ArrowRight: (i, n) => (i + 1) % n, ArrowDown: (i, n) => (i + 1) % n,
+  ArrowLeft: (i, n) => (i - 1 + n) % n, ArrowUp: (i, n) => (i - 1 + n) % n,
+  Home: () => 0, End: (_, n) => n - 1,
 };
 const panelOf = (event: React.SyntheticEvent) => (event.target as Element).closest<HTMLElement>(".pf-tiles > li");
 
@@ -111,6 +118,15 @@ export function WorkAccordion({ children }: { children: ReactNode }) {
         const box = li.getBoundingClientRect();
         li.style.setProperty("--rx", `${((event.clientY - box.top) / box.height - 0.5) * -6}deg`);
         li.style.setProperty("--ry", `${((event.clientX - box.left) / box.width - 0.5) * 6}deg`);
+      }}
+      onKeyDown={(event) => {
+        const move = headerKeys[event.key];
+        if (!move || !(event.target as Element).matches(".pf-tile-open")) return;
+        const headers = [...event.currentTarget.querySelectorAll<HTMLButtonElement>(".pf-tile-open")];
+        event.preventDefault();
+        const next = headers[move(headers.indexOf(event.target as HTMLButtonElement), headers.length)];
+        next?.focus();
+        openPanel(next?.closest("li") ?? null);
       }}
       onPointerLeave={(event) => event.currentTarget.querySelectorAll<HTMLElement>(":scope > li").forEach((li) => { li.style.removeProperty("--rx"); li.style.removeProperty("--ry"); })}
     >
