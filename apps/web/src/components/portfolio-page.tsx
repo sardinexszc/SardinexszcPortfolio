@@ -4,7 +4,7 @@ import { ArrowDown, ArrowUpRight, Code2, Cpu, Database } from "lucide-react";
 import type { Portfolio, Project } from "@/lib/types";
 import { profile } from "@/lib/profile";
 import { inferCategory, isAllowedImage, projectDisplayTitle, projectSlug } from "@/lib/work-projects";
-import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, Wordmark } from "./home-parts";
+import { ClipReveal, MagneticPill, Parallax, ProjectLinks, Reveal, SiteMenu, WorkAccordion, Wordmark } from "./home-parts";
 import { ContactFooter } from "./contact-footer";
 import { GlyphIntro } from "./glyph-intro";
 import { TechIcon } from "./tech-icon";
@@ -17,12 +17,12 @@ const serviceIcons = { code: Code2, database: Database, cpu: Cpu };
 const firstYear = (text: string) => Number(text.match(/\b(?:19|20)\d{2}\b/)?.[0]) || null;
 const ipStatus = (detail: string) => (/pending/i.test(detail) ? "Pending" : /published/i.test(detail) ? "Published" : "Registered");
 
-// Tile picture: the screenshot, or a title card when there is none. The whole picture links to the
+// Tile picture: the screenshot, or a plain dark panel when there is none (the glass bar names it). The whole picture links to the
 // live site (or the source when there is no live site) and shows a hint on hover.
 function TileMedia({ project, title }: { project: Project; title: string }) {
   const media = isAllowedImage(project.image_url)
-    ? <Image src={project.image_url!} alt="" fill quality={90} sizes="(max-width: 800px) 150vw, 50vw" />
-    : <div className="pf-tile-card"><span>{inferCategory(project)}</span><strong>{title}</strong></div>;
+    ? <Image src={project.image_url!} alt="" fill quality={90} sizes="(max-width: 800px) 100vw, 75vw" />
+    : <div className="pf-tile-card" />;
   const href = project.live_url || project.github_url;
   if (!href) return <div className="pf-tile-media" aria-hidden="true">{media}</div>;
   const hint = project.live_url ? "View live" : "View source";
@@ -166,21 +166,29 @@ export function PortfolioPage({ portfolio }: { portfolio: Portfolio }) {
 
         <section id="work" className="pf-section" aria-labelledby="work-title">
           <LabelRow id="work-title" title="Selected work" aside={`(${projects.length})`} />
-          <ul className="pf-tiles">
-            {projects.map((project) => {
-              const title = projectDisplayTitle(project);
-              return (
-                <li key={project.id} id={`project-${projectSlug(project)}`}>
-                  <Reveal className="pf-tile">
-                    <TileMedia project={project} title={title} />
-                    <p className="pf-tile-kind">{inferCategory(project)}</p>
-                    <h3>{title}</h3>
-                    <ProjectLinks project={project} title={title} />
-                  </Reveal>
-                </li>
-              );
-            })}
-          </ul>
+          <Reveal>
+            <WorkAccordion>
+              {projects.map((project, i) => {
+                const title = projectDisplayTitle(project);
+                return (
+                  <li key={project.id} id={`project-${projectSlug(project)}`} data-open={i === 0 ? "" : undefined}>
+                    <div className="pf-tile">
+                      <TileMedia project={project} title={title} />
+                      <span className="pf-tile-num pf-glass" aria-hidden="true">{String(i + 1).padStart(2, "0")}<span className="pf-tile-of"> / {String(projects.length).padStart(2, "0")}</span></span>
+                      <span className="pf-tile-label" aria-hidden="true"><span>{title}</span></span>
+                      <div className="pf-tile-info pf-glass">
+                        <div>
+                          <p className="pf-tile-kind">{inferCategory(project)}</p>
+                          <h3>{title}</h3>
+                        </div>
+                        <ProjectLinks project={project} title={title} />
+                      </div>
+                    </div>
+                  </li>
+                );
+              })}
+            </WorkAccordion>
+          </Reveal>
         </section>
 
         {s.institutions.length ? (

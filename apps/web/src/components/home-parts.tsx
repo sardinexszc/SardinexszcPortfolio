@@ -81,6 +81,44 @@ export function SiteMenu({ children }: { children: ReactNode }) {
   );
 }
 
+// Selected work as a row of panels: one is open (data-open), the rest are strips. Mouse hover, keyboard
+// focus or a tap opens a panel; a tap on a closed strip only opens it, so touch visitors don't leave by
+// accident. The open panel tilts toward a mouse pointer through --rx/--ry, which the CSS reads.
+const openPanel = (li: HTMLElement | null) => {
+  if (!li || li.hasAttribute("data-open")) return;
+  const old = li.parentElement?.querySelector<HTMLElement>(":scope > [data-open]");
+  old?.removeAttribute("data-open");
+  old?.style.removeProperty("--rx");
+  old?.style.removeProperty("--ry");
+  li.setAttribute("data-open", "");
+};
+const panelOf = (event: React.SyntheticEvent) => (event.target as Element).closest<HTMLElement>(".pf-tiles > li");
+
+export function WorkAccordion({ children }: { children: ReactNode }) {
+  return (
+    <ul
+      className="pf-tiles"
+      onPointerOver={(event) => { if (event.pointerType === "mouse") openPanel(panelOf(event)); }}
+      // A tap also focuses the link; only keyboard focus (focus-visible) opens, or the tap would navigate.
+      onFocus={(event) => { if ((event.target as Element).matches(":focus-visible")) openPanel(panelOf(event)); }}
+      onClick={(event) => {
+        const li = panelOf(event);
+        if (li && !li.hasAttribute("data-open")) { event.preventDefault(); openPanel(li); }
+      }}
+      onPointerMove={(event) => {
+        const li = panelOf(event);
+        if (event.pointerType !== "mouse" || !li?.hasAttribute("data-open")) return;
+        const box = li.getBoundingClientRect();
+        li.style.setProperty("--rx", `${((event.clientY - box.top) / box.height - 0.5) * -6}deg`);
+        li.style.setProperty("--ry", `${((event.clientX - box.left) / box.width - 0.5) * 6}deg`);
+      }}
+      onPointerLeave={(event) => event.currentTarget.querySelectorAll<HTMLElement>(":scope > li").forEach((li) => { li.style.removeProperty("--rx"); li.style.removeProperty("--ry"); })}
+    >
+      {children}
+    </ul>
+  );
+}
+
 export function ProjectLinks({ project, title }: { project: Project; title: string }) {
   return (
     <div className="pf-work-links">
